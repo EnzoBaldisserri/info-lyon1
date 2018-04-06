@@ -1,26 +1,31 @@
 <main>
     <div class="container">
         <h4>Profil de : <?= $data['student']->name . ' ' . $data['student']->surname?></h4>
-        <?php foreach ($data['semesters'] as $key => $semester): ?>
+        <?php
+        foreach ($data['semesters'] as $key => $semester) { ?>
             <div class="card grey lighten-5 expandable">
                 <div class="card-content">
                     <div class="card-title"><?= $semester->groupName . $semester->courseType . ' '
-                        . ($semester->delayed?'différé':'') . ' de '
+                        . ($semester->delayed ? 'différé' : '') . ' de '
                         . $semester->schoolYear . '-' . ($semester->schoolYear + 1) ?>
                         <span class='right'><i class="material-icons medium">expand_more</i></span>
-
                     </div>
                     <div class="row">
                             <div class="col s12">
                                 <div class="card grey lighten-4">
                                     <div class="card-content">
                                         <span class="card-title">Absences</span>
-                                        <?php if ($data['absences'][$semester->idSemester]['justified'] == 0 && $data['absences'][$semester->idSemester]['unjustified'] == 0) {?>
-                                            <p>Des absences mais pas encore affichées</p>
-                                        <?php } else { ?>
-                                            <p> <?= $data['absences'][$semester->idSemester]['justified'] ?> absence(s) justifiée(s)</p>
-                                            <p> <?= $data['absences'][$semester->idSemester]['unjustified'] ?> absence(s) injustifiée(s)</p>
-                                        <?php }?>
+                                        <?php
+                                        if ($data['absences'][$semester->idSemester]['justified'] === 0
+                                            && $data['absences'][$semester->idSemester]['unjustified'] === 0
+                                        ) { ?>
+                                            <p>Pas d'absences</p>
+                                            <?php
+                                        } else { ?>
+                                            <p><?= $data['absences'][$semester->idSemester]['unjustified'] ?> absence(s) injustifiée(s)</p>
+                                            <p><?= $data['absences'][$semester->idSemester]['justified'] ?> absence(s) justifiée(s)</p>
+                                            <?php
+                                        }?>
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +34,7 @@
                                     <div class="card-content">
                                         <div class="card-title">
                                             Notes
-                                            <span class='right'><?= is_null($data['totalAvgs'][$semester->idSemester]['student'])?'':'Moyenne au semestre : ' . number_format($data['totalAvgs'][$semester->idSemester]['student'], 2) . '/20'?></span>
+                                            <span class='right'><?= is_null($data['totalAvgs'][$semester->idSemester]['student'])?'':'Moyenne du semestre : ' . number_format($data['totalAvgs'][$semester->idSemester]['student'], 2) . '/20'?></span>
                                         </div>
                                         <?php if (count($data['averageBySemester'][$semester->idSemester])){ ?>
                                         <ul class="collection with-header">
@@ -48,8 +53,10 @@
                                                                 </div>
 
                                                                 <div class="col s3 right-align">
-                                                                    <span>Eleve : <?=$data['averageTUBySemester'][$semester->idSemester][$average->idTeachingUnit]->average?>/20<br>
-                                                                        Groupe : <?= $data['averageTUBySemester'][$semester->idSemester][$average->idTeachingUnit]->groupAverage ?>/20</span>
+                                                                    <span>
+                                                                        Eleve : <?=$data['averageTUBySemester'][$semester->idSemester][$average->idTeachingUnit]->average?>/20<br>
+                                                                        Groupe : <?= $data['averageTUBySemester'][$semester->idSemester][$average->idTeachingUnit]->groupAverage ?>/20
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                     <?php } ?>
@@ -67,8 +74,7 @@
                     </div>
                 </div>
             </div>
-
-        <?php endforeach; ?>
-
+            <?php
+        } ?>
     </div>
 </main>

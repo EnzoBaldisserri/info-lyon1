@@ -121,7 +121,7 @@ class Students extends CI_Model
             ->where('idStudent', $studentId)
             ->where('beginDate BETWEEN "' . $period->getBeginDate()->format('Y-m-d')
                 . '" AND "' . $period->getEndDate()->format('Y-m-d') . '"')
-            ->where('justified','1')
+            ->where('justified', true)
             ->get()
             ->num_rows();
         $unjustified = $this->db
@@ -129,11 +129,14 @@ class Students extends CI_Model
             ->where('idStudent', $studentId)
             ->where('beginDate BETWEEN "' . $period->getBeginDate()->format('Y-m-d')
                 . '" AND "' . $period->getEndDate()->format('Y-m-d') . '"')
-            ->where('justified','0')
+            ->where('justified', false)
             ->get()
             ->num_rows();
 
-        return array('justified' => $justified, 'unjustified' => $unjustified);
+        return array(
+          'justified' => $justified,
+          'unjustified' => $unjustified
+        );
 
     }
 
@@ -155,15 +158,15 @@ class Students extends CI_Model
                         JOIN Control USING (idControl)
                         JOIN Education USING (idEducation)
                         JOIN `Group` USING (idGroup) 
-                        WHERE idStudent = \'p0000001\'
-                        AND idSemester = 2
+                        WHERE idStudent = "' . $studentId . '"
+                        AND idSemester = "' . $semesterId . '"
                     UNION
                         SELECT value, controlName, coefficient, divisor, controlDate
                         FROM Mark
                         JOIN Control USING (idControl)
                         JOIN Promo USING (idPromo)
-                        WHERE idStudent = \'p0000001\'
-                        AND idSemester = 2
+                        WHERE idStudent = "' . $studentId . '"
+                        AND idSemester = "' . $semesterId . '"
                 ) AS foo
                 ORDER BY controlDate DESC
                 LIMIT 1',
@@ -180,7 +183,7 @@ class Students extends CI_Model
     public function getSubjectsAverage($studentId, $semesterId) {
         $sql = 'SELECT idSubject, subjectCode, subjectName, subjectCoefficient, moduleName, idTeachingUnit, teachingUnitName, teachingUnitCode, idSemester,
                         ROUND(SUM((value/divisor)*20*coefficient)/SUM(coefficient), 2) AS average,
-                        ROUND(SUM(average*coefficient)/SUM(coefficient), 2) AS groupAverage
+                        ROUND(SUM((average/divisor)*20*coefficient)/SUM(coefficient), 2) AS groupAverage
                 FROM (
                 SELECT idSubject, idControl, idStudent, idSemester FROM mark
                     JOIN control using (idControl)
@@ -211,10 +214,9 @@ class Students extends CI_Model
 
     public function getSubjectsTUAverage($studentId, $semesterId) {
         $sql = 'SELECT idTeachingUnit, teachingUnitName, teachingUnitCode,
-                        ROUND(SUM((value/divisor)*20*coefficient)/SUM(coefficient), 2) AS average,
-                        ROUND(SUM(average*coefficient)/SUM(coefficient), 2) AS groupAverage,
+                        ROUND(SUM((value / divisor) * 20 * coefficient)/SUM(coefficient), 2) AS average,
+                        ROUND(SUM((average / divisor) * 20 * coefficient)/SUM(coefficient), 2) AS groupAverage,
                         SUM(subjectCoefficient) as coefficient
-
                 FROM (
                 SELECT idSubject, idControl, idStudent, idSemester FROM mark
                     JOIN control using (idControl)
@@ -315,9 +317,7 @@ class Students extends CI_Model
     }
     
     /**
-<<<<<<< HEAD
      * Returns all the public questions without those who belong to the student.
-=======
      * Return the project to which the student currently or most lastly belongs.
      *
      * @param string $studentId
@@ -341,7 +341,6 @@ class Students extends CI_Model
 
     /**
      * Returns the answers to the questions the student asked.
->>>>>>> Dashboard
      *
      * @param string $studentId
      * @return array
@@ -412,7 +411,9 @@ class Students extends CI_Model
             ->where('active', '1')
             ->get_compiled_select();
 
-        return $this->db->select('idTeacher, CONCAT(name, \' \', surname) as name')
+        return $this->db
+            ->distinct()
+            ->select('idTeacher, CONCAT(name, \' \', surname) as name')
             ->from('Teacher')
             ->join('User', 'idUser')
             ->join('Education', 'idTeacher')

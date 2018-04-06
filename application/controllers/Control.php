@@ -33,6 +33,10 @@ class Control extends TM_Controller
                 )
             ) {
                 unset($controls[$key]);
+            } else {
+                if (empty($control->subjectName)) {
+                  $controls[$key]->subjectName = $control->moduleName;
+                }
             }
         }
 
@@ -61,6 +65,12 @@ class Control extends TM_Controller
         } else {
             show_404();
             return;
+        }
+        
+        foreach ($select as $key => $selectItem) {
+            $select[$key]->subjectName = empty($selectItem->subjectName)
+                ? $selectItem->moduleName
+                : $selectItem->subjectName;
         }
 
         $controlTypes = $this->Controls->getTypes();
