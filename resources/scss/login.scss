@@ -1,0 +1,29 @@
+@import 'materialize/components/color-variables';
+@import 'materialize/components/variables';
+
+body {
+    min-height: 100vh;
+}
+
+#error {
+    margin-bottom: 2rem;
+    
+    > span {
+        min-width: 5rem;
+    }
+}
+
+#logo_info-lyon1 {
+    width: 10rem;
+    margin-bottom: 1rem;
+}
+
+.input-field {
+    @media #{$medium-and-up} {
+        max-width: 50%;
+    }
+    
+    > .prefix {
+        color: color('grey', 'base');
+    }
+}

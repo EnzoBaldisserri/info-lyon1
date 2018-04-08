@@ -1,0 +1,36 @@
+{
+  "name": "info-lyon1",
+  "version": "1.0.0",
+  "description": "Site web de gestion de l'IUT Lyon 1",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EnzoBaldisserri/info-lyon1.git"
+  },
+  "keywords": [
+    "symfony",
+    "php",
+    "website",
+    "web",
+    "management"
+  ],
+  "author": "Enzo Baldisserri",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EnzoBaldisserri/info-lyon1/issues"
+  },
+  "homepage": "https://github.com/EnzoBaldisserri/info-lyon1#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-sass": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.4"
+  }
+}

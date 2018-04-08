@@ -1,0 +1,62 @@
+@import '../materialize/components/variables';
+@import '../materialize/components/color-classes';
+
+.primary-color {
+    background-color: $primary-color;
+}
+
+.primary-color-text {
+    color: $primary-color;
+}
+
+.secondary-color {
+    background-color: $secondary-color;
+}
+
+.secondary-color-text {
+    color: $secondary-color;
+}
+
+@mixin alert() {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    
+    border-radius: 0.25rem;
+}
+
+.success {
+    @include alert();
+    @extend .white-text;
+    background-color: $success-color;
+}
+
+.error {
+    @include alert();
+    @extend .white-text;
+    background-color: $error-color;
+}
+
+.material-icons {
+  @extends .no-select;
+  vertical-align: middle;
+
+  main & {
+    color: $secondary-color;
+  }
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.small-caps {
+  font-variant: small-caps;
+}
+
+.card-action button.btn-flat {
+  color: $card-link-color;
+}
+
+.h-wrapper {
+  overflow-x: auto;
+}

@@ -1,0 +1,19 @@
+parameters:
+    date_format: Y-m-d
+    fetch_url:
+        "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp\
+        ?resources={resources}\
+        &projectId={projectId}\
+        &calType=ical\
+        &firstDate={firstDate}\
+        &lastDate={lastDate}"
+    project_id: 1
+
+services:
+    _defaults: { public: true }
+    il_schedule.ScheduleFetcher:
+        class: IL\ScheduleBundle\Service\ScheduleFetcher
+        arguments:
+            - "%fetch_url%"
+            - "%project_id%"
+            - "%date_format%"

@@ -1,0 +1,54 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_STUDENT:     ROLE_USER
+        ROLE_TEACHER:     ROLE_USER
+        ROLE_SECRETARIAT: ROLE_USER
+        ROLE_ADMIN:       [ROLE_ALLOWED_TO_SWITCH]
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory:
+            memory:
+                users:
+                    # password is 'azertyuiop' for the three
+                    student: { password: $2y$10$xldE0T78JJgLhdievuwwYuJTrT/VZvc4myAqxop9sWHQJAjT6sIa2, roles: ['ROLE_STUDENT'] }
+                    teacher: { password: $2y$10$xldE0T78JJgLhdievuwwYuJTrT/VZvc4myAqxop9sWHQJAjT6sIa2, roles: ['ROLE_TEACHER'] }
+                    secretariat: { password: $2y$10$xldE0T78JJgLhdievuwwYuJTrT/VZvc4myAqxop9sWHQJAjT6sIa2, roles: ['ROLE_SECRETARIAT'] }
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login:
+          pattern: ^/login$
+          anonymous: true
+          logout_on_user_change: true
+
+        main:
+            pattern: ^/
+            anonymous: false
+            logout_on_user_change: true
+            form_login:
+                login_path: login
+                check_path: login_check
+            logout:
+                path: logout
+                target: login
+            remember_me:
+                secret: '%secret%'
+                lifetime: 604800
+
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~
