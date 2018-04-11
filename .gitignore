@@ -107,10 +107,8 @@ typings/
 ### Symfony Patch ###
 /web/css/
 /web/js/
-
+/web/images/
 
 # End of https://www.gitignore.io/api/node,symfony
 
 /vendor/
-!/web/js/materialize.js
-!/web/js/materialize.min.js

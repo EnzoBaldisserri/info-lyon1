@@ -1,8 +1,6 @@
-@import "materialize/components/color-variables";
+@import 'general/variables';
+@import 'general/colors';
 
-$primary-color: color("yellow", "accent-4");
-$secondary-color: color("orange", "lighten-2");
-$link-color: $secondary-color;
-
-@import 'materialize/materialize';
-@import 'general/general';
+@import '../../node_modules/materialize-css/sass/materialize';
+@import 'general/style';
+@import 'general/header';

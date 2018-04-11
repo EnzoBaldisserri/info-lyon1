@@ -1,0 +1,15 @@
+@import '../../node_modules/materialize-css/sass/components/color-variables';
+
+/* Materialize replacement */
+$primary-color: color('yellow', 'accent-4');
+$secondary-color: color('orange', 'lighten-2');
+$link-color: $secondary-color;
+
+/* Own variables */
+$color-primary: $primary-color;
+$color-secondary: $secondary-color;
+$color-white: #ffffff;
+$color-light-grey: color('grey', 'base');
+$color-dark: color('grey', 'darken-4');
+
+@import '../../node_modules/materialize-css/sass/components/variables';

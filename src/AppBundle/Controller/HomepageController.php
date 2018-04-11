@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreBundle\Controller;
+namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class HomepageController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="app_homepage")
      */
     public function indexAction()
     {
-        return $this->render('@Core/index.html.twig');
+        return $this->render('@App/homepage.html.twig');
     }
 }

@@ -15,7 +15,7 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request, AuthenticationUtils $authenticationUtils) {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_homepage');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();

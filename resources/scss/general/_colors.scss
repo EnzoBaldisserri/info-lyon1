@@ -1,0 +1,32 @@
+$custom-colors:
+  // Dark colors (white text)
+  (
+    ('primary', $color-primary),
+    ('secondary', $color-secondary),
+    ('dark', $color-dark)
+  ),
+  // Light colors (dark text)
+  (
+    ('white', $color-white),
+    ('light-grey', $color-light-grey)
+  );
+
+@each $color in nth($custom-colors, 1) {
+  .bg-#{nth($color, 1)} {
+    background-color: #{nth($color, 2)} !important;
+    color: $color-white !important;
+  }
+  .text-#{nth($color, 1)} {
+    color: #{nth($color, 2)} !important;
+  }
+}
+
+@each $color in nth($custom-colors, 2) {
+  .bg-#{nth($color, 1)} {
+    background-color: #{nth($color, 2)} !important;
+    color: $color-dark !important;
+  }
+  .text-#{nth($color, 1)} {
+    color: #{nth($color, 2)} !important;
+  }
+}

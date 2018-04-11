@@ -2,11 +2,6 @@ il_schedule:
     resource: "@ILScheduleBundle/Resources/config/routing.yml"
     prefix:   /schedule
 
-core:
-    resource: "@CoreBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
