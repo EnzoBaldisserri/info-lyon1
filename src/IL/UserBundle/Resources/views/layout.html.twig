@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Connexion{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="center-align">
+        {% if error|default %}
+            <div id="error" class="center-block">
+                <span class="alert alert-error">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+            </div>
+        {% endif %}
+
+        {% block fos_user_content %}
+        {% endblock %}
+    </div>
+{% endblock %}

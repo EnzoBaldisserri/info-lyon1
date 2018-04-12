@@ -19,17 +19,17 @@ const sassConfig = {
   ],
   output: `${pathPublic}/css/`,
   options: {
-    outputStyle: 'expanded'
-  }
-}
+    outputStyle: 'expanded',
+  },
+};
 
 const babelConfig = {
   input: `${pathResources}/js/**/*.js`,
   output: `${pathPublic}/js/`,
   options: {
-    presets: ['env']
-  }
-}
+    presets: ['env'],
+  },
+};
 
 gulp.task('default', ['dev', 'watch']);
 
@@ -37,54 +37,49 @@ gulp.task('dev', ['ensure-dependencies', 'build-js', 'build-css', 'optimize-imag
 
 gulp.task('ensure-dependencies', ['move-materialize-js']);
 
-gulp.task('move-materialize-js', () => {
-  return gulp
+gulp.task('move-materialize-js', () =>
+  gulp
     .src(`${nodeModulesPath}/materialize-css/dist/js/materialize.js`)
-    .pipe(gulp.dest(`${pathPublic}/js/`));
-});
+    .pipe(gulp.dest(`${pathPublic}/js/`)));
 
-gulp.task('build-js', () => {
-  return gulp
+gulp.task('build-js', () =>
+  gulp
     .src(babelConfig.input)
     .pipe(sourcemaps.init())
-      .pipe(babel(babelConfig.options))
+    .pipe(babel(babelConfig.options))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(babelConfig.output));
-});
+    .pipe(gulp.dest(babelConfig.output)));
 
-gulp.task('lint-js', () => {
-    return gulp
-        .src(babelConfig.input)
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-});
+gulp.task('lint-js', () =>
+  gulp
+    .src(babelConfig.input)
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError()));
 
-gulp.task('build-css', () => {
-  return gulp.src(sassConfig.input)
+gulp.task('build-css', () =>
+  gulp
+    .src(sassConfig.input)
     .pipe(sourcemaps.init())
-      .pipe(sass(sassConfig.options).on('error', sass.logError))
-      .pipe(postcss([ autoprefixer() ]))
+    .pipe(sass(sassConfig.options).on('error', sass.logError))
+    .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(sassConfig.output));
-});
+    .pipe(gulp.dest(sassConfig.output)));
 
-gulp.task('lint-css', () => {
-  return gulp
+gulp.task('lint-css', () =>
+  gulp
     .src(sassConfig.input)
     .pipe(stylelint({
       reporters: [
-        { formatter: 'string', console: true }
-      ]
-  }));
-});
+        { formatter: 'string', console: true },
+      ],
+    })));
 
-gulp.task('optimize-images', () => {
-  return gulp
+gulp.task('optimize-images', () =>
+  gulp
     .src(`${pathResources}/images/*.*`)
     .pipe(imagemin())
-    .pipe(gulp.dest(`${pathPublic}/images/`));
-})
+    .pipe(gulp.dest(`${pathPublic}/images/`)));
 
 gulp.task('watch', () => {
   gulp.watch(babelConfig.input, ['lint-js', 'build-js']);

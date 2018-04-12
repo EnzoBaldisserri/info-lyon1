@@ -7,7 +7,11 @@ $link-color: $secondary-color;
 
 /* Own variables */
 $color-primary: $primary-color;
+$color-primary-light: lighten($color-primary, 5%);
+$color-primary-dark: darken($color-primary, 5%);
 $color-secondary: $secondary-color;
+$color-secondary-light: lighten($color-secondary, 5%);
+$color-secondary-dark: darken($color-secondary, 5%);
 $color-white: #ffffff;
 $color-light-grey: color('grey', 'base');
 $color-dark: color('grey', 'darken-4');

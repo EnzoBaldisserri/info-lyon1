@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
+
     <title>{% block title %}info-lyon1{% endblock %}</title>
     {% block stylesheets %}
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -23,6 +23,7 @@
     </main>
     {% block javascripts %}
       <script src="{{ asset("js/materialize.js") }}"></script>
+      <script src="{{ asset("js/app.js") }}"></script>
     {% endblock %}
   </body>
 </html>

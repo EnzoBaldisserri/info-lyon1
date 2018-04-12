@@ -1,0 +1,16 @@
+<ul class="right hide-on-med-and-down">
+    <li>
+        <a id="navbar-user-trigger" class="dropdown-trigger" data-target="navbar-user">
+            <i class="material-icons">account_circle</i>
+        </a>
+        <ul id="navbar-user" class="dropdown-content">
+            <li>
+              <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
+            </li>
+            <li class="divider"></li>
+            <li class="text-uppercase">
+                <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+            </li>
+        </ul>
+    </li>
+</ul>

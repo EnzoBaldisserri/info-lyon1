@@ -1,0 +1,58 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<img id="brand-logo"
+    src="{{ asset('images/logo_800.png') }}"
+    alt="info-lyon1"
+    class="responsive-img center-block"
+/>
+
+<form action="{{ path("fos_user_security_check") }}" method="post">
+    {% if csrf_token %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    {% endif %}
+
+    <div class="input-field center-block">
+        <i class="material-icons prefix">account_circle</i>
+        <input
+            type="text"
+            id="username"
+            name="_username"
+            value="{{ last_username }}"
+            required="required"
+            autocomplete="username"
+        />
+        <label for="username">Identifiant</label>
+    </div>
+    <div class="input-field center-block">
+        <i class="material-icons prefix">lock</i>
+        <input
+            type="password"
+            id="password"
+            name="_password"
+            required="required"
+            autocomplete="current-password"
+        />
+        <label for="password">Mot de passe</label>
+    </div>
+    <div>
+        <label>
+            <input
+              type="checkbox"
+              id="remember_me"
+              name="_remember_me"
+              value="on"
+            />
+            <span>Rester connecté</span>
+        </label>
+    </div>
+    <p class="center-align">
+        <button
+            type="submit"
+            id="submit"
+            name="_submit"
+            class="btn yellow accent-4 waves-effect waves-light"
+        >
+          Se connecter
+        </button>
+    </p>
+</form>

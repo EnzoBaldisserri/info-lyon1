@@ -5,5 +5,32 @@ header {
     .brand-logo {
       margin-left: 1rem;
     }
+
+    #navbar-user {
+      li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+        text-transform: capitalize;
+
+        a { width: 100%; }
+      }
+    }
+  }
+
+  .sidenav {
+    .user-view {
+      line-height: 2.3rem;
+
+      .background {
+        background: $color-white;
+      }
+
+      img {
+        margin-bottom: 0.5rem;
+      }
+    }
   }
 }

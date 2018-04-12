@@ -1,0 +1,14 @@
+<ul class="sidenav" id="mobile-sidenav">
+    <li>
+        <div class="user-view">
+            <div class="background"></div>
+            <img class="circle" src="{{ asset('images/logo_800.png') }}">
+            <span class="text-capitalize">{{ app.user.username }}</span><br>
+            <span>{{ app.user.email }}</span>
+        </div>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+    </li>
+</ul>

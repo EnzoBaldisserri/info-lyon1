@@ -1,5 +1,14 @@
 <nav class="nav-extended">
-  <div class="nav-wrapper">
-    <a href="{{ path("app_homepage") }}" class="brand-logo small-caps">Info-lyon1</a>
-  </div>
+    <div class="nav-wrapper">
+        <a href="{{ path("app_homepage") }}" class="brand-logo text-uppercase">Info-lyon1</a>
+        
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+          {{ include('navigation/computer_navbar.html.twig') }}
+          {{ include('navigation/mobile_navbar.html.twig') }}
+        {% endif %}
+    </div>
 </nav>
+
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+  {{ include('navigation/mobile_sidenav.html.twig') }}
+{% endif %}
