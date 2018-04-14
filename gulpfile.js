@@ -8,24 +8,46 @@ const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
 
-const nodeModulesPath = 'node_modules/';
-const pathResources = 'resources/';
-const pathPublic = 'web/';
+const resourcesPath = 'resources/';
+const publicPath = 'web/';
+
+const path = {
+  nodeModules: 'node_modules/',
+  in: {
+    js: `${resourcesPath}/js/**/*.js`,
+    scss: [
+      `${resourcesPath}/scss/**/*.scss`,
+      `!${resourcesPath}/scss/materialize/**/*`,
+    ],
+    images: `${resourcesPath}/images/**/*.*`,
+  },
+  out: {
+    scripts: `${publicPath}/scripts/`,
+    styles: `${publicPath}/styles/`,
+    images: `${publicPath}/images/`,
+  },
+};
 
 const sassConfig = {
-  input: [
-    `${pathResources}/scss/**/*.scss`,
-    `!${pathResources}/scss/materialize/**/*`,
-  ],
-  output: `${pathPublic}/css/`,
+  input: path.in.scss,
+  output: path.out.styles,
   options: {
     outputStyle: 'expanded',
   },
 };
 
+const stylelintConfig = {
+  input: path.in.scss,
+  options: {
+    reporters: [
+      { formatter: 'string', console: true },
+    ],
+  },
+};
+
 const babelConfig = {
-  input: `${pathResources}/js/**/*.js`,
-  output: `${pathPublic}/js/`,
+  input: path.in.js,
+  output: path.out.scripts,
   options: {
     presets: ['env'],
   },
@@ -39,8 +61,8 @@ gulp.task('ensure-dependencies', ['move-materialize-js']);
 
 gulp.task('move-materialize-js', () =>
   gulp
-    .src(`${nodeModulesPath}/materialize-css/dist/js/materialize.js`)
-    .pipe(gulp.dest(`${pathPublic}/js/`)));
+    .src(`${path.nodeModules}/materialize-css/dist/js/materialize.js`)
+    .pipe(gulp.dest(path.out.scripts)));
 
 gulp.task('build-js', () =>
   gulp
@@ -68,21 +90,17 @@ gulp.task('build-css', () =>
 
 gulp.task('lint-css', () =>
   gulp
-    .src(sassConfig.input)
-    .pipe(stylelint({
-      reporters: [
-        { formatter: 'string', console: true },
-      ],
-    })));
+    .src(stylelintConfig.input)
+    .pipe(stylelint(stylelintConfig.options)));
 
 gulp.task('optimize-images', () =>
   gulp
-    .src(`${pathResources}/images/*.*`)
+    .src(path.in.images)
     .pipe(imagemin())
-    .pipe(gulp.dest(`${pathPublic}/images/`)));
+    .pipe(gulp.dest(path.out.images)));
 
 gulp.task('watch', () => {
   gulp.watch(babelConfig.input, ['lint-js', 'build-js']);
   gulp.watch(sassConfig.input, ['lint-css', 'build-css']);
-  gulp.watch(`${pathResources}/images/*.*`, ['optimize-images']);
+  gulp.watch(path.in.images, ['optimize-images']);
 });

@@ -105,8 +105,8 @@ typings/
 **/Entity/*~
 
 ### Symfony Patch ###
-/web/css/
-/web/js/
+/web/styles/
+/web/scripts/
 /web/images/
 
 # End of https://www.gitignore.io/api/node,symfony

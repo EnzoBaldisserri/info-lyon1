@@ -7,7 +7,7 @@
     <title>{% block title %}info-lyon1{% endblock %}</title>
     {% block stylesheets %}
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+      <link rel="stylesheet" href="{{ asset('styles/style.css') }}">
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
   </head>
@@ -22,8 +22,8 @@
       {% endblock %}
     </main>
     {% block javascripts %}
-      <script src="{{ asset("js/materialize.js") }}"></script>
-      <script src="{{ asset("js/app.js") }}"></script>
+      <script src="{{ asset("scripts/materialize.js") }}"></script>
+      <script src="{{ asset("scripts/app.js") }}"></script>
     {% endblock %}
   </body>
 </html>
