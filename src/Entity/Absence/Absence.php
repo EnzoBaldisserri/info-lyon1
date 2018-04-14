@@ -2,6 +2,8 @@
 
 namespace App\Entity\Absence;
 
+use App\Entity\Absence\AbsenceType;
+use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,13 +34,13 @@ class Absence
     private $justified;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\AbsenceType", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Absence\AbsenceType", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $absenceType;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\Student", inversedBy="absences")
      * @ORM\JoinColumn(nullable=false)
      */
     private $student;
@@ -96,15 +98,16 @@ class Absence
         return $this;
     }
 
-    public function getStudent(): ?User
+    public function getStudent(): ?Student
     {
         return $this->student;
     }
 
-    public function setStudent(User $student): self
+    public function setStudent(?Student $student): self
     {
         $this->student = $student;
 
         return $this;
     }
+
 }
