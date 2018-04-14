@@ -8,8 +8,8 @@ const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const sourcemaps = require('gulp-sourcemaps');
 
-const resourcesPath = 'resources/';
-const publicPath = 'web/';
+const resourcesPath = 'assets/';
+const publicPath = 'public/';
 
 const path = {
   nodeModules: 'node_modules/',

@@ -1,3 +1,0 @@
-il_schedule_homepage:
-    path:     /
-    defaults: { _controller: ILScheduleBundle:Default:index }
