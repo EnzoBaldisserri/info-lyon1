@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use App\Entity\Absence\Absence;
+use App\Entity\Administration\Group;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Student extends User
 {
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="student", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Group", inversedBy="students")
      */
-    private $absences;
+    private $classes;
 
     public function __construct() {
         parent::__construct();
@@ -25,35 +26,30 @@ class Student extends User
             $this->addRole('ROLE_STUDENT');
         }
 
-        $this->absences = new ArrayCollection();
+        $this->classes = new ArrayCollection();
     }
 
     /**
-     * @return Collection|Absence[]
+     * @return Collection|Group[]
      */
-    public function getAbsences(): Collection
+    public function getClasses(): Collection
     {
-        return $this->absences;
+        return $this->classes;
     }
 
-    public function addAbsence(Absence $absence): self
+    public function addClass(Group $class): self
     {
-        if (!$this->absences->contains($absence)) {
-            $this->absences[] = $absence;
-            $absence->setStudent($this);
+        if (!$this->classes->contains($class)) {
+            $this->classes[] = $class;
         }
 
         return $this;
     }
 
-    public function removeAbsence(Absence $absence): self
+    public function removeClass(Group $class): self
     {
-        if ($this->absences->contains($absence)) {
-            $this->absences->removeElement($absence);
-            // set the owning side to null (unless already changed)
-            if ($absence->getStudent() === $this) {
-                $absence->setStudent(null);
-            }
+        if ($this->classes->contains($class)) {
+            $this->classes->removeElement($class);
         }
 
         return $this;

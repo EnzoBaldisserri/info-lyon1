@@ -23,40 +23,4 @@ class User extends BaseUser
      * @ORM\Column(type="integer")
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Group", inversedBy="users")
-     */
-    private $classes;
-
-    public function __construct()
-    {
-        $this->classes = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection|Group[]
-     */
-    public function getClasses(): Collection
-    {
-        return $this->classes;
-    }
-
-    public function addClass(Group $class): self
-    {
-        if (!$this->classes->contains($class)) {
-            $this->classes[] = $class;
-        }
-
-        return $this;
-    }
-
-    public function removeClass(Group $class): self
-    {
-        if ($this->classes->contains($class)) {
-            $this->classes->removeElement($class);
-        }
-
-        return $this;
-    }
 }

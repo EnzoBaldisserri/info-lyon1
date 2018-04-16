@@ -3,6 +3,7 @@
 namespace App\Entity\Absence;
 
 use App\Entity\Absence\AbsenceType;
+use App\Entity\Administration\Semester;
 use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,13 +38,23 @@ class Absence
      * @ORM\OneToOne(targetEntity="App\Entity\Absence\AbsenceType", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $absenceType;
+    private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User\Student", inversedBy="absences")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\Student")
      * @ORM\JoinColumn(nullable=false)
      */
     private $student;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="absences")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $semester;
+
+    public function __construct() {
+        $this->justified = false;
+    }
 
     public function getId()
     {
@@ -86,14 +97,14 @@ class Absence
         return $this;
     }
 
-    public function getAbsenceType(): ?AbsenceType
+    public function getType(): ?AbsenceType
     {
-        return $this->absenceType;
+        return $this->type;
     }
 
-    public function setAbsenceType(AbsenceType $absenceType): self
+    public function setType(AbsenceType $type): self
     {
-        $this->absenceType = $absenceType;
+        $this->type = $type;
 
         return $this;
     }
@@ -106,6 +117,18 @@ class Absence
     public function setStudent(?Student $student): self
     {
         $this->student = $student;
+
+        return $this;
+    }
+
+    public function getSemester(): ?Semester
+    {
+        return $this->semester;
+    }
+
+    public function setSemester(?Semester $semester): self
+    {
+        $this->semester = $semester;
 
         return $this;
     }

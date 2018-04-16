@@ -2,6 +2,9 @@
 
 namespace App\Entity\Administration;
 
+use App\Entity\Absence\Absence;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,19 +20,14 @@ class Semester
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="datetime")
      */
-    private $schoolYear;
+    private $beginDate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $deferred;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
+    private $endDate;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist", "remove"})
@@ -37,10 +35,16 @@ class Semester
      */
     private $course;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="semester", orphanRemoval=true)
+     */
+    private $absences;
+
     public function __construct() {
         parent::__construct();
 
         $this->active = false;
+        $this->absences = new ArrayCollection();
     }
 
     public function getId()
@@ -53,40 +57,39 @@ class Semester
         return 'S' . $this->course->getSemester();
     }
 
-    public function getSchoolYear(): ?int
+    public function getBeginDate(): ?\DateTimeInterface
     {
-        return $this->schoolYear;
+        return $this->beginDate;
     }
 
-    public function setSchoolYear(int $schoolYear): self
+    public function setBeginDate(\DateTimeInterface $beginDate): self
     {
-        $this->schoolYear = $schoolYear;
+        $this->beginDate = $beginDate;
 
         return $this;
     }
 
-    public function getDeferred(): ?bool
+    public function getEndDate(): ?\DateTimeInterface
     {
-        return $this->deferred;
+        return $this->endDate;
     }
 
-    public function setDeferred(bool $deferred): self
+    public function setEndDate(\DateTimeInterface $endDate): self
     {
-        $this->deferred = $deferred;
+        $this->endDate = $endDate;
 
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function isActive(\DateTimeInterface $datetime = null): ?bool
     {
-        return $this->active;
-    }
+        if ($datetime === null) {
+            $datetime = new \DateTime();
+        }
 
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
+        // Check if datetime is between begin and end
+        return $this->beginDate->diff($datetime)->invert === 0
+            && $this->endDate->diff($datetime)->invert === 1;
     }
 
     public function getCourse(): ?Course
@@ -100,4 +103,36 @@ class Semester
 
         return $this;
     }
+
+    /**
+     * @return Collection|Absence[]
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences[] = $absence;
+            $absence->setSemester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): self
+    {
+        if ($this->absences->contains($absence)) {
+            $this->absences->removeElement($absence);
+            // set the owning side to null (unless already changed)
+            if ($absence->getSemester() === $this) {
+                $absence->setSemester(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Administration;
 
+use App\Entity\User\Student;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,19 +33,20 @@ class Group
     private $semester;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Education", mappedBy="Group", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Education", mappedBy="group", orphanRemoval=true)
      */
     private $educations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User\User", mappedBy="classes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User\Student", mappedBy="classes")
      */
-    private $users;
+    private $students;
 
     public function __construct()
     {
         $this->educations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->students = new ArrayCollection();
     }
 
     public function getId()
@@ -118,28 +120,28 @@ class Group
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|Student[]
      */
-    public function getUsers(): Collection
+    public function getStudents(): Collection
     {
-        return $this->users;
+        return $this->students;
     }
 
-    public function addUser(User $user): self
+    public function addStudent(Student $student): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addClass($this);
+        if (!$this->students->contains($student)) {
+            $this->students[] = $student;
+            $student->addClass($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeStudent(Student $student): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeClass($this);
+        if ($this->students->contains($student)) {
+            $this->students->removeElement($student);
+            $student->removeClass($this);
         }
 
         return $this;
