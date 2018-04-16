@@ -3,10 +3,34 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_STUDENT:     ROLE_USER
-        ROLE_TEACHER:     ROLE_USER
-        ROLE_SECRETARIAT: ROLE_USER
-        ROLE_ADMIN:       [ROLE_ALLOWED_TO_SWITCH]
+        ROLE_PROJECT_MEMBER:
+        ROLE_PROJECT_ADMIN:   ROLE_PROJECT_MEMBER
+        ROLE_FORUM_ACCESS:
+        ROLE_FORUM_ASKER:     ROLE_FORUM_ACCESS
+        ROLE_FORUM_ADMIN:     ROLE_FORUM_ACCESS
+        ROLE_SCHEDULED:
+        ROLE_FOLLOW_UP:
+        ROLE_ADMINISTRATIVE:
+
+        ROLE_STUDENT:
+            - ROLE_SCHEDULED
+            - ROLE_PROJECT_MEMBER
+            - ROLE_FORUM_ASKER
+
+        ROLE_TEACHER:
+            - ROLE_SCHEDULED
+            - ROLE_PROJECT_ADMIN
+            - ROLE_FORUM_ADMIN
+            - ROLE_FOLLOW_UP
+
+        ROLE_SECRETARIAT:
+            - ROLE_ADMINISTRATIVE
+            - ROLE_FOLLOW_UP
+
+        ROLE_ADMIN:
+            - ROLE_ADMINISTRATIVE
+            - ROLE_FOLLOW_UP
+            - ROLE_ALLOWED_TO_SWITCH
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -40,4 +64,11 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/control/, role: ROLE_TEACHER }
+        - { path: ^/mark/, role: ROLE_STUDENT }
+        - { path: ^/project/, role: ROLE_PROJECT_MEMBER }
+        - { path: ^/forum/, role: ROLE_FORUM_ACCESS }
+        - { path: ^/schedule/, role: ROLE_SCHEDULED }
+        - { path: ^/followup/, role: ROLE_FOLLOW_UP }
+        - { path: ^/administration/, role: ROLE_ADMINISTRATIVE }
         - { path: ^/admin/, role: ROLE_ADMIN }

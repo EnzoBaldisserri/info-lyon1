@@ -7,6 +7,9 @@
             <span>{{ app.user.email }}</span>
         </div>
     </li>
+    {% for name, link in navigation %}
+        <li><a href="{{ path(link) }}">{{ name }}</a></li>
+    {% endfor %}
     <li class="divider"></li>
     <li>
         <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>

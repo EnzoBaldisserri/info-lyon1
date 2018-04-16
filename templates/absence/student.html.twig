@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Absence - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1>Absences</h1>
+    <table class="bordered centered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Horaire</th>
+                <th>Type</th>
+                <th>Justification</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for absence in absences %}
+                <tr {% if not absence.justified %}class="alert alert-error"{% endif %}>
+                    <td>{{ absence.beginDate|date('d/m/Y') }}</td>
+                    <td>
+                        {{ absence.beginDate|date('H:i') }}
+                        <i class="material-icons">arrow_forward</i>
+                        {{ absence.endDate|date('H:i') }}
+                    </td>
+                    <td>{{ absence.type.name }}</td>
+                    <td>{{ absence.justified ? 'Justifiée' : 'Injustifiée' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="99">Aucune absence</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

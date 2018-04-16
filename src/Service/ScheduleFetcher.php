@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\Schedule;
+namespace App\Service;
 
 use ICal\ICal;
 use App\Entity\Schedule\Schedule;

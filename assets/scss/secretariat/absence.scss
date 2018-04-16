@@ -1,0 +1,7 @@
+$color-justified: #1bee00;
+$color-mix:       #b203fd;
+
+#color-code {
+  li:first-child { color: $color-justified; }
+  li:last-child { color: $color-mix; }
+}

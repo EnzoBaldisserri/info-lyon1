@@ -1,4 +1,7 @@
 <ul class="right hide-on-med-and-down">
+    {% for name, link in navigation %}
+        <li><a href="{{ path(link) }}">{{ name }}</a></li>
+    {% endfor %}
     <li>
         <a id="navbar-user-trigger" class="dropdown-trigger" data-target="navbar-user">
             <i class="material-icons">account_circle</i>

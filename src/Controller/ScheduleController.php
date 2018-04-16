@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use App\Service\Schedule\ScheduleFetcher;
+use App\Controller\BaseController;
+use App\Service\ScheduleFetcher;
 
-class ScheduleController extends Controller
+/**
+ * @Route("/schedule", name="schedule_")
+ */
+class ScheduleController extends BaseController
 {
     /**
-     * @Route("/schedule", name="schedule")
+     * @Route("/", name="homepage")
      */
     public function index(ScheduleFetcher $fetcher)
     {
@@ -18,7 +21,7 @@ class ScheduleController extends Controller
             ->setWeek()
             ->load();
 
-        return $this->render('schedule/index.html.twig', [
+        return $this->show('schedule/index.html.twig', [
             'schedule' => $schedule,
         ]);
     }

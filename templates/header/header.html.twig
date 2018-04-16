@@ -1,14 +1,14 @@
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="{{ path("homepage") }}" class="brand-logo text-uppercase">Info-lyon1</a>
-        
+        <a href="{{ path("app_homepage") }}" class="brand-logo text-uppercase">Info-lyon1</a>
+
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-          {{ include('header/computer_navbar.html.twig') }}
-          {{ include('header/mobile_navbar.html.twig') }}
+            {% include 'header/computer_navbar.html.twig' with {'navigation': navigation|default } only %}
+            {% include 'header/mobile_navbar.html.twig' only %}
         {% endif %}
     </div>
 </nav>
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-  {{ include('header/mobile_sidenav.html.twig') }}
+    {% include 'header/mobile_sidenav.html.twig' with {'navigation': navigation|default } only %}
 {% endif %}

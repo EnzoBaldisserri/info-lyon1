@@ -3,15 +3,33 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Controller\BaseController;
 
-class HomepageController extends Controller
+class HomepageController extends BaseController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="app_homepage")
      */
     public function index()
     {
-        return $this->render('homepage/index.html.twig');
+        $user = $this->getUser();
+
+        if ($user === null) {
+            throw $this->createAccessDeniedException('Accès interdit');
+        }
+
+        if ($user->hasRole('ROLE_STUDENT')) {
+            return $this->redirectToRoute('absence_homepage');
+        }
+
+        if ($user->hasRole('ROLE_TEACHER')) {
+            return $this->redirectToRoute('absence_homepage');
+        }
+
+        if ($user->hasRole('ROLE_SECRETARIAT')) {
+            return $this->redirectToRoute('absence_homepage');
+        }
+
+        throw $this->createAccessDeniedException('Accès interdit');
     }
 }
