@@ -91,8 +91,8 @@ class Schedule
 
     private function lessonFromEvent($event) {
         $name = $event->summary;
-        $startDate = $this->ical->iCalDateToDateTime($event->dtstart);
-        $endDate = $this->ical->iCalDateToDateTime($event->dtend);
+        $startTime = $this->ical->iCalDateToDateTime($event->dtstart);
+        $endTime = $this->ical->iCalDateToDateTime($event->dtend);
 
         $description = explode("\n", $event->description);
         $groupLimit = 0;
@@ -104,10 +104,11 @@ class Schedule
         $teachers = array_slice($description, $groupLimit, -1);
         $rooms = explode(',', $event->location);
 
+        // TODO This is wrong. Now uses objects.
         return (new Lesson())
             ->setName($name)
-            ->setStartDate($startDate)
-            ->setEndDate($endDate)
+            ->setStartTime($startTime)
+            ->setEndTime($endTime)
             ->setGroups($groups)
             ->setTeachers($teachers)
             ->setRooms($rooms);

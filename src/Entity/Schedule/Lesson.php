@@ -2,185 +2,194 @@
 
 namespace App\Entity\Schedule;
 
-class Lesson {
+use App\Entity\Administration\Group;
+use App\Entity\User\Teacher;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\Schedule\LessonRepository")
+ */
+class Lesson
+{
     /**
-     * Name of the lesson
-     * @var string
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $resources;
+
+    /**
+     * @ORM\Column(type="string", length=45)
      */
     private $name;
 
     /**
-     * Beginning of the lesson
-     * @var DateTime
+     * @ORM\Column(type="datetime")
      */
-    private $startDate;
+    private $startTime;
 
     /**
-     * End of the lesson
-     * @var DateTime
+     * @ORM\Column(type="datetime")
      */
-    private $endDate;
+    private $endTime;
 
     /**
-     * Groups that must attend the lesson
-     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Group")
      */
     private $groups;
 
     /**
-     * Teachers teaching the lesson
-     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\User\Teacher")
      */
     private $teachers;
 
     /**
-     * Rooms where the lesson is happening
-     * @var array
+     * @ORM\ManyToMany(targetEntity="App\Entity\Schedule\Room")
      */
     private $rooms;
 
-    /**
-     * Get the name of the lesson
-     *
-     * @return string
-     */
-    public function getName()
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+        $this->teachers = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getResources(): ?int
+    {
+        return $this->resources;
+    }
+
+    public function setResources(int $resources): self
+    {
+        $this->resources = $resources;
+
+        return $this;
+    }
+
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * Set the name of the lesson
-     *
-     * @param string name
-     *
-     * @return self
-     */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get the beginning of the lesson
-     *
-     * @return DateTime
-     */
-    public function getStartDate()
+    public function getStartTime(): ?\DateTimeInterface
     {
-        return $this->startDate;
+        return $this->startTime;
     }
 
-    /**
-     * Set the beginning of the lesson
-     *
-     * @param DateTime startDate
-     *
-     * @return self
-     */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
-        $this->startDate = $startDate;
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->endTime;
+    }
+
+    public function setEndTime(\DateTimeInterface $endTime): self
+    {
+        $this->endTime = $endTime;
 
         return $this;
     }
 
     /**
-     * Get the end of the lesson
-     *
-     * @return DateTime
+     * @return Collection|Group[]
      */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * Set the end of the lesson
-     *
-     * @param DateTime endDate
-     *
-     * @return self
-     */
-    public function setEndDate(\DateTime $endDate)
-    {
-        $this->endDate = $endDate;
-
-        return $this;
-    }
-
-    /**
-     * Get the groups that must attend the lesson
-     *
-     * @return array
-     */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    /**
-     * Set the groups that must attend the lesson
-     *
-     * @param array groups
-     *
-     * @return self
-     */
-    public function setGroups(array $groups)
+    public function addGroup(Group $group): self
     {
-        $this->groups = $groups;
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+        }
 
         return $this;
     }
 
     /**
-     * Get the teachers teaching the lesson
-     *
-     * @return array
+     * @return Collection|Teacher[]
      */
-    public function getTeachers()
+    public function getTeachers(): Collection
     {
         return $this->teachers;
     }
 
-    /**
-     * Set the teachers teaching the lesson
-     *
-     * @param array teachers
-     *
-     * @return self
-     */
-    public function setTeachers(array $teachers)
+    public function addTeacher(Teacher $teacher): self
     {
-        $this->teachers = $teachers;
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers[] = $teacher;
+        }
+
+        return $this;
+    }
+
+    public function removeTeacher(Teacher $teacher): self
+    {
+        if ($this->teachers->contains($teacher)) {
+            $this->teachers->removeElement($teacher);
+        }
 
         return $this;
     }
 
     /**
-     * Get the rooms where the lesson is happening
-     *
-     * @return array
+     * @return Collection|Room[]
      */
-    public function getRooms()
+    public function getRooms(): Collection
     {
         return $this->rooms;
     }
 
-    /**
-     * Set the rooms where the lesson is happening
-     *
-     * @param array rooms
-     *
-     * @return self
-     */
-    public function setRooms(array $rooms)
+    public function addRoom(Room $room): self
     {
-        $this->rooms = $rooms;
+        if (!$this->rooms->contains($room)) {
+            $this->rooms[] = $room;
+        }
 
         return $this;
     }
 
+    public function removeRoom(Room $room): self
+    {
+        if ($this->rooms->contains($room)) {
+            $this->rooms->removeElement($room);
+        }
+
+        return $this;
+    }
 }
