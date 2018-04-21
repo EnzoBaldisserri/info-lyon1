@@ -22,7 +22,7 @@ class Semester
     /**
      * @ORM\Column(type="datetime")
      */
-    private $beginDate;
+    private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
@@ -30,21 +30,19 @@ class Semester
     private $endDate;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="semester", orphanRemoval=true)
+     * @var Array
      */
-    private $absences;
+    private $months;
 
     public function __construct() {
-        parent::__construct();
-
         $this->active = false;
-        $this->absences = new ArrayCollection();
+        $this->months = null;
     }
 
     public function getId()
@@ -57,14 +55,17 @@ class Semester
         return 'S' . $this->course->getSemester();
     }
 
-    public function getBeginDate(): ?\DateTimeInterface
+    public function getStartDate(): ?\DateTimeInterface
     {
-        return $this->beginDate;
+        return $this->startDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setStartDate(\DateTimeInterface $startDate): self
     {
-        $this->beginDate = $beginDate;
+        // Start date's time must be the beginning of the day
+        $startDate->setTime(0, 0, 0, 0);
+
+        $this->startDate = $startDate;
 
         return $this;
     }
@@ -76,6 +77,9 @@ class Semester
 
     public function setEndDate(\DateTimeInterface $endDate): self
     {
+        // End date's time must be the end of the day
+        $endDate->setTime(23, 59, 59, 999);
+
         $this->endDate = $endDate;
 
         return $this;
@@ -88,7 +92,7 @@ class Semester
         }
 
         // Check if datetime is between begin and end
-        return $this->beginDate->diff($datetime)->invert === 0
+        return $this->startDate->diff($datetime)->invert === 0
             && $this->endDate->diff($datetime)->invert === 1;
     }
 
@@ -104,35 +108,84 @@ class Semester
         return $this;
     }
 
-    /**
-     * @return Collection|Absence[]
-     */
-    public function getAbsences(): Collection
-    {
-        return $this->absences;
-    }
+    const MONTHES = [
+        'Janvier',
+        'Février',
+        'Mars',
+        'Avril',
+        'Mai',
+        'Juin',
+        'Juillet',
+        'Août',
+        'Septembre',
+        'Octrobre',
+        'Novembre',
+        'Décembre',
+    ];
 
-    public function addAbsence(Absence $absence): self
+    const DAYS_SHORT = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+    public function getMonths(): Array
     {
-        if (!$this->absences->contains($absence)) {
-            $this->absences[] = $absence;
-            $absence->setSemester($this);
+        if (isset($this->months)) {
+            return $this->months;
         }
 
-        return $this;
-    }
+        $months = [];
 
-    public function removeAbsence(Absence $absence): self
-    {
-        if ($this->absences->contains($absence)) {
-            $this->absences->removeElement($absence);
-            // set the owning side to null (unless already changed)
-            if ($absence->getSemester() === $this) {
-                $absence->setSemester(null);
+        [$startDay, $startMonth, $startYear] = explode('-', $this->startDate->format('Y-n-j'));
+        $dayInWeek = (int) $this->startDate->format('N');
+
+        [$endDay, $endMonth, $endYear] = explode('-', $this->endDate->format('Y-n-j'));
+
+        $dayInMonth = $startDay;
+        $month = $startMonth;
+        $year = $startYear;
+
+        $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        while ($year !== $endYear || $month !== $endMonth) {
+            $days = [];
+
+            while ($dayInMonth <= $nbDayInMonth) {
+                $days[$dayInMonth] = self::DAYS_SHORT[$dayInWeek];
+
+                $dayInMonth += 1;
+                $dayInWeek = ($dayInWeek + 1) % 7;
             }
+
+            $months[] = [
+                'name' => self::MONTHES[$month - 1],
+                'days' => $days,
+            ];
+
+            $month += 1;
+            if ($month > 12) {
+                $month = 1;
+                $year += 1;
+            }
+
+            $dayInMonth = 1;
+            $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         }
 
-        return $this;
+        // Compute days for last month
+        $days = [];
+
+        while ($dayInMonth <= $endDay) {
+            $days[$dayInMonth] = self::DAYS_SHORT[$dayInWeek];
+
+            $dayInMonth += 1;
+            $dayInWeek = ($dayInWeek + 1) % 7;
+        }
+
+        $months[] = [
+            'name' => self::MONTHES[$month - 1],
+            'days' => $days,
+        ];
+
+        $this->months = $months;
+        return $months;
     }
 
 }

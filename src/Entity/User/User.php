@@ -29,6 +29,16 @@ abstract class User extends BaseUser
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="string", length=45)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=45)
+     */
+    private $surname;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -61,6 +71,30 @@ abstract class User extends BaseUser
                 $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
 
         return $this;
     }

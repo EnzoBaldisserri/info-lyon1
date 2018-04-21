@@ -1,7 +1,36 @@
-$color-justified: #1bee00;
-$color-mix:       #b203fd;
+$abs-colors: (
+  'justify'   : #1bee00,
+  'absence'   : #f7171b,
+  'lateness'  : #eb9a0e,
+  'control'   : #010dfd,
+  'mix'       : #b203fd
+);
+
+@each $name, $color in $abs-colors {
+  .abs-#{$name} {
+    color: $color;
+  }
+
+  #color-code {
+    li.abs-#{$name}::before {
+      content: '';
+      display: inline-block;
+
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.4rem;
+
+      background-color: $color;
+    }
+  }
+}
 
 #color-code {
-  li:first-child { color: $color-justified; }
-  li:last-child { color: $color-mix; }
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+  li {
+    margin-left: 0.8rem;
+  }
 }

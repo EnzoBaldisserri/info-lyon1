@@ -21,7 +21,7 @@ class TeachingUnit
     /**
      * @ORM\Column(type="date")
      */
-    private $implementationYear;
+    private $implementationDate;
 
     /**
      * @ORM\Column(type="string", length=45)
@@ -34,13 +34,18 @@ class TeachingUnit
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $course;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Module", mappedBy="teachingUnit", orphanRemoval=true)
      */
     private $modules;
 
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
         $this->modules = new ArrayCollection();
     }
 
@@ -49,14 +54,14 @@ class TeachingUnit
         return $this->id;
     }
 
-    public function getImplementationYear(): ?\DateTimeInterface
+    public function getImplementationDate(): ?\DateTimeInterface
     {
-        return $this->implementationYear;
+        return $this->implementationDate;
     }
 
-    public function setImplementationYear(\DateTimeInterface $implementationYear): self
+    public function setImplementationDate(\DateTimeInterface $implementationDate): self
     {
-        $this->implementationYear = $implementationYear;
+        $this->implementationDate = $implementationDate;
 
         return $this;
     }
@@ -81,6 +86,18 @@ class TeachingUnit
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
 
         return $this;
     }

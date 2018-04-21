@@ -19,4 +19,25 @@ class SemesterRepository extends ServiceEntityRepository
         parent::__construct($registry, Semester::class);
     }
 
+    public function findOneOfCurrent(): ?Semester
+    {
+        $now = new \DateTime();
+        return $this->findOneAtDate($now);
+    }
+
+    public function findOneAtDate(\DateTime $datetime): ?Semester
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->andWhere($qb->expr()->between(':datetime', 's.startDate', 's.endDate'))
+            ->setParameter('datetime', $datetime)
+        ;
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

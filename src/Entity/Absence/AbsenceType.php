@@ -22,9 +22,9 @@ class AbsenceType
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(type="string", length=20)
      */
-    private $color;
+    private $class;
 
     public function getId()
     {
@@ -43,15 +43,16 @@ class AbsenceType
         return $this;
     }
 
-    public function getColor(): ?string
+    public function getClass(): ?string
     {
-        return $this->color;
+        return $this->class;
     }
 
-    public function setColor(string $color): self
+    public function setClass(string $class): self
     {
-        $this->color = $color;
+        $this->class = $class;
 
         return $this;
     }
+
 }

@@ -19,7 +19,7 @@ class Education
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Group", inversedBy="educations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Group")
      * @ORM\JoinColumn(nullable=false)
      */
     private $group;
@@ -32,7 +32,6 @@ class Education
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Teacher", inversedBy="educations")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $teacher;
 

@@ -8,10 +8,10 @@
         </a>
         <ul id="navbar-user" class="dropdown-content">
             <li>
-              <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
+              <a href="{{ path('fos_user_profile_show') }}">{{ app.user.firstname }} {{ app.user.surname }}</a>
             </li>
             <li class="divider"></li>
-            <li class="text-uppercase">
+            <li>
                 <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
             </li>
         </ul>

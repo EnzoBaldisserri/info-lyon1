@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\BaseController;
+use App\Entity\Absence\Absence;
 use App\Entity\Absence\AbsenceType;
+use App\Entity\Administration\Semester;
+use App\Entity\Administration\Group;
 
 /**
  * @Route("/absence", name="absence_")
@@ -40,16 +43,30 @@ class AbsenceController extends BaseController
         throw $this->createNotFoundException('Cette page n\'existe pas');
     }
 
-    private function student($semester = null)
+    private function student(string $semester = null)
     {
         $this->denyAccessUnlessGranted('ROLE_STUDENT');
 
+        $doctrine = $this->getDoctrine();
+
+        $semester = $doctrine
+            ->getRepository(Semester::class)
+            ->findOneOfCurrent();
+
+        $student = $this->getUser();
+
+        if (null !== $semester) {
+            $absences = $doctrine
+                ->getRepository(Absence::class)
+                ->getInSemesterForStudent($semester, $student);
+        }
+
         return $this->show('absence/student.html.twig', [
-            'absences' => [],
+            'absences' => $absences ?? [],
         ]);
     }
 
-    private function teacher($hour = null)
+    private function teacher(string $hour = null)
     {
         $this->denyAccessUnlessGranted('ROLE_TEACHER');
 
@@ -62,16 +79,24 @@ class AbsenceController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_SECRETARIAT');
 
-        $absenceTypes = $this->getDoctrine()
+        $doctrine = $this->getDoctrine();
+
+        $absenceTypes = $doctrine
             ->getRepository(AbsenceType::class)
             ->findAll();
 
+        $semester = $doctrine
+            ->getRepository(Semester::class)
+            ->findOneOfCurrent();
+
+        if (null !== $semester) {
+            $groups = $doctrine
+                ->getRepository(Group::class)
+                ->findInSemesterWithAbsences($semester);
+        }
+
         return $this->show('absence/secretariat.html.twig', [
-            'absenceTypes' => $absenceTypes,
-            'groups' => [],
-            'students' => [],
-            'beginDate' => new \DateTime,
-            'period' => [],
+            'absenceTypes' => $absenceTypes ?? null,
         ]);
     }
 }

@@ -26,17 +26,7 @@ class Course
     /**
      * @ORM\Column(type="date")
      */
-    private $implementationYear;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\TeachingUnit")
-     */
-    private $teachingUnits;
-
-    public function __construct()
-    {
-        $this->teachingUnits = new ArrayCollection();
-    }
+    private $implementationDate;
 
     public function getId()
     {
@@ -55,40 +45,14 @@ class Course
         return $this;
     }
 
-    public function getImplementationYear(): ?\DateTimeInterface
+    public function getImplementationDate(): ?\DateTimeInterface
     {
-        return $this->implementationYear;
+        return $this->implementationDate;
     }
 
-    public function setImplementationYear(\DateTimeInterface $implementationYear): self
+    public function setImplementationDate(\DateTimeInterface $implementationDate): self
     {
-        $this->implementationYear = $implementationYear;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TeachingUnit[]
-     */
-    public function getTeachingUnits(): Collection
-    {
-        return $this->teachingUnits;
-    }
-
-    public function addTeachingUnit(TeachingUnit $teachingUnit): self
-    {
-        if (!$this->teachingUnits->contains($teachingUnit)) {
-            $this->teachingUnits[] = $teachingUnit;
-        }
-
-        return $this;
-    }
-
-    public function removeTeachingUnit(TeachingUnit $teachingUnit): self
-    {
-        if ($this->teachingUnits->contains($teachingUnit)) {
-            $this->teachingUnits->removeElement($teachingUnit);
-        }
+        $this->implementationDate = $implementationDate;
 
         return $this;
     }

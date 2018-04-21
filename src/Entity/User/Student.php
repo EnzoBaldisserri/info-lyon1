@@ -19,6 +19,11 @@ class Student extends User
      */
     private $classes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="student", orphanRemoval=true)
+     */
+    private $absences;
+
     public function __construct() {
         parent::__construct();
 
@@ -27,6 +32,7 @@ class Student extends User
         }
 
         $this->classes = new ArrayCollection();
+        $this->absences = new ArrayCollection();
     }
 
     /**
@@ -54,4 +60,36 @@ class Student extends User
 
         return $this;
     }
+
+    /**
+     * @return Collection|Absence[]
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences[] = $absence;
+            $absence->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): self
+    {
+        if ($this->absences->contains($absence)) {
+            $this->absences->removeElement($absence);
+            // set the owning side to null (unless already changed)
+            if ($absence->getStudent() === $this) {
+                $absence->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -19,4 +19,41 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    public function findInSemesterWithAbsences($semester)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        // Order the groups by type of semester + by number
+        // G6S2 < G2S3 < G3S3 < G1S4
+        $qb
+            // ->join('g.semester', 'sem')
+            // ->join('sem.course', 'c')
+            // ->addOrderBy('c.semester', 'ASC')
+            ->addOrderBy('g.number', 'ASC')
+        ;
+
+        // Join students
+        // Order them by surname and name
+        $qb
+            ->innerJoin('g.students', 's')
+            ->addSelect('s')
+            ->addOrderBy('s.surname', 'ASC')
+            ->addOrderBy('s.firstname', 'ASC')
+        ;
+
+        // Add absences
+        // That are in the semester
+        // Order them by time
+        $qb
+            ->leftJoin('s.absences', 'a')
+            ->addSelect('a')
+            ->andWhere($qb->expr()->between('a.startTime', ':start', ':end'))
+            ->setParameter('start', $semester->getStartDate())
+            ->setParameter('end', $semester->getEndDate())
+            ->orderBy('a.startTime', 'ASC')
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }

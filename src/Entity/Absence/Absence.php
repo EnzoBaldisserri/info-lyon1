@@ -22,12 +22,12 @@ class Absence
     /**
      * @ORM\Column(type="datetime")
      */
-    private $beginDate;
+    private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $endDate;
+    private $endTime;
 
     /**
      * @ORM\Column(type="boolean")
@@ -35,22 +35,16 @@ class Absence
     private $justified;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Absence\AbsenceType", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Absence\AbsenceType")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User\Student")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\Student", inversedBy="absences")
      * @ORM\JoinColumn(nullable=false)
      */
     private $student;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="absences")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $semester;
 
     public function __construct() {
         $this->justified = false;
@@ -61,31 +55,31 @@ class Absence
         return $this->id;
     }
 
-    public function getBeginDate(): ?\DateTimeInterface
+    public function getStartTime(): ?\DateTimeInterface
     {
-        return $this->beginDate;
+        return $this->startTime;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
-        $this->beginDate = $beginDate;
+        $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndTime(): ?\DateTimeInterface
     {
-        return $this->endDate;
+        return $this->endTime;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndTime(\DateTimeInterface $endTime): self
     {
-        $this->endDate = $endDate;
+        $this->endTime = $endTime;
 
         return $this;
     }
 
-    public function getJustified(): ?bool
+    public function isJustified(): ?bool
     {
         return $this->justified;
     }
@@ -102,7 +96,7 @@ class Absence
         return $this->type;
     }
 
-    public function setType(AbsenceType $type): self
+    public function setType(?AbsenceType $type): self
     {
         $this->type = $type;
 
@@ -117,18 +111,6 @@ class Absence
     public function setStudent(?Student $student): self
     {
         $this->student = $student;
-
-        return $this;
-    }
-
-    public function getSemester(): ?Semester
-    {
-        return $this->semester;
-    }
-
-    public function setSemester(?Semester $semester): self
-    {
-        $this->semester = $semester;
 
         return $this;
     }

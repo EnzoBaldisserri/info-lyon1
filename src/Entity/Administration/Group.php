@@ -27,15 +27,10 @@ class Group
     private $number;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Administration\Semester", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $semester;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Education", mappedBy="group", orphanRemoval=true)
-     */
-    private $educations;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User\Student", mappedBy="classes")
@@ -44,7 +39,6 @@ class Group
 
     public function __construct()
     {
-        $this->educations = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->students = new ArrayCollection();
     }
@@ -84,37 +78,6 @@ class Group
     public function setSemester(Semester $semester): self
     {
         $this->semester = $semester;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Education[]
-     */
-    public function getEducation(): Collection
-    {
-        return $this->educations;
-    }
-
-    public function addEducation(Education $education): self
-    {
-        if (!$this->educations->contains($education)) {
-            $this->educations[] = $education;
-            $education->setGroup($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEducation(Education $education): self
-    {
-        if ($this->educations->contains($education)) {
-            $this->educations->removeElement($education);
-            // set the owning side to null (unless already changed)
-            if ($education->getGroup() === $this) {
-                $education->setGroup(null);
-            }
-        }
 
         return $this;
     }

@@ -19,13 +19,4 @@ class AbsenceTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, AbsenceType::class);
     }
 
-    public function deleteAll(): integer
-    {
-        $qb = $this->createQueryBuilder()
-            ->delete()
-            ->andWhere(true)
-            ->getQuery()
-            ->getResult();
-    }
-
 }
