@@ -9,7 +9,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('styles/style.css') }}">
+            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -25,8 +25,7 @@
             </main>
         {% endblock %}
         {% block javascripts %}
-            <script src="{{ asset("scripts/materialize.js") }}"></script>
-            <script src="{{ asset("scripts/app.js") }}"></script>
+            <script src="{{ asset("build/app.js") }}"></script>
         {% endblock %}
     </body>
 </html>

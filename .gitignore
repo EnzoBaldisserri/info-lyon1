@@ -21,6 +21,4 @@ yarn-error.log
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-/public/images
-/public/scripts
-/public/styles
+/public/build

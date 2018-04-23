@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Controller\BaseController;
 use App\Entity\Absence\Absence;
 use App\Entity\Absence\AbsenceType;
@@ -85,6 +86,19 @@ class AbsenceController extends BaseController
             ->getRepository(AbsenceType::class)
             ->findAll();
 
+        return $this->show('absence/secretariat.html.twig', [
+            'absenceTypes' => $absenceTypes ?? null,
+        ]);
+    }
+
+    /**
+     * @Route("/api/get_all", name="api_getall")
+     * @Security("isGranted('ROLE_SECRETARIAT')")
+     */
+    public function apiGetAll() {
+        // TODO Move asynchronous calls in another controller
+        $doctrine = $this->getDoctrine();
+
         $semester = $doctrine
             ->getRepository(Semester::class)
             ->findOneOfCurrent();
@@ -95,8 +109,9 @@ class AbsenceController extends BaseController
                 ->findInSemesterWithAbsences($semester);
         }
 
-        return $this->show('absence/secretariat.html.twig', [
-            'absenceTypes' => $absenceTypes ?? null,
+        return JsonResponse([
+            'semester' => $semester,
+            'groups' => $groups ?? [],
         ]);
     }
 }

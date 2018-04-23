@@ -4,7 +4,11 @@
     "es6": true
   },
   "extends": [
-    "airbnb-base"
+    "airbnb"
+  ],
+  "plugins": [
+    "react",
+    "jsx-a11y"
   ],
   "globals": {
     "M": true
