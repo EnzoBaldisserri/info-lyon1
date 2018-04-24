@@ -90,28 +90,4 @@ class AbsenceController extends BaseController
             'absenceTypes' => $absenceTypes ?? null,
         ]);
     }
-
-    /**
-     * @Route("/api/get_all", name="api_getall")
-     * @Security("isGranted('ROLE_SECRETARIAT')")
-     */
-    public function apiGetAll() {
-        // TODO Move asynchronous calls in another controller
-        $doctrine = $this->getDoctrine();
-
-        $semester = $doctrine
-            ->getRepository(Semester::class)
-            ->findOneOfCurrent();
-
-        if (null !== $semester) {
-            $groups = $doctrine
-                ->getRepository(Group::class)
-                ->findInSemesterWithAbsences($semester);
-        }
-
-        return JsonResponse([
-            'semester' => $semester,
-            'groups' => $groups ?? [],
-        ]);
-    }
 }

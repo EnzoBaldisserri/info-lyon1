@@ -1,7 +1,10 @@
 @import 'general/variables';
 @import 'general/colors';
 
+/* stylelint-disable */
 @import '../../node_modules/materialize-css/sass/materialize';
+/* stylelint-enable */
+
 @import 'general/helpers';
 @import 'general/style';
 @import 'general/header';

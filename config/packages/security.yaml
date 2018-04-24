@@ -39,7 +39,7 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|styles|images|scripts)/
+            pattern: ^/(_(profiler|wdt))/
             security: false
 
         login:
@@ -62,7 +62,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/control/, role: ROLE_TEACHER }
         - { path: ^/mark/, role: ROLE_STUDENT }

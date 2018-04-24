@@ -16,7 +16,7 @@
 }
 
 .material-icons {
-  @extends .no-select;
+  user-select: none;
   vertical-align: middle;
 
   main & {

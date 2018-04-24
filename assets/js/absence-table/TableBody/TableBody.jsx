@@ -7,9 +7,12 @@ const TableBody = props => (
   </tbody>
 );
 
+TableBody.defaultProps = {
+  groups: [],
+};
+
 TableBody.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.any).isRequired,
-  apis: PropTypes.arrayOf(PropTypes.string).isRequired,
+  groups: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default TableBody;

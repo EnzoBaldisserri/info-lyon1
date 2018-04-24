@@ -12,10 +12,14 @@ const TableHeader = props => (
   </thead>
 );
 
+TableHeader.defaultProps = {
+  semester: null,
+};
+
 TableHeader.propTypes = {
   semester: PropTypes.shape({
     months: PropTypes.arrayOf().isRequired,
-  }).isRequired,
+  }),
 };
 
 export default TableHeader;

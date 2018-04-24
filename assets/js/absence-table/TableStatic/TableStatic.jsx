@@ -7,8 +7,12 @@ const TableStatic = props => (
   </div>
 );
 
+TableStatic.defaultProps = {
+  groups: [],
+};
+
 TableStatic.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.any).isRequired,
+  groups: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default TableStatic;
