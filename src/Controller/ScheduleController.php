@@ -21,7 +21,7 @@ class ScheduleController extends BaseController
             ->setWeek()
             ->load();
 
-        return $this->show('schedule/index.html.twig', [
+        return $this->createHtmlResponse('schedule/index.html.twig', [
             'schedule' => $schedule,
         ]);
     }

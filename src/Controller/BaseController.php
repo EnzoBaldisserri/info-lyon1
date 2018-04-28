@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\NavbarBuilder;
 
 abstract class BaseController extends AbstractController
@@ -15,7 +16,7 @@ abstract class BaseController extends AbstractController
         $this->navbarBuilder = $navbarBuilder;
     }
 
-    protected function show(string $view, Array $parameters = [], Response $response = null): Response
+    protected function createHtmlResponse(string $view, Array $parameters = [], Response $response = null): Response
     {
         $this->checkUserParameters($parameters);
 
@@ -29,5 +30,22 @@ abstract class BaseController extends AbstractController
         if (array_key_exists('navigation', $parameters)) {
             throw new \RuntimeException('\'navigation\' is a reserved entry in parameters');
         }
+
+        if (array_key_exists('notifications', $parameters)) {
+            throw new \RuntimeException('\'notifications\' is a reserved entry in parameters');
+        }
+    }
+
+    protected function createJsonResponse(Array $data = [], int $status = 200, Array $headers = [])
+    {
+        if (empty($data)) {
+            $data['ok'] = $status === 200;
+        }
+
+        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+
+        $json = $serializer->serialize($data, 'json');
+
+        return JsonResponse::fromJsonString($json, $status, $headers);
     }
 }

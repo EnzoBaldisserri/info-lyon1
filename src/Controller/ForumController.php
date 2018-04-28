@@ -15,7 +15,7 @@ class ForumController extends BaseController
      */
     public function index()
     {
-        return $this->show('forum/index.html.twig', [
+        return $this->createHtmlResponse('forum/index.html.twig', [
             'controller_name' => 'ForumController',
         ]);
     }

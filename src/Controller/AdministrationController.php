@@ -15,7 +15,7 @@ class AdministrationController extends BaseController
      */
     public function index()
     {
-        return $this->show('administration/index.html.twig', [
+        return $this->createHtmlResponse('administration/index.html.twig', [
             'controller_name' => 'AdministrationController',
         ]);
     }

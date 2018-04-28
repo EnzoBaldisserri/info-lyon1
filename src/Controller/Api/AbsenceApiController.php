@@ -4,16 +4,20 @@ namespace App\Controller\Api;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Controller\BaseController;
+use App\Entity\Administration\Semester;
+use App\Entity\Administration\Group;
 
 /**
  * @Route("/absence", name="api_absence_")
  */
-class AbsenceController extends Controller
+class AbsenceApiController extends BaseController
 {
     /**
      * @Route("/get_all", name="getall")
      */
-    public function getAll() {
+    public function getAll()
+    {
         $doctrine = $this->getDoctrine();
 
         $semester = $doctrine
@@ -26,7 +30,7 @@ class AbsenceController extends Controller
                 ->findInSemesterWithAbsences($semester);
         }
 
-        return JsonResponse([
+        return $this->createJsonResponse([
             'semester' => $semester,
             'groups' => $groups ?? [],
         ]);

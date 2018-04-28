@@ -15,7 +15,7 @@ class MarkController extends BaseController
      */
     public function index()
     {
-        return $this->show('mark/index.html.twig', [
+        return $this->createHtmlResponse('mark/index.html.twig', [
             'controller_name' => 'MarkController',
         ]);
     }

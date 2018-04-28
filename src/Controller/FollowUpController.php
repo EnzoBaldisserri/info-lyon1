@@ -15,7 +15,7 @@ class FollowUpController extends BaseController
      */
     public function index()
     {
-        return $this->show('follow_up/index.html.twig', [
+        return $this->createHtmlResponse('follow_up/index.html.twig', [
             'controller_name' => 'FollowUpController',
         ]);
     }

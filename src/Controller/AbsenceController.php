@@ -62,7 +62,7 @@ class AbsenceController extends BaseController
                 ->getInSemesterForStudent($semester, $student);
         }
 
-        return $this->show('absence/student.html.twig', [
+        return $this->createHtmlResponse('absence/student.html.twig', [
             'absences' => $absences ?? [],
         ]);
     }
@@ -71,7 +71,7 @@ class AbsenceController extends BaseController
     {
         $this->denyAccessUnlessGranted('ROLE_TEACHER');
 
-        return $this->show('absence/teacher.html.twig', [
+        return $this->createHtmlResponse('absence/teacher.html.twig', [
             'controller_name' => 'AbsenceController',
         ]);
     }
@@ -86,7 +86,7 @@ class AbsenceController extends BaseController
             ->getRepository(AbsenceType::class)
             ->findAll();
 
-        return $this->show('absence/secretariat.html.twig', [
+        return $this->createHtmlResponse('absence/secretariat.html.twig', [
             'absenceTypes' => $absenceTypes ?? null,
         ]);
     }

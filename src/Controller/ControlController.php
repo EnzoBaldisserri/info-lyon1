@@ -15,7 +15,7 @@ class ControlController extends BaseController
      */
     public function index()
     {
-        return $this->show('control/index.html.twig', [
+        return $this->createHtmlResponse('control/index.html.twig', [
             'controller_name' => 'ControlController',
         ]);
     }

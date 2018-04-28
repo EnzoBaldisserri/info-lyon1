@@ -15,7 +15,7 @@ class ProjectController extends BaseController
      */
     public function index()
     {
-        return $this->show('project/index.html.twig', [
+        return $this->createHtmlResponse('project/index.html.twig', [
             'controller_name' => 'ProjectController',
         ]);
     }
