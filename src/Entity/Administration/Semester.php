@@ -6,6 +6,7 @@ use App\Entity\Absence\Absence;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\SemesterRepository")
@@ -36,7 +37,8 @@ class Semester
     private $course;
 
     /**
-     * @var Array
+     * @Serializer\Type("array")
+     * @Serializer\Accessor(getter="getMonths")
      */
     private $months;
 
@@ -108,7 +110,16 @@ class Semester
         return $this;
     }
 
-    const MONTHES = [
+    public function getMonths(): Array
+    {
+        if (!isset($this->months)) {
+            $this->computeMonths();
+        }
+
+        return $this->months;
+    }
+
+    const MONTHS = [
         'Janvier',
         'Février',
         'Mars',
@@ -125,18 +136,21 @@ class Semester
 
     const DAYS_SHORT = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 
-    public function getMonths(): Array
+    private function computeMonths(): void
     {
-        if (isset($this->months)) {
-            return $this->months;
-        }
-
         $months = [];
 
-        [$startDay, $startMonth, $startYear] = explode('-', $this->startDate->format('Y-n-j'));
+        [$startYear, $startMonth, $startDay] = array_map(
+            'intval',
+            explode('-', $this->startDate->format('Y-n-j'))
+        );
+
         $dayInWeek = (int) $this->startDate->format('N');
 
-        [$endDay, $endMonth, $endYear] = explode('-', $this->endDate->format('Y-n-j'));
+        [$endYear, $endMonth, $endDay] = array_map(
+            'intval',
+            explode('-', $this->endDate->format('Y-n-j'))
+        );
 
         $dayInMonth = $startDay;
         $month = $startMonth;
@@ -155,7 +169,7 @@ class Semester
             }
 
             $months[] = [
-                'name' => self::MONTHES[$month - 1],
+                'name' => self::MONTHS[$month - 1],
                 'days' => $days,
             ];
 
@@ -180,12 +194,11 @@ class Semester
         }
 
         $months[] = [
-            'name' => self::MONTHES[$month - 1],
+            'name' => self::MONTHS[$month - 1],
             'days' => $days,
         ];
 
         $this->months = $months;
-        return $months;
     }
 
 }

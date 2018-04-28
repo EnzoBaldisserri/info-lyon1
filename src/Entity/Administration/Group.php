@@ -7,6 +7,7 @@ use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\GroupRepository")
@@ -37,6 +38,16 @@ class Group
      */
     private $students;
 
+    /**
+     * @Serializer\Accessor(getter="getName")
+     */
+    private $name;
+
+    /**
+     * @Serializer\Accessor(getter="getFullname")
+     */
+    private $fullname;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -50,12 +61,20 @@ class Group
 
     public function getName(): ?string
     {
-        return 'G' . $this->number;
+        if (!isset($this->name)) {
+            $this->name = 'G' . $this->number;
+        }
+
+        return $this->name;
     }
 
-    public function getFullName(): ?string
+    public function getFullname(): ?string
     {
-        return $this->getName() . $this->semester->getName();
+        if (!isset($this->fullname)) {
+            $this->fullname = $this->getName() . $this->semester->getName();
+        }
+
+        return $this->fullname;
     }
 
     public function getNumber(): ?int

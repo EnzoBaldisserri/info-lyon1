@@ -7,6 +7,7 @@ use App\Entity\Administration\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use FOS\UserBundle\Model\User as BaseUser;
 
 /**
@@ -14,6 +15,8 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\Table(name="fos_user")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="userType", type="string", length=20)
+ *
+ * @Serializer\ExclusionPolicy("ALL")
  */
 abstract class User extends BaseUser
 {
@@ -21,6 +24,8 @@ abstract class User extends BaseUser
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
      */
     protected $id;
 
@@ -31,11 +36,13 @@ abstract class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Serializer\Expose
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Serializer\Expose
      */
     private $surname;
 
