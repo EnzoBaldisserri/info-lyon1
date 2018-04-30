@@ -46,6 +46,11 @@ security:
             pattern: ^/login$
             anonymous: true
 
+        # TODO Handle security for the API
+        api:
+            pattern: ^/api/
+            anonymous: true
+
         main:
             pattern: ^/
             anonymous: false

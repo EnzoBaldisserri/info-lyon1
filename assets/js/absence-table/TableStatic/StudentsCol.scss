@@ -1,0 +1,9 @@
+@import '../variables';
+
+.main {
+  flex-grow: 1;
+
+  > .group {
+    border-top: $default-border;
+  }
+}

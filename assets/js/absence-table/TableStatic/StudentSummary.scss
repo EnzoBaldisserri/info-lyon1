@@ -1,0 +1,26 @@
+@import '../variables';
+
+.popup {
+  position: absolute;
+  left: 3%;
+
+  padding: .3rem 1.6rem .3rem .5rem;
+
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: $color-white;
+
+  z-index: 20;
+
+  .popup-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    &::after {
+      content: 'close';
+      display: inline-block;
+      cursor: pointer;
+    }
+  }
+}

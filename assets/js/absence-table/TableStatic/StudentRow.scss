@@ -1,0 +1,16 @@
+@import '../variables';
+
+.main {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  height: $line-height;
+  border-top: $default-border;
+
+  > .student {
+    flex-grow: 1;
+    white-space: nowrap;
+  }
+}

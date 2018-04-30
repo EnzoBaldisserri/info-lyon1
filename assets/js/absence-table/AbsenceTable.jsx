@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Loader from '../utils/Loader';
+
+import style from './AbsenceTable.scss';
 
 import TableStatic from './TableStatic/TableStatic';
 import TableHeader from './TableHeader/TableHeader';
@@ -10,31 +13,39 @@ class AbsenceTable extends Component {
     super(props);
 
     this.state = {
+      loaded: false,
       error: null,
       semester: null,
       groups: [],
     };
+  }
 
-    fetch(props.apis.load)
+  componentDidMount() {
+    const { apis } = this.props;
+
+    fetch(apis.load)
       .then((response) => {
-        response.text().then(console.log); // eslint-disable-line
-        if (true || !response.ok || response.redirected) { // eslint-disable-line
+        if (!response.ok) {
           throw new Error('Impossible de charger les données nécessaires');
         }
 
         return response.json();
       })
-      .catch((error) => {
-        console.log(error); // eslint-disable-line no-console
-        this.setState({ error });
-      });
+
+      .then(data => this.setState({
+        loaded: !!data.semester,
+        ...data,
+      }))
+
+      .catch(error => this.setState({ error }));
   }
 
   render() {
     const {
+      loaded,
+      error,
       semester,
       groups,
-      error,
     } = this.state;
 
     if (error) {
@@ -45,13 +56,21 @@ class AbsenceTable extends Component {
       );
     }
 
+    if (!loaded) {
+      return (
+        <Loader />
+      );
+    }
+
     return (
-      <div className="section">
+      <div className={style.flex}>
         <TableStatic groups={groups} />
-        <table>
-          <TableHeader semester={semester} />
-          <TableBody groups={groups} />
-        </table>
+        <div className={style.dynamic}>
+          <table>
+            <TableHeader semester={semester} />
+            <TableBody groups={groups} />
+          </table>
+        </div>
       </div>
     );
   }

@@ -1,0 +1,27 @@
+@import '../variables';
+
+.main {
+  position: relative;
+  z-index: 10;
+
+  background-color: $color-white;
+  border-right: 2px SOLID $border-color;
+
+  .title {
+    height: $header-height;
+    line-height: $header-height;
+
+    font-size: $title-font-size;
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    border-bottom: $big-border;
+    margin-bottom: 0;
+  }
+}

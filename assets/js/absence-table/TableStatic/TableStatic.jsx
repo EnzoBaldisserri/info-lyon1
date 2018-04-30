@@ -1,11 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TableStatic = props => (
-  <div id="table-static">
-    { props.groups.map(group => <div>{ group.name }</div>)}
-  </div>
-);
+import style from './TableStatic.scss';
+
+import GroupsCol from './GroupsCol';
+import StudentsCol from './StudentsCol';
+
+const TableStatic = (props) => {
+  const { groups, ...restProps } = props;
+
+  return (
+    <div {...restProps} className={style.main}>
+      <div className={style.title}>
+        Étudiants
+      </div>
+      <div className={`${style.flex} row`}>
+        <GroupsCol groups={groups} />
+        <StudentsCol groups={groups} />
+      </div>
+    </div>
+  );
+};
 
 TableStatic.defaultProps = {
   groups: [],

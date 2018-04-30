@@ -1,52 +1,77 @@
-const Encore = require('@symfony/webpack-encore');
+const path = require('path');
+const NotifierPlugin = require('webpack-notifier');
+const CopyPlugin = require('copy-webpack-plugin');
 
-const entries = {
-  app: 'app.js',
-  login: 'login.js',
-  'absence-table': 'absence-table/index.js',
+module.exports = {
+  mode: 'development',
+
+  entry: {
+    app: './assets/js/app.js',
+    login: './assets/js/login.js',
+    'absence-table': './assets/js/absence-table/index.js',
+  },
+
+  output: {
+    path: path.resolve(__dirname, 'public/build/'),
+    filename: '[name].js',
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+          'eslint-loader',
+        ],
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              localIdentName: '[name]__[local]--[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              outputStyle: 'expanded',
+            },
+          },
+        ],
+      },
+    ],
+  },
+
+  plugins: [
+    new NotifierPlugin(),
+    new CopyPlugin([
+      'node_modules/materialize-css/dist/js/materialize.js',
+    ]),
+  ],
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+  },
+
+  devtool: 'source-map',
+
+  target: 'web',
+
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/,
+  },
 };
-
-Encore
-  // the project directory where all compiled assets will be stored
-  .setOutputPath('public/build/')
-
-  // the public path used by the web server to access the previous directory
-  .setPublicPath('/build')
-
-  // enable source maps during development
-  .enableSourceMaps(!Encore.isProduction())
-
-  // empty the outputPath dir before each build
-  .cleanupOutputBeforeBuild()
-
-  // show OS notifications when builds finish/fail
-  .enableBuildNotifications()
-
-  .addLoader({
-    test: /\.jsx?$/,
-    exclude: /node_modules/,
-    loader: 'eslint-loader',
-  })
-
-  // enable react
-  .enableReactPreset()
-
-  // allow sass/scss files to be processed
-  .enableSassLoader((options) => {
-    // eslint-disable-next-line no-param-reassign
-    options.outputStyle = Encore.isProduction() ? 'compressed' : 'expanded';
-  })
-
-  // add postcss plugins
-  .enablePostCssLoader();
-
-Object.entries(entries).forEach(([name, path]) => {
-  // will create public/build/[path].js and public/build/[path].css if needed
-  Encore.addEntry(name, `./assets/js/${path}`);
-});
-
-const config = Encore.getWebpackConfig();
-config.watchOptions = { ignored: /node_modules/ };
-
-// export the final configuration
-module.exports = config;

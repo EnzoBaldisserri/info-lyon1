@@ -1,4 +1,3 @@
-import M from '../../node_modules/materialize-css/dist/js/materialize';
 import '../scss/app.scss';
 
 window.addEventListener('load', () => {

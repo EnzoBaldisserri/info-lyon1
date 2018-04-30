@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TableBody = props => (
-  <tbody>
-    { props.groups.map(group => <tr>{group.name}</tr>) }
-  </tbody>
-);
+const TableBody = (props) => {
+  const groups = props.groups.map(group => (
+    <tr key={group.id}>
+      <td>{group.name}</td>
+    </tr>
+  ));
+
+  return (
+    <tbody>
+      { groups }
+    </tbody>
+  );
+};
 
 TableBody.defaultProps = {
   groups: [],

@@ -1,4 +1,6 @@
-@import '../../node_modules/materialize-css/sass/components/color-variables';
+/* stylelint-disable */
+@import '~materialize-css/sass/components/color-variables';
+/* stylelint-enable */
 
 /* Materialize replacement */
 $primary-color: color('yellow', 'accent-4');
@@ -16,4 +18,6 @@ $color-white: #ffffff;
 $color-light-grey: color('grey', 'base');
 $color-dark: color('grey', 'darken-4');
 
-@import '../../node_modules/materialize-css/sass/components/variables';
+/* stylelint-disable */
+@import '~materialize-css/sass/components/variables';
+/* stylelint-enable */
