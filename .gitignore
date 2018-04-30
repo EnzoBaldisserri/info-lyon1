@@ -22,3 +22,4 @@ yarn-error.log
 ###< symfony/web-server-bundle ###
 
 /public/build
+/public/images

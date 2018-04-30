@@ -59,6 +59,7 @@ module.exports = {
     new NotifierPlugin(),
     new CopyPlugin([
       'node_modules/materialize-css/dist/js/materialize.js',
+      { from: 'assets/images', to: '../images' },
     ]),
   ],
 
