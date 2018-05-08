@@ -57,11 +57,15 @@ services:
 
     App\Service\ScheduleFetcher:
         arguments:
-          $fetch_url: "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp\
-              ?resources={resources}\
-              &projectId={projectId}\
-              &calType=ical\
-              &firstDate={firstDate}\
-              &lastDate={lastDate}"
-          $projectId: 1
-          $date_format: 'Y-m-d'
+            $fetch_url: "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp\
+                ?resources={resources}\
+                &projectId={projectId}\
+                &calType=ical\
+                &firstDate={firstDate}\
+                &lastDate={lastDate}"
+            $projectId: 1
+            $date_format: 'Y-m-d'
+
+    App\Service\TimeHelper:
+        arguments:
+            - '@translator'

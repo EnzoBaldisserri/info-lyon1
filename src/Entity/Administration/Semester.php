@@ -36,15 +36,8 @@ class Semester
      */
     private $course;
 
-    /**
-     * @Serializer\Type("array")
-     * @Serializer\Accessor(getter="getMonths")
-     */
-    private $months;
-
     public function __construct() {
         $this->active = false;
-        $this->months = null;
     }
 
     public function getId()
@@ -109,96 +102,4 @@ class Semester
 
         return $this;
     }
-
-    public function getMonths(): Array
-    {
-        if (!isset($this->months)) {
-            $this->computeMonths();
-        }
-
-        return $this->months;
-    }
-
-    const MONTHS = [
-        'Janvier',
-        'Février',
-        'Mars',
-        'Avril',
-        'Mai',
-        'Juin',
-        'Juillet',
-        'Août',
-        'Septembre',
-        'Octrobre',
-        'Novembre',
-        'Décembre',
-    ];
-
-    const DAYS_SHORT = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-
-    private function computeMonths(): void
-    {
-        $months = [];
-
-        [$startYear, $startMonth, $startDay] = array_map(
-            'intval',
-            explode('-', $this->startDate->format('Y-n-j'))
-        );
-
-        $dayInWeek = (int) $this->startDate->format('N');
-
-        [$endYear, $endMonth, $endDay] = array_map(
-            'intval',
-            explode('-', $this->endDate->format('Y-n-j'))
-        );
-
-        $dayInMonth = $startDay;
-        $month = $startMonth;
-        $year = $startYear;
-
-        $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-        while ($year !== $endYear || $month !== $endMonth) {
-            $days = [];
-
-            while ($dayInMonth <= $nbDayInMonth) {
-                $days[$dayInMonth] = self::DAYS_SHORT[$dayInWeek];
-
-                $dayInMonth += 1;
-                $dayInWeek = ($dayInWeek + 1) % 7;
-            }
-
-            $months[] = [
-                'name' => self::MONTHS[$month - 1],
-                'days' => $days,
-            ];
-
-            $month += 1;
-            if ($month > 12) {
-                $month = 1;
-                $year += 1;
-            }
-
-            $dayInMonth = 1;
-            $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        }
-
-        // Compute days for last month
-        $days = [];
-
-        while ($dayInMonth <= $endDay) {
-            $days[$dayInMonth] = self::DAYS_SHORT[$dayInWeek];
-
-            $dayInMonth += 1;
-            $dayInWeek = ($dayInWeek + 1) % 7;
-        }
-
-        $months[] = [
-            'name' => self::MONTHS[$month - 1],
-            'days' => $days,
-        ];
-
-        $this->months = $months;
-    }
-
 }

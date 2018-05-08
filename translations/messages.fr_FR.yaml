@@ -1,0 +1,16 @@
+global:
+    time:
+        months:
+            - Janvier
+            - Février
+            - Mars
+            - Avril
+            - Mai
+            - Juin
+            - Juillet
+            - Août
+            - Septembre
+            - Octobre
+            - Novembre
+            - Décembre
+        days_short: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
