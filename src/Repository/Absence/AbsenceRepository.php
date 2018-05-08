@@ -27,13 +27,13 @@ class AbsenceRepository extends ServiceEntityRepository
 
         $qb
             ->andWhere($qb->expr()->eq('a.student', ':student'))
-            ->setParameter('student', $student);
+              ->setParameter('student', $student);
         ;
 
         $qb
             ->andWhere($qb->expr()->between('a.startTime', ':start', ':end'))
-            ->setParameter('start', $semester->getStartDate())
-            ->setParameter('end', $semester->getEndDate())
+              ->setParameter('start', $semester->getStartDate())
+              ->setParameter('end', $semester->getEndDate())
         ;
 
         return $qb->getQuery()

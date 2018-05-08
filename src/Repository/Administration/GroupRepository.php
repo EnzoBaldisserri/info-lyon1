@@ -48,8 +48,8 @@ class GroupRepository extends ServiceEntityRepository
             ->leftJoin('s.absences', 'a')
             ->addSelect('a')
             ->andWhere($qb->expr()->between('a.startTime', ':start', ':end'))
-            ->setParameter('start', $semester->getStartDate())
-            ->setParameter('end', $semester->getEndDate())
+              ->setParameter('start', $oneSemester->getStartDate())
+              ->setParameter('end', $oneSemester->getEndDate())
             ->orderBy('a.startTime', 'ASC')
         ;
 
