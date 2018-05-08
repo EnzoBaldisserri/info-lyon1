@@ -1,0 +1,27 @@
+// General
+$line-height: 26px;
+$table-dynamic-width: 80%;
+
+$border-color: #a0a0a0;
+$border-width: 1px;
+$border-width-big: 2px;
+$default-border: $border-width SOLID $border-color;
+$big-border: $border-width-big SOLID $border-color;
+
+// TableStatic
+$title-font-size: 1.4rem;
+
+$groups-font-size: 20px;
+$groups-width: 30px;
+
+// TableHeader
+$header-height: ($line-height * 3) - 1px;
+
+// Absences colors
+$abs-colors: (
+  'justify'   : #1bee00,
+  'absence'   : #f7171b,
+  'lateness'  : #eb9a0e,
+  'control'   : #010dfd,
+  'mix'       : #b203fd
+);

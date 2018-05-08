@@ -1,6 +1,9 @@
-@import '../variables';
+@import 'groups-column';
+@import 'students-column';
 
-.main {
+@mixin table-static() {
+  flex-grow: 1;
+
   position: relative;
   z-index: 10;
 
@@ -15,6 +18,7 @@
     text-align: center;
   }
 
+  // GroupsCol + StudentsCol
   .flex {
     display: flex;
     flex-flow: row nowrap;
@@ -23,5 +27,13 @@
 
     border-bottom: $big-border;
     margin-bottom: 0;
+
+    .groups {
+      @include groups-column();
+    }
+
+    .students {
+      @include students-column();
+    }
   }
 }

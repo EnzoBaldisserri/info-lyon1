@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import style from './TableStatic.scss';
-
 import GroupsCol from './GroupsCol';
 import StudentsCol from './StudentsCol';
 
 const TableStatic = (props) => {
-  const { groups, ...restProps } = props;
+  const { groups } = props;
 
   return (
-    <div {...restProps} className={style.main}>
-      <div className={style.title}>
+    <div className="static">
+      <div className="title">
         Étudiants
       </div>
-      <div className={`${style.flex} row`}>
+      <div className="flex row">
         <GroupsCol groups={groups} />
         <StudentsCol groups={groups} />
       </div>

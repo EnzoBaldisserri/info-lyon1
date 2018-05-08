@@ -1,6 +1,6 @@
-@import '../variables';
+@import 'student-summary';
 
-.main {
+@mixin student-row() {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -9,8 +9,13 @@
   height: $line-height;
   border-top: $default-border;
 
-  > .student {
+  > .content {
     flex-grow: 1;
     white-space: nowrap;
+  }
+
+  .popup {
+    @include popup();
+    @include student-summary();
   }
 }

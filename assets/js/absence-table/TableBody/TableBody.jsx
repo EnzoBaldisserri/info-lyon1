@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import StudentRow from './StudentRow';
+
 const TableBody = (props) => {
-  const groups = props.groups.map(group => (
-    <tr key={group.id}>
-      <td>{group.name}</td>
-    </tr>
-  ));
+  const studentsRows = props.groups.map(group =>
+    group.students.map((student, index) => (
+      <StudentRow
+        student={student}
+        className={index === 0 ? 'new-group' : undefined}
+        key={student.id}
+      />
+    )));
 
   return (
     <tbody>
-      { groups }
+      { studentsRows }
     </tbody>
   );
 };

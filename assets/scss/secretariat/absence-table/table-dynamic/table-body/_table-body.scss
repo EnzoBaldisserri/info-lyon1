@@ -1,0 +1,14 @@
+@mixin table-body() {
+  td.abs {
+    cursor: pointer;
+  }
+
+  tr:not(:first-child) {
+    border-top: $default-border;
+
+    &.new-group {
+      border-width: $border-width-big;
+      height: $line-height + 1px;
+    }
+  }
+}

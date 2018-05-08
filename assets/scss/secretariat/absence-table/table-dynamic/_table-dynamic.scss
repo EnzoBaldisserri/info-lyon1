@@ -1,0 +1,31 @@
+@import 'table-header/table-header';
+@import 'table-body/table-body';
+
+@mixin table-dynamic() {
+  width: $table-dynamic-width;
+  overflow-x: auto;
+
+  table {
+    table-layout: fixed;
+
+    thead {
+      @include table-header();
+    }
+
+    tbody {
+      @include table-body();
+    }
+
+    td,
+    th {
+      width: $line-height * 24;
+      height: $line-height;
+
+      padding: 0;
+      border-right: 1px solid $border-color;
+
+      border-radius: 0;
+      text-align: center;
+    }
+  }
+}

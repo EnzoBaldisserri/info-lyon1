@@ -1,0 +1,28 @@
+@each $name, $color in $abs-colors {
+  td.abs-#{$name} {
+    background-color: $color;
+  }
+
+  #color-code {
+    li.abs-#{$name}::before {
+      content: '';
+      display: inline-block;
+
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.4rem;
+
+      background-color: $color;
+    }
+  }
+}
+
+#color-code {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+  li {
+    margin-left: 0.8rem;
+  }
+}

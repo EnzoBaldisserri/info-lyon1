@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Loader from '../utils/Loader';
-
-import style from './AbsenceTable.scss';
+import Loader from '../react-utils/Loader';
 
 import TableStatic from './TableStatic/TableStatic';
 import TableHeader from './TableHeader/TableHeader';
@@ -63,15 +61,15 @@ class AbsenceTable extends Component {
     }
 
     return (
-      <div className={style.flex}>
+      <Fragment>
         <TableStatic groups={groups} />
-        <div className={style.dynamic}>
+        <div className="dynamic">
           <table>
             <TableHeader semester={semester} />
             <TableBody groups={groups} />
           </table>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

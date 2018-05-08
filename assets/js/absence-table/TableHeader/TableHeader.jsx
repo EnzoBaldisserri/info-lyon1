@@ -16,19 +16,19 @@ const TableHeader = (props) => {
     <thead>
       <tr>
         { months.map((month, key) => (
-          <td colSpan={Object.values(month.days).length} key={key}>
+          <th colSpan={Object.values(month.days).length} key={key}>
             {month.name}
-          </td>
-        )) }
-      </tr>
-      <tr>
-        { days.map(([dayInMonth], key) => (
-          <td key={key}>{ dayInMonth }</td>
+          </th>
         )) }
       </tr>
       <tr>
         { days.map(([, dayInWeek], key) => (
-          <td key={key}>{ dayInWeek }</td>
+          <th key={key}>{ dayInWeek }</th>
+        )) }
+      </tr>
+      <tr>
+        { days.map(([dayInMonth], key) => (
+          <th key={key}>{ dayInMonth }</th>
         )) }
       </tr>
     </thead>

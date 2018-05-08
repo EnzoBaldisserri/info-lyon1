@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import style from './StudentsCol.scss';
 import StudentRow from './StudentRow';
 
 const StudentsCol = (props) => {
@@ -10,14 +9,14 @@ const StudentsCol = (props) => {
       <StudentRow student={student} key={student.id} />);
 
     return (
-      <div className={style.group} key={group.id}>
+      <div className="group" key={group.id}>
         { students }
       </div>
     );
   });
 
   return (
-    <div className={style.main}>
+    <div className="students">
       { groups }
     </div>
   );

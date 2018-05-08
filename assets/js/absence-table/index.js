@@ -5,7 +5,7 @@ import AbsenceTable from './AbsenceTable';
 
 import '../../scss/secretariat/absence.scss';
 
-const $absenceTable = document.getElementById('absences-table');
+const $absenceTable = document.getElementById('absence-table');
 const apis = JSON.parse($absenceTable.getAttribute('data-api'));
 
 ReactDOM.render(

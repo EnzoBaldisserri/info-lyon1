@@ -1,0 +1,13 @@
+@import 'student-row';
+
+@mixin students-column() {
+  flex-grow: 1;
+
+  > .group {
+    border-top: $default-border;
+
+    > .student-row {
+      @include student-row();
+    }
+  }
+}

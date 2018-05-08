@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import style from './StudentRow.scss';
 import StudentSummary from './StudentSummary';
 
 class StudentRow extends Component {
@@ -21,8 +20,8 @@ class StudentRow extends Component {
     const { id, firstname, surname } = student;
 
     return (
-      <div className={style.main}>
-        <div className={style.student} key={id}>
+      <div className="student-row">
+        <div className="content" key={id}>
           { `${firstname} ${surname}` }
         </div>
         <i

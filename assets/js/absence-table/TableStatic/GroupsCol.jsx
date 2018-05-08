@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import style from './GroupsCol.scss';
-
 const GroupsCol = (props) => {
   const groups = props.groups.map((group) => {
     const lineHeight = 26;
     const height = `${(group.students.length * lineHeight) + 1}px`;
 
-    return <div className={style.group} style={{ height }} key={group.id}>{group.fullname}</div>;
+    return (
+      <div
+        key={group.id}
+        className="group"
+        style={{ height }}
+      >
+        {group.fullname}
+      </div>
+    );
   });
 
   return (
-    <div>
+    <div className="groups">
       { groups }
     </div>
   );
