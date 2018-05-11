@@ -19,12 +19,12 @@ class AbsenceTable extends Component {
   }
 
   componentDidMount() {
-    const { apis } = this.props;
+    const { apis, i18n } = this.props;
 
     fetch(apis.load)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Impossible de charger les données nécessaires');
+          throw new Error(i18n.load_error);
         }
 
         return response.json();
@@ -52,6 +52,8 @@ class AbsenceTable extends Component {
       groups,
     } = this.state;
 
+    const { i18n } = this.props;
+
     if (error) {
       return (
         <div className="section alert alert-error">
@@ -68,7 +70,7 @@ class AbsenceTable extends Component {
 
     return (
       <Fragment>
-        <TableStatic groups={groups} />
+        <TableStatic groups={groups} i18n={i18n} />
         <div className="dynamic">
           <table>
             <TableHeader months={months} />
@@ -86,6 +88,10 @@ AbsenceTable.propTypes = {
     load: PropTypes.string,
     add: PropTypes.string,
     remove: PropTypes.string,
+  }).isRequired,
+  i18n: PropTypes.shape({
+    students: PropTypes.string,
+    load_error: PropTypes.string,
   }).isRequired,
 };
 

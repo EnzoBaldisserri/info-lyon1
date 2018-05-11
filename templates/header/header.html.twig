@@ -1,6 +1,6 @@
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="{{ path("app_homepage") }}" class="brand-logo text-uppercase">Info-lyon1</a>
+        <a href="{{ path("app_homepage") }}" class="brand-logo text-uppercase">{{ 'app.title'|trans }}</a>
 
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             {% include 'header/computer_navbar.html.twig' with {'navigation': navigation|default } only %}

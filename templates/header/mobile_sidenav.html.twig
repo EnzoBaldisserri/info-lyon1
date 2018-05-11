@@ -8,10 +8,10 @@
         </div>
     </li>
     {% for name, link in navigation %}
-        <li><a href="{{ path(link) }}">{{ name }}</a></li>
+        <li><a href="{{ path(link) }}">{{ name|trans }}</a></li>
     {% endfor %}
     <li class="divider"></li>
     <li>
-        <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+        <a href="{{ path('fos_user_security_logout') }}">{{ 'fosub.logout'|trans }}</a>
     </li>
 </ul>

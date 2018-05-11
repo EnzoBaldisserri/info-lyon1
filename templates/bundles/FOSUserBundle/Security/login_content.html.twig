@@ -1,8 +1,6 @@
-{% trans_default_domain 'FOSUserBundle' %}
-
 <img id="brand-logo"
     src="{{ asset('images/logo_800.png') }}"
-    alt="info-lyon1"
+    alt="{{ 'app.title'|trans }}"
     class="responsive-img center-block"
 />
 
@@ -27,7 +25,7 @@
             autocomplete="username"
             required
         />
-        <label for="username">Identifiant</label>
+        <label for="username">{{ 'fosub.login.field.id'|trans }}</label>
     </div>
     <div class="input-field center-block">
         <i class="material-icons prefix">lock</i>
@@ -38,7 +36,7 @@
             autocomplete="current-password"
             required
         />
-        <label for="password">Mot de passe</label>
+        <label for="password">{{ 'fosub.login.field.password'|trans }}</label>
     </div>
     <div>
         <label>
@@ -48,7 +46,7 @@
               name="_remember_me"
               checked
             />
-            <span>Rester connecté</span>
+            <span>{{ 'fosub.login.field.remember_me'|trans }}</span>
         </label>
     </div>
     <p class="center-align">
@@ -58,7 +56,7 @@
             name="_submit"
             class="btn yellow accent-4 waves-effect waves-light"
         >
-          Se connecter
+            {{ 'fosub.login.field.connect'|trans }}
         </button>
     </p>
 </form>

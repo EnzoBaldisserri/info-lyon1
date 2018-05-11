@@ -29,31 +29,6 @@ services:
     App\Service\NavbarBuilder:
         arguments:
             - "@security.authorization_checker"
-            - ROLE_STUDENT:
-                  Absence: absence_homepage
-                  Notes: mark_homepage
-
-              ROLE_TEACHER:
-                  Absence: absence_homepage
-                  Contrôles: control_homepage
-
-              ROLE_SECRETARIAT:
-                  Absence: absence_homepage
-
-              ROLE_PROJECT_MEMBER:
-                  Projet: project_homepage
-
-              ROLE_FORUM_ACCESS:
-                  Forum: forum_homepage
-
-              ROLE_FOLLOW_UP:
-                  Suivi: followup_homepage
-
-              ROLE_ADMINISTRATIVE:
-                  Administration: administration_homepage
-
-              ROLE_SCHEDULED:
-                  Emploi du temps: schedule_homepage
 
     App\Service\ScheduleFetcher:
         arguments:

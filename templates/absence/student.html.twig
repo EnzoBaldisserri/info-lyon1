@@ -1,33 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Absence - {{ parent() }}{% endblock %}
+{% block title %}{{ 'absence.title'|trans }} - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <h1>Absences</h1>
+    <h1>{{ 'absence.title'|trans }}</h1>
     <table class="bordered centered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Horaire</th>
-                <th>Type</th>
-                <th>Justification</th>
+                <th>{{ 'absence.props.date'|trans }}</th>
+                <th>{{ 'absence.props.time'|trans }}</th>
+                <th>{{ 'absence.props.type'|trans }}</th>
+                <th>{{ 'absence.props.justification'|trans }}</th>
             </tr>
         </thead>
         <tbody>
             {% for absence in absences %}
                 <tr {% if not absence.justified %}class="alert alert-error"{% endif %}>
-                    <td>{{ absence.startTime|date('d/m/Y') }}</td>
+                    <td>{{ absence.startTime|date('global.date.format'|trans) }}</td>
                     <td>
-                        {{ absence.startTime|date('H:i') }}
+                        {{ absence.startTime|date('global.time.format'|trans) }}
                         <i class="material-icons">arrow_forward</i>
-                        {{ absence.endTime|date('H:i') }}
+                        {{ absence.endTime|date('global.time.format'|trans) }}
                     </td>
                     <td>{{ absence.type.name|trans([], 'absence_type') }}</td>
-                    <td>{{ absence.justified ? 'Justifiée' : 'Injustifiée' }}</td>
+                    <td>{{ absence.justified ? 'absence.value.justified'|trans : 'absence.value.not_justified'|trans }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="99">Aucune absence</td>
+                    <td colspan="99">{{ 'absence.message.no_absences'|trans }}</td>
                 </tr>
             {% endfor %}
         </tbody>

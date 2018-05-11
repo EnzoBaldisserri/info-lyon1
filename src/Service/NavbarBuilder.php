@@ -6,24 +6,49 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NavbarBuilder
 {
-    private $authChecker;
-    private $routesMap;
+    const MENU = [
+        'ROLE_STUDENT' => [
+            'app.menu.absences'       => 'absence_homepage',
+            'app.menu.marks'          => 'mark_homepage',
+        ],
+        'ROLE_TEACHER' => [
+            'app.menu.absences'       => 'absence_homepage',
+            'app.menu.controls'       => 'control_homepage',
+        ],
+        'ROLE_SECRETARIAT' => [
+            'app.menu.absences'       => 'absence_homepage',
+        ],
+        'ROLE_PROJECT_MEMBER'   => [
+            'app.menu.project'        => 'project_homepage',
+        ],
+        'ROLE_FORUM_ACCESS' => [
+            'app.menu.forum'          => 'forum_homepage',
+        ],
+        'ROLE_FOLLOW_UP' => [
+            'app.menu.follow_up'      => 'followup_homepage',
+        ],
+        'ROLE_ADMINISTRATIVE' => [
+            'app.menu.administration' => 'administration_homepage',
+        ],
+        'ROLE_SCHEDULED' => [
+            'app.menu.schedule'       => 'schedule_homepage',
+        ]
+    ];
 
-    public function __construct(AuthorizationCheckerInterface $authChecker, Array $routesMap)
+    private $authChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker)
     {
         $this->authChecker = $authChecker;
-        $this->routesMap = $routesMap;
     }
 
     public function getNavigation(): Array
     {
         $navigation = [];
 
-        foreach ($this->routesMap as $role => $routes) {
+        foreach (self::MENU as $role => $routes) {
             if ($this->authChecker->isGranted($role)) {
-                foreach ($routes as $name => $route) {
-                    $navigation[$name] = $route;
-                }
+                $navigation = array_merge($navigation, $routes);
             }
         }
 

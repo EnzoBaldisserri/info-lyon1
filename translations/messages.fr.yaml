@@ -1,5 +1,48 @@
 global:
+    date:
+        format: d/m/Y
     time:
+        format: H:i
+        format_long: H:i:s
         months: Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre
         days: Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi
         days_short: D,L,M,M,J,V,S
+    message:
+        no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
+
+app:
+    title: info-lyon1
+    menu:
+        absences: Absences
+        marks: Notes
+        controls: Contrôles
+        project: PTUT
+        forum: Forum
+        follow_up: Suivi
+        administration: Administration
+        schedule: Emploi du temps
+
+absence:
+    title: Absences
+    props:
+        date: Date
+        time: Heure
+        type: Type
+        justification: Justification
+    value:
+        justified: Justifiée
+        not_justified: Injustifiée
+    message:
+        no_absence: Pas d'absence
+    plain:
+        students: Étudiants
+
+fosub:
+    login:
+        title: Connexion
+        field:
+            id: Identifiant
+            password: Mot de passe
+            remember_me: Rester connecté
+            connect: Se connecter
+    logout: Déconnexion
