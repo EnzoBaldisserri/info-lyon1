@@ -1,13 +1,14 @@
 const path = require('path');
 const NotifierPlugin = require('webpack-notifier');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
 
   entry: {
     app: './assets/js/app.js',
-    login: './assets/js/login.js',
+    fos_layout: './assets/js/fos_layout.js',
     'absence-table': './assets/js/absence-table/index.js',
   },
 
@@ -30,11 +31,13 @@ module.exports = {
         test: /\.scss$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: 'style-loader',
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              minimize: true,
+            },
           },
           {
             loader: 'postcss-loader',
@@ -56,6 +59,7 @@ module.exports = {
       'node_modules/materialize-css/dist/js/materialize.js',
       { from: 'assets/images', to: '../images' },
     ]),
+    new MiniCssExtractPlugin(),
   ],
 
   resolve: {
