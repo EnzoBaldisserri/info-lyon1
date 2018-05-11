@@ -22,7 +22,7 @@
                         <i class="material-icons">arrow_forward</i>
                         {{ absence.endTime|date('H:i') }}
                     </td>
-                    <td>{{ absence.type.name }}</td>
+                    <td>{{ absence.type.name|trans([], 'absence_type') }}</td>
                     <td>{{ absence.justified ? 'Justifiée' : 'Injustifiée' }}</td>
                 </tr>
             {% else %}

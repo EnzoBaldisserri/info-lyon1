@@ -17,14 +17,9 @@ class AbsenceType
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=48)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $class;
 
     public function getId()
     {
@@ -42,17 +37,4 @@ class AbsenceType
 
         return $this;
     }
-
-    public function getClass(): ?string
-    {
-        return $this->class;
-    }
-
-    public function setClass(string $class): self
-    {
-        $this->class = $class;
-
-        return $this;
-    }
-
 }
