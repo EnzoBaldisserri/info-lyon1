@@ -16,8 +16,8 @@ class TimeHelper
 
     public function getSemesterMonths(Semester $semester): Array
     {
-        $MONTHS = $this->translator->trans('global.time.months');
-        $DAYS_SHORT = $this->translator->trans('global.time.days_short');
+        $MONTHS = explode(',', $this->translator->trans('global.time.months'));
+        $DAYS_SHORT = explode(',', $this->translator->trans('global.time.days_short'));
 
         $months = [];
         $startDate = $semester->getStartDate();
