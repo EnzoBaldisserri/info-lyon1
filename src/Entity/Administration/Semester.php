@@ -3,6 +3,7 @@
 namespace App\Entity\Administration;
 
 use App\Entity\Absence\Absence;
+use App\Entity\Period;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,6 +79,11 @@ class Semester
         $this->endDate = $endDate;
 
         return $this;
+    }
+
+    public function getPeriod(): Period
+    {
+        return new Period($this->startDate, $this->endDate);
     }
 
     public function isActive(\DateTimeInterface $datetime = null): ?bool

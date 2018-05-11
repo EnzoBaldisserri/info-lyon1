@@ -3,6 +3,7 @@
 namespace App\Repository\Administration;
 
 use App\Entity\Administration\Semester;
+use App\Entity\Period;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,25 +20,48 @@ class SemesterRepository extends ServiceEntityRepository
         parent::__construct($registry, Semester::class);
     }
 
-    public function findOneOfCurrent(): ?Semester
+    public function findCurrent(): Array
     {
         $now = new \DateTime();
-        return $this->findOneAtDate($now);
+        return $this->findAtDate($now);
     }
 
-    public function findOneAtDate(\DateTime $datetime): ?Semester
+    public function findAtDate(\DateTime $datetime): Array
     {
         $qb = $this->createQueryBuilder('s');
 
         $qb
             ->andWhere($qb->expr()->between(':datetime', 's.startDate', 's.endDate'))
-            ->setParameter('datetime', $datetime)
+              ->setParameter('datetime', $datetime)
         ;
 
-        $qb->setMaxResults(1);
-
         return $qb->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
+    public function findCurrentPeriod(): Period
+    {
+        $now = new \DateTime();
+        return $this->findPeriodAt($now);
+    }
+
+    public function findPeriodAt(\DateTime $datetime): Period
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->andWhere($qb->expr()->between(':datetime', 's.startDate', 's.endDate'))
+              ->setParameter('datetime', $datetime)
+            ->setMaxResults(1)
+        ;
+
+        $semester = $qb->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $semester) {
+            return null;
+        }
+
+        return $semester->getPeriod();
+    }
 }

@@ -16,11 +16,11 @@
         <tbody>
             {% for absence in absences %}
                 <tr {% if not absence.justified %}class="alert alert-error"{% endif %}>
-                    <td>{{ absence.beginDate|date('d/m/Y') }}</td>
+                    <td>{{ absence.startTime|date('d/m/Y') }}</td>
                     <td>
-                        {{ absence.beginDate|date('H:i') }}
+                        {{ absence.startTime|date('H:i') }}
                         <i class="material-icons">arrow_forward</i>
-                        {{ absence.endDate|date('H:i') }}
+                        {{ absence.endTime|date('H:i') }}
                     </td>
                     <td>{{ absence.type.name }}</td>
                     <td>{{ absence.justified ? 'Justifiée' : 'Injustifiée' }}</td>

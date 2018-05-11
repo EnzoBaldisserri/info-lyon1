@@ -92,4 +92,10 @@ class Student extends User
         return $this;
     }
 
+    public function setAbsences(Collection $absences): self
+    {
+        $this->absences = $absences;
+
+        return $this;
+    }
 }

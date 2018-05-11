@@ -5,7 +5,7 @@ namespace App\Repository\Absence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use App\Entity\Absence\Absence;
-use App\Entity\Administration\Semester;
+use App\Entity\Period;
 use App\Entity\User\Student;
 
 /**
@@ -21,7 +21,7 @@ class AbsenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Absence::class);
     }
 
-    public function getInSemesterForStudent(Semester $semester, Student $student)
+    public function getInPeriodForStudent(Period $period, Student $student): Array
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -32,8 +32,9 @@ class AbsenceRepository extends ServiceEntityRepository
 
         $qb
             ->andWhere($qb->expr()->between('a.startTime', ':start', ':end'))
-              ->setParameter('start', $semester->getStartDate())
-              ->setParameter('end', $semester->getEndDate())
+              ->setParameter('start', $period->getStart())
+              ->setParameter('end', $period->getEnd())
+            ->addOrderBy('a.startTime', 'ASC')
         ;
 
         return $qb->getQuery()

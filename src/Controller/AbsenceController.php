@@ -52,14 +52,14 @@ class AbsenceController extends BaseController
 
         $semester = $doctrine
             ->getRepository(Semester::class)
-            ->findOneOfCurrent();
-
-        $student = $this->getUser();
+            ->findCurrentPeriod();
 
         if (null !== $semester) {
+            $student = $this->getUser();
+
             $absences = $doctrine
                 ->getRepository(Absence::class)
-                ->getInSemesterForStudent($semester, $student);
+                ->getInPeriodForStudent($semester, $student);
         }
 
         return $this->createHtmlResponse('absence/student.html.twig', [
