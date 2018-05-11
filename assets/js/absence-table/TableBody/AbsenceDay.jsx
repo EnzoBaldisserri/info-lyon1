@@ -7,7 +7,7 @@ const isJustified = absences => absences.reduce(
 );
 
 const getType = absences => absences.reduce(
-  (carry, absence) => ((carry === null || carry === absence.type.class) ? absence.type.class : 'mixed'),
+  (carry, absence) => ((carry === null || carry === absence.type.name) ? absence.type.name : 'mixed'),
   null,
 );
 
@@ -30,7 +30,7 @@ const AbsenceDay = props => (
 AbsenceDay.propTypes = {
   absences: PropTypes.arrayOf(PropTypes.shape({
     type: PropTypes.shape({
-      class: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }),
   })).isRequired,
 };
