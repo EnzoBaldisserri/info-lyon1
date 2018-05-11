@@ -48,7 +48,7 @@ class TimeHelper
                 $newDay = $withHash ?
                     [
                         'name' => $DAYS_SHORT[$dayInWeek],
-                        'hash' => md5(serialize([$year, $month, $dayInWeek])),
+                        'hash' => "$year-$month-$dayInMonth",
                     ]
                     : $DAYS_SHORT[$dayInWeek];
 
@@ -64,7 +64,7 @@ class TimeHelper
             ];
 
             if ($withHash) {
-                $newMonth['hash'] = md5(serialize([$year, $month]));
+                $newMonth['hash'] = "$year-$month";
             }
 
             $months[] = $newMonth;
@@ -86,7 +86,7 @@ class TimeHelper
             $newDay = $withHash ?
                 [
                     'name' => $DAYS_SHORT[$dayInWeek],
-                    'hash' => md5(serialize([$year, $month, $dayInWeek])),
+                    'hash' => "$year-$month-$dayInMonth",
                 ]
                 : $DAYS_SHORT[$dayInWeek];
 
@@ -102,7 +102,7 @@ class TimeHelper
         ];
 
         if ($withHash) {
-            $newMonth['hash'] = md5(serialize([$year, $month]));
+            $newMonth['hash'] = "$year-$month";
         }
 
         $months[] = $newMonth;

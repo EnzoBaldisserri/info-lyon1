@@ -99,7 +99,10 @@ class GroupRepository extends ServiceEntityRepository
         while ($semDate->diff($endDate)->invert === 0) {
             $date = $semDate->format('Y-m-d');
 
-            $days[$date] = ['hash' => md5($date)];
+            $days[$date] = [
+                'hash' => $date,
+                'absences' => [],
+            ];
             $semDate->modify('+1 day');
         }
 
@@ -111,7 +114,7 @@ class GroupRepository extends ServiceEntityRepository
         foreach ($absences as $absence) {
             $date = $absence->getStartTime()->format('Y-m-d');
 
-            $days[$date][] = $absence;
+            $days[$date]['absences'][] = $absence;
         }
 
         return new ArrayCollection(array_values($days));

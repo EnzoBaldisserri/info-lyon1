@@ -1,15 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const computeClass = abs1 => `abs abs-${abs1.type.class}`;
+const isJustified = absences => absences.reduce(
+  (carry, absence) => carry && absence.justified,
+  true,
+);
+
+const getType = absences => absences.reduce(
+  (carry, absence) => ((carry === null || carry === absence.type.class) ? absence.type.class : 'mixed'),
+  null,
+);
+
+const getClass = (absences) => {
+  if (absences.length === 0) {
+    return null;
+  }
+
+  const typeClass = isJustified(absences) ?
+    'abs-justified'
+    : `abs-${getType(absences)}`;
+
+  return `abs ${typeClass}`;
+};
 
 const AbsenceDay = props => (
-  <td className={computeClass(props.absences[0])} />
+  <td className={getClass(props.absences)} />
 );
 
 AbsenceDay.propTypes = {
   absences: PropTypes.arrayOf(PropTypes.shape({
-    type: PropTypes.any,
+    type: PropTypes.shape({
+      class: PropTypes.string.isRequired,
+    }),
   })).isRequired,
 };
 

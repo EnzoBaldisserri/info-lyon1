@@ -13,7 +13,7 @@ class AbsenceTable extends Component {
     this.state = {
       loaded: false,
       error: null,
-      semester: null,
+      months: [],
       groups: [],
     };
   }
@@ -30,10 +30,16 @@ class AbsenceTable extends Component {
         return response.json();
       })
 
-      .then(data => this.setState({
-        loaded: !!data.semester,
-        ...data,
-      }))
+      .then((data) => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        this.setState({
+          loaded: true,
+          ...data,
+        });
+      })
 
       .catch(error => this.setState({ error }));
   }
@@ -42,7 +48,7 @@ class AbsenceTable extends Component {
     const {
       loaded,
       error,
-      semester,
+      months,
       groups,
     } = this.state;
 
@@ -65,7 +71,7 @@ class AbsenceTable extends Component {
         <TableStatic groups={groups} />
         <div className="dynamic">
           <table>
-            <TableHeader semester={semester} />
+            <TableHeader months={months} />
             <TableBody groups={groups} />
           </table>
         </div>

@@ -6,8 +6,8 @@ import AbsenceDay from './AbsenceDay';
 const StudentRow = (props) => {
   const { student, ...restProps } = props;
 
-  const absences = student.absences.map(absence => (
-    <AbsenceDay absences={[absence]} />
+  const absences = student.absences.map(day => (
+    <AbsenceDay absences={day.absences} key={day.hash} />
   ));
 
   return (
