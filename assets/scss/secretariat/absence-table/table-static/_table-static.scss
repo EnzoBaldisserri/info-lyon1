@@ -4,11 +4,8 @@
 @mixin table-static() {
   flex-grow: 1;
 
-  position: relative;
-  z-index: 10;
-
   background-color: $color-white;
-  border-right: 2px SOLID $border-color;
+  border-right: $big-border;
 
   .title {
     height: $header-height;

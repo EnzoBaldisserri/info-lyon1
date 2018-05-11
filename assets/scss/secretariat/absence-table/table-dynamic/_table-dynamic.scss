@@ -7,6 +7,7 @@
 
   table {
     table-layout: fixed;
+    border-left: $default-border;
 
     thead {
       @include table-header();
@@ -18,11 +19,12 @@
 
     td,
     th {
-      width: $line-height * 24;
+      width: $line-height * 28;
       height: $line-height;
 
       padding: 0;
-      border-right: 1px solid $border-color;
+      border-right: $default-border;
+      border-bottom: $default-border;
 
       border-radius: 0;
       text-align: center;

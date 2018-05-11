@@ -12,7 +12,7 @@ const TableStatic = (props) => {
       <div className="title">
         Étudiants
       </div>
-      <div className="flex row">
+      <div className="flex">
         <GroupsCol groups={groups} />
         <StudentsCol groups={groups} />
       </div>

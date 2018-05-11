@@ -5,8 +5,8 @@ $table-dynamic-width: 80%;
 $border-color: #a0a0a0;
 $border-width: 1px;
 $border-width-big: 2px;
-$default-border: $border-width SOLID $border-color;
-$big-border: $border-width-big SOLID $border-color;
+$default-border: $border-width solid $border-color;
+$big-border: $border-width-big solid $border-color;
 
 // TableStatic
 $title-font-size: 1.4rem;
