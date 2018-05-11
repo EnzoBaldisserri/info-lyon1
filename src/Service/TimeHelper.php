@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use Symfony\Component\Translation\TranslatorInterface;
-use App\Entity\Administration\Semester;
+use App\Entity\Period;
 
 class TimeHelper
 {
@@ -14,14 +14,14 @@ class TimeHelper
         $this->translator = $translator;
     }
 
-    public function getSemesterMonths(Semester $semester): Array
+    public function getPeriodMonths(Period $period, bool $withHash = false): Array
     {
         $MONTHS = explode(',', $this->translator->trans('global.time.months'));
         $DAYS_SHORT = explode(',', $this->translator->trans('global.time.days_short'));
 
         $months = [];
-        $startDate = $semester->getStartDate();
-        $endDate = $semester->getEndDate();
+        $startDate = $period->getStart();
+        $endDate = $period->getEnd();
 
         [$startYear, $startMonth, $startDay] = array_map(
             'intval',
@@ -45,16 +45,29 @@ class TimeHelper
             $days = [];
 
             while ($dayInMonth <= $nbDayInMonth) {
-                $days[$dayInMonth] = $DAYS_SHORT[$dayInWeek];
+                $newDay = $withHash ?
+                    [
+                        'name' => $DAYS_SHORT[$dayInWeek],
+                        'hash' => md5(serialize([$year, $month, $dayInWeek])),
+                    ]
+                    : $DAYS_SHORT[$dayInWeek];
+
+                $days[$dayInMonth] = $newDay;
 
                 $dayInMonth += 1;
                 $dayInWeek = ($dayInWeek + 1) % 7;
             }
 
-            $months[] = [
+            $newMonth = [
                 'name' => $MONTHS[$month - 1],
                 'days' => $days,
             ];
+
+            if ($withHash) {
+                $newMonth['hash'] = md5(serialize([$year, $month]));
+            }
+
+            $months[] = $newMonth;
 
             $month += 1;
             if ($month > 12) {
@@ -70,16 +83,29 @@ class TimeHelper
         $days = [];
 
         while ($dayInMonth <= $endDay) {
-            $days[$dayInMonth] = $DAYS_SHORT[$dayInWeek];
+            $newDay = $withHash ?
+                [
+                    'name' => $DAYS_SHORT[$dayInWeek],
+                    'hash' => md5(serialize([$year, $month, $dayInWeek])),
+                ]
+                : $DAYS_SHORT[$dayInWeek];
+
+            $days[$dayInMonth] = $newDay;
 
             $dayInMonth += 1;
             $dayInWeek = ($dayInWeek + 1) % 7;
         }
 
-        $months[] = [
+        $newMonth = [
             'name' => $MONTHS[$month - 1],
             'days' => $days,
         ];
+
+        if ($withHash) {
+            $newMonth['hash'] = md5(serialize([$year, $month]));
+        }
+
+        $months[] = $newMonth;
 
         return $months;
     }

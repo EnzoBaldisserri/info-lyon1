@@ -109,13 +109,6 @@ class GroupRepository extends ServiceEntityRepository
     private function organizeAbsences(Iterable $absences, Array $days): Collection
     {
         foreach ($absences as $absence) {
-            // TODO Remove when db request is fixed
-            // Students may be two times in the result,
-            // Skips the repeated ones
-            if (is_array($absence)) {
-                continue;
-            }
-
             $date = $absence->getStartTime()->format('Y-m-d');
 
             $days[$date][] = $absence;

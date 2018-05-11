@@ -29,10 +29,10 @@ class AbsenceApiController extends BaseController
         if (empty($semesters)) {
             $error = $translate->trans('no_current_semester', [], 'error');
         } else {
-            $oneSemester = reset($semesters);
+            $period = reset($semesters)->getPeriod();
 
             $months = $timeHelper
-                ->getSemesterMonths($oneSemester);
+                ->getPeriodMonths($period, true);
 
             $groups = $doctrine
                 ->getRepository(Group::class)
