@@ -10,11 +10,14 @@ class AbsenceTable extends Component {
   constructor(props) {
     super(props);
 
+    this.tableContainer = React.createRef();
+
     this.state = {
       loaded: false,
       error: null,
       months: [],
       groups: [],
+      tableScroll: null,
     };
   }
 
@@ -39,9 +42,39 @@ class AbsenceTable extends Component {
           loaded: true,
           ...data,
         });
+
+        return data;
+      })
+
+      .then((data) => {
+        if (data.firstDay) {
+          const firstDate = new Date(data.firstDay);
+
+          // Center current day
+          const today = new Date();
+          const timeDifference = today.getTime() - firstDate.getTime();
+
+          if (timeDifference > 0) {
+            const cellWidth = 26;
+            const dayDifference = timeDifference / (1000 * 3600 * 24);
+
+            this.setState({
+              tableScroll: Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0),
+            });
+          }
+        }
       })
 
       .catch(error => this.setState({ error }));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Only change table scroll
+    if (prevState.tableScroll === this.state.tableScroll) {
+      return;
+    }
+
+    this.tableContainer.current.scrollLeft = this.state.tableScroll;
   }
 
   render() {
@@ -71,7 +104,7 @@ class AbsenceTable extends Component {
     return (
       <Fragment>
         <TableStatic groups={groups} i18n={i18n} />
-        <div className="dynamic">
+        <div className="dynamic" ref={this.tableContainer}>
           <table>
             <TableHeader months={months} />
             <TableBody groups={groups} />

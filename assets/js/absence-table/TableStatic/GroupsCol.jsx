@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const GroupsCol = (props) => {
   const groups = props.groups.map((group) => {
-    const lineHeight = 26;
-    const height = `${(group.students.length * lineHeight) + 1}px`;
+    const cellHeight = 26;
+    const height = `${(group.students.length * cellHeight) + 1}px`;
 
     return (
       <div
