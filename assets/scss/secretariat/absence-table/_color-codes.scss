@@ -1,6 +1,12 @@
 @each $name, $color in $abs-colors {
-  td.abs-#{$name} {
-    background-color: $color;
+  td {
+    &.abs-#{$name} {
+      background-color: $color;
+    }
+
+    &.abs div.abs-#{$name} :nth-child(3) {
+      color: $color;
+    }
   }
 
   #color-code {

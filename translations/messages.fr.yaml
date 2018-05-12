@@ -8,6 +8,8 @@ global:
         days: Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi
         days_short: D,L,M,M,J,V,S
     message:
+        yes: Oui
+        no: Non
         no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
 
 app:
@@ -29,6 +31,7 @@ absence:
         time: Heure
         type: Type
         justification: Justification
+        justified: Justifiée
     value:
         justified: Justifiée
         not_justified: Injustifiée

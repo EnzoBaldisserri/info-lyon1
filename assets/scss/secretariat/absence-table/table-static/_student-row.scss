@@ -15,7 +15,7 @@
   }
 
   .popup {
-    @include popup();
+    @include popup(true, true);
     @include student-summary();
   }
 }

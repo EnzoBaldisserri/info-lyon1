@@ -1,23 +1,40 @@
-@mixin popup() {
+@mixin popup($popup-close: false, $default-visible: false) {
   position: absolute;
 
-  padding: .3rem 1.6rem .3rem .5rem;
+  @if not $default-visible {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @if $popup-close {
+    padding: .3rem 1.6rem .3rem .5rem;
+  } @else {
+    padding: .3rem .5rem;
+  }
 
   border: 1px solid #cccccc;
   border-radius: 3px;
   background-color: $color-white;
 
   z-index: 20;
+  transition: $default-transition;
 
-  .popup-close {
-    position: absolute;
-    top: 0;
-    right: 0;
+  @if popup-close {
+    .popup-close {
+      position: absolute;
+      top: 0;
+      right: 0;
 
-    &::after {
-      content: 'close';
-      display: inline-block;
-      cursor: pointer;
+      &::after {
+        content: 'close';
+        display: inline-block;
+        cursor: pointer;
+      }
     }
   }
+}
+
+@mixin popup-visible($opacity: 1, $pointer-events: auto) {
+  opacity: $opacity !important;
+  pointer-events: $pointer-events !important;
 }

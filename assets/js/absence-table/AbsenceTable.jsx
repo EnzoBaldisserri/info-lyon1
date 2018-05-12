@@ -116,9 +116,9 @@ class AbsenceTable extends Component {
       <Fragment>
         <TableStatic groups={groups} i18n={i18n} />
         <div className="dynamic" ref={this.tableContainer}>
-          <table>
+          <table role="grid">
             <TableHeader months={months} />
-            <TableBody groups={groups} />
+            <TableBody groups={groups} i18n={i18n} />
           </table>
         </div>
       </Fragment>

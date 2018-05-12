@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import StudentRow from './StudentRow';
 
 const TableBody = (props) => {
-  const studentsRows = props.groups.map(group =>
+  const { groups, i18n } = props;
+
+  const studentsRows = groups.map(group =>
     group.students.map((student, index) => (
       <StudentRow
+        className={index === 0 ? 'new-group' : null}
+        i18n={i18n}
         student={student}
-        className={index === 0 ? 'new-group' : undefined}
         key={student.id}
       />
     )));
@@ -25,6 +28,7 @@ TableBody.defaultProps = {
 };
 
 TableBody.propTypes = {
+  i18n: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   groups: PropTypes.arrayOf(PropTypes.any),
 };
 

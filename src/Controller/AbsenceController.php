@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Controller\BaseController;
 use App\Entity\Absence\Absence;
@@ -15,6 +16,8 @@ use App\Entity\Administration\Group;
  */
 class AbsenceController extends BaseController
 {
+    private $translator;
+
     /**
      * @Route(
      *   "/{argument}",
@@ -22,7 +25,9 @@ class AbsenceController extends BaseController
      *   requirements={"argument"="[sS]\d|(([01][0-9])|(2[0-3])):[0-5][0-9]"}
      * )
      */
-    public function index($argument = null) {
+    public function index($argument = null, TranslatorInterface $translator) {
+        $this->translator = $translator;
+
         $user = $this->getUser();
 
         if (null === $user) {
@@ -82,9 +87,15 @@ class AbsenceController extends BaseController
 
         $doctrine = $this->getDoctrine();
 
-        $absenceTypes = $doctrine
+        $absenceTypesRaw = $doctrine
             ->getRepository(AbsenceType::class)
             ->findAll();
+
+        $absenceTypes = [];
+        foreach ($absenceTypesRaw as $type) {
+            $name = $type->getName();
+            $absenceTypes[$name] = $this->translator->trans($name, [], 'absence_type');
+        }
 
         return $this->createHtmlResponse('absence/secretariat.html.twig', [
             'absenceTypes' => $absenceTypes ?? null,
