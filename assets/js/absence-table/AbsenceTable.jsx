@@ -62,6 +62,17 @@ class AbsenceTable extends Component {
               tableScroll: Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0),
             });
           }
+
+          // Highlight week-ends
+          document.head.insertAdjacentHTML(
+            'beforeend',
+            `<style>
+              tbody td:nth-child(7n + ${8 - firstDate.getDay()}),
+              tbody td:nth-child(7n + ${7 - firstDate.getDay()}) {
+                background-color: rgba(255, 183, 77, .6);
+              }
+            </style>`,
+          );
         }
       })
 
