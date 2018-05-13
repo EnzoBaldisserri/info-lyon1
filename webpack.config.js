@@ -7,9 +7,9 @@ module.exports = {
   mode: 'development',
 
   entry: {
+    'absence-table': './assets/js/absence-table/index.js',
     app: './assets/js/app.js',
     fos_layout: './assets/js/fos_layout.js',
-    'absence-table': './assets/js/absence-table/index.js',
   },
 
   output: {

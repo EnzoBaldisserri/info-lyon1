@@ -2,6 +2,11 @@ api_controllers:
     resource: ../../src/Controller/Api/
     type: annotation
     prefix: /api
+    options:
+        expose: true
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

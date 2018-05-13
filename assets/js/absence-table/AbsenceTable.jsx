@@ -22,9 +22,9 @@ class AbsenceTable extends Component {
   }
 
   componentDidMount() {
-    const { apis, i18n } = this.props;
+    const { i18n } = this.props;
 
-    fetch(apis.load)
+    fetch(Routing.generate('api_absence_getall'))
       .then((response) => {
         if (!response.ok) {
           throw new Error(i18n.load_error);
@@ -100,7 +100,7 @@ class AbsenceTable extends Component {
 
     if (error) {
       return (
-        <div className="section alert alert-error">
+        <div className="alert alert-error center-block">
           {error.message}
         </div>
       );
@@ -128,11 +128,6 @@ class AbsenceTable extends Component {
 
 /* eslint-disable react/no-unused-prop-types */
 AbsenceTable.propTypes = {
-  apis: PropTypes.shape({
-    load: PropTypes.string,
-    add: PropTypes.string,
-    remove: PropTypes.string,
-  }).isRequired,
   i18n: PropTypes.shape({
     students: PropTypes.string,
     load_error: PropTypes.string,

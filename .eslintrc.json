@@ -11,7 +11,8 @@
     "jsx-a11y"
   ],
   "globals": {
-    "M": true
+    "M": true,
+    "Routing": true
   },
   "parser": "babel-eslint"
 }
