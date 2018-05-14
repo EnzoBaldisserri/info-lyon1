@@ -1,0 +1,7 @@
+@import '../secretariat/absence-table/colors';
+
+@each $name, $color in $abs-colors {
+  .abs-#{$name} {
+    color: $color;
+  }
+}

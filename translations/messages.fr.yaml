@@ -10,6 +10,9 @@ global:
     message:
         yes: Oui
         no: Non
+        cancel: Annuler
+        clear: Effacer
+        done: Accepter
         no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
 
 app:
@@ -24,19 +27,27 @@ app:
         administration: Administration
         schedule: Emploi du temps
 
+error:
+    no_current_semester: Aucun semestre en cours
+
 absence:
     title: Absences
+    type:
+        justified: Absence justifiée
+        absence: Absence
+        lateness: Retard
+        control: Contrôle
+        several: Plusieurs types
     props:
         date: Date
         time: Heure
         type: Type
         justification: Justification
-        justified: Justifiée
     value:
         justified: Justifiée
         not_justified: Injustifiée
     message:
-        no_absence: Pas d'absence
+        absences_empty: Pas d'absence
     plain:
         students: Étudiants
 

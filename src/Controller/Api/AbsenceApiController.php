@@ -27,7 +27,7 @@ class AbsenceApiController extends BaseController
             ->findCurrent();
 
         if (empty($semesters)) {
-            $error = $translate->trans('no_current_semester', [], 'error');
+            $error = $translate->trans('error.no_current_semester');
         } else {
             $period = reset($semesters)->getPeriod();
 

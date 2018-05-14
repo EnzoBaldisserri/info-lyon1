@@ -2,6 +2,11 @@
 
 {% block title %}{{ 'absence.title'|trans }} - {{ parent() }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/student_absence.css') }}">
+{% endblock %}
+
 {% block body %}
     <h1>{{ 'absence.title'|trans }}</h1>
     <table class="bordered centered">
@@ -22,14 +27,16 @@
                         <i class="material-icons">arrow_forward</i>
                         {{ absence.endTime|date('global.time.format'|trans) }}
                     </td>
-                    <td>{{ absence.type.name|trans([], 'absence_type') }}</td>
+                    <td {% if absence.justified %}class="abs-{{ absence.type.name }}"{% endif %}>
+                        {{ ('absence.type.' ~ absence.type.name)|trans }}
+                    </td>
                     <td>{{ absence.justified ? 'absence.value.justified'|trans : 'absence.value.not_justified'|trans }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="99">{{ 'absence.message.no_absences'|trans }}</td>
+                    <td colspan="99">{{ 'absence.message.absences_empty'|trans }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-{% endblock %}
+{% endblock body %}

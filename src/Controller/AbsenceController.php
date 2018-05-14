@@ -94,7 +94,7 @@ class AbsenceController extends BaseController
         $absenceTypes = [];
         foreach ($absenceTypesRaw as $type) {
             $name = $type->getName();
-            $absenceTypes[$name] = $this->translator->trans($name, [], 'absence_type');
+            $absenceTypes[$name] = $this->translator->trans("absence.type.$name");
         }
 
         return $this->createHtmlResponse('absence/secretariat.html.twig', [
