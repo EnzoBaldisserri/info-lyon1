@@ -5,8 +5,5 @@ api_controllers:
     options:
         expose: true
 
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

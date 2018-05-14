@@ -1,6 +1,13 @@
+import Translator from 'bazinga-translator';
+import Routing from '../../public/bundles/fosjsrouting/js/router.min';
+import routes from '../../public/bundles/fos_js_routes.json';
+
 import '../scss/app.scss';
 
-window.addEventListener('load', () => {
+Routing.setRoutingData(routes);
+window.Routing = Routing;
+
+window.addEventListener('DOMContentLoaded', () => {
   // Navigation
   M.Dropdown.init(
     document.getElementById('navbar-user-trigger'),

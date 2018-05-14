@@ -1,3 +1,6 @@
+parameters:
+    router.request_context.host: '%env(HOST)'
+    router.request_context.base_url: '%env(BASE_URL)%'
 framework:
     router:
         strict_requirements: ~
