@@ -1,3 +1,8 @@
+input:required + label::after,
+label.required::after {
+  content: '*';
+}
+
 .alert {
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
