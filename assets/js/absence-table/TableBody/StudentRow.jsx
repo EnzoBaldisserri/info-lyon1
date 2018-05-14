@@ -5,14 +5,12 @@ import AbsenceDay from './AbsenceDay';
 
 const StudentRow = (props) => {
   const {
-    i18n,
     student,
     ...restProps
   } = props;
 
   const absences = student.absences.map(day => (
     <AbsenceDay
-      i18n={i18n}
       absences={day.absences}
       key={day.hash}
     />
@@ -26,7 +24,6 @@ const StudentRow = (props) => {
 };
 
 StudentRow.propTypes = {
-  i18n: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   student: PropTypes.shape({
     absences: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,

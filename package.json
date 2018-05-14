@@ -55,6 +55,7 @@
     "webpack-notifier": "^1.6.0"
   },
   "dependencies": {
+    "bazinga-translator": "^2.6.6",
     "classnames": "^2.2.5",
     "concurrently": "^3.5.1",
     "materialize-css": "^1.0.0-beta",

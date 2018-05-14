@@ -12,6 +12,7 @@
   ],
   "globals": {
     "M": true,
+    "Translator": true,
     "Routing": true
   },
   "parser": "babel-eslint"

@@ -6,6 +6,7 @@ import '../scss/app.scss';
 
 Routing.setRoutingData(routes);
 window.Routing = Routing;
+window.Translator = Translator;
 
 window.addEventListener('DOMContentLoaded', () => {
   // Navigation
@@ -19,6 +20,31 @@ window.addEventListener('DOMContentLoaded', () => {
   );
 
   M.Sidenav.init(document.getElementById('mobile-sidenav'));
+
+  M.FormSelect.init(document.querySelectorAll('select'));
+  M.Datepicker.init(document.querySelectorAll('.datepicker'), {
+    autoClose: true,
+    format: Translator.trans('global.date.format'),
+    i18n: {
+      cancel: Translator.trans('global.message.cancel'),
+      clear: Translator.trans('global.message.clear'),
+      done: Translator.trans('global.message.done'),
+      months: Translator.trans('global.time.months').split(','),
+      monthsShort: Translator.trans('global.time.months_short').split(','),
+      weekdays: Translator.trans('global.time.weekdays').split(','),
+      weekdaysShort: Translator.trans('global.time.weekdays_short').split(','),
+      weekdaysAbbrev: Translator.trans('global.time.weekdays_abbrev').split(','),
+    },
+  });
+  M.Timepicker.init(document.querySelectorAll('.timepicker'), {
+    autoClose: true,
+    twelveHour: false,
+    i18n: {
+      cancel: Translator.trans('global.message.cancel'),
+      clear: Translator.trans('global.message.clear'),
+      done: Translator.trans('global.message.done'),
+    },
+  });
 
   // Form confirmation
   // eslint-disable-next-line no-alert

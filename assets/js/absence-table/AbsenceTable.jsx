@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import Loader from '../react-utils/Loader';
 
 import TableStatic from './TableStatic/TableStatic';
@@ -22,12 +21,10 @@ class AbsenceTable extends Component {
   }
 
   componentDidMount() {
-    const { i18n } = this.props;
-
     fetch(Routing.generate('api_absence_getall'))
       .then((response) => {
         if (!response.ok) {
-          throw new Error(i18n.load_error);
+          throw new Error(Translator.trans('error.load_error'));
         }
 
         return response.json();
@@ -90,13 +87,11 @@ class AbsenceTable extends Component {
 
   render() {
     const {
-      loaded,
       error,
+      loaded,
       months,
       groups,
     } = this.state;
-
-    const { i18n } = this.props;
 
     if (error) {
       return (
@@ -114,24 +109,16 @@ class AbsenceTable extends Component {
 
     return (
       <Fragment>
-        <TableStatic groups={groups} i18n={i18n} />
+        <TableStatic groups={groups} />
         <div className="dynamic" ref={this.tableContainer}>
           <table role="grid">
             <TableHeader months={months} />
-            <TableBody groups={groups} i18n={i18n} />
+            <TableBody groups={groups} />
           </table>
         </div>
       </Fragment>
     );
   }
 }
-
-/* eslint-disable react/no-unused-prop-types */
-AbsenceTable.propTypes = {
-  i18n: PropTypes.shape({
-    students: PropTypes.string,
-    load_error: PropTypes.string,
-  }).isRequired,
-};
 
 export default AbsenceTable;

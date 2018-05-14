@@ -56,11 +56,7 @@ class AbsenceDay extends PureComponent {
   }
 
   render() {
-    const {
-      i18n,
-      absences,
-    } = this.props;
-
+    const { absences } = this.props;
     const { open } = this.state;
 
     if (absences.length === 0) {
@@ -83,14 +79,14 @@ class AbsenceDay extends PureComponent {
           absences.map(absence => (
             <div className={`abs-${absence.type.name}`} key={absence.id}>
               <div>
-                {i18n.props.time}&nbsp;:&nbsp;
+                { Translator.trans('absence.props.time') } :&nbsp;
                 { formatTime(absence.start_time) } - { formatTime(absence.end_time) }
               </div>
               <div>
-                {i18n.props.justified}&nbsp;:&nbsp;
-                { absence.justified ? i18n.general.yes : i18n.general.no }
+                { Translator.trans('absence.props.justified') } :&nbsp;
+                { absence.justified ? Translator.trans('global.message.yes') : Translator.trans('global.message.no') }
               </div>
-              <div>{ i18n.absence_types[absence.type.name] || absence.type.name }</div>
+              <div>{ Translator.trans(`absence.type.${absence.type.name}`) }</div>
             </div>
           ))
         }
@@ -100,17 +96,6 @@ class AbsenceDay extends PureComponent {
 }
 
 AbsenceDay.propTypes = {
-  i18n: PropTypes.shape({
-    general: PropTypes.shape({
-      yes: PropTypes.string,
-      no: PropTypes.string,
-    }),
-    props: PropTypes.shape({
-      time: PropTypes.string,
-      justified: PropTypes.string,
-    }),
-    absence_types: PropTypes.object.isRequired,
-  }).isRequired,
   absences: PropTypes.arrayOf(PropTypes.shape({
     student: PropTypes.shape({
       id: PropTypes.number.isRequired,

@@ -7,3 +7,6 @@ api_controllers:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"

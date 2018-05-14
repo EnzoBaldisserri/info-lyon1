@@ -5,12 +5,12 @@ import GroupsCol from './GroupsCol';
 import StudentsCol from './StudentsCol';
 
 const TableStatic = (props) => {
-  const { groups, i18n } = props;
+  const { groups } = props;
 
   return (
     <div className="static">
       <div className="title">
-        { i18n.students }
+        { Translator.trans('absence.plain.students') }
       </div>
       <div className="flex">
         <GroupsCol groups={groups} />
@@ -26,9 +26,6 @@ TableStatic.defaultProps = {
 
 TableStatic.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.any),
-  i18n: PropTypes.shape({
-    students: PropTypes.string,
-  }).isRequired,
 };
 
 export default TableStatic;

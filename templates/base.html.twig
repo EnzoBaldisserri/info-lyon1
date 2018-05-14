@@ -27,6 +27,7 @@
         {% block javascripts %}
             <script src="{{ asset('build/materialize.js') }}"></script>
             <script src="{{ asset('build/app.js') }}"></script>
+            <script src="{{ path('bazinga_jstranslation_js', { domain: 'javascript' }) }}"></script>
         {% endblock %}
     </body>
 </html>

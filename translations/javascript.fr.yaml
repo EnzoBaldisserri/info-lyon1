@@ -1,0 +1,31 @@
+global:
+    date:
+        format: dd/mm/YYYY
+    time:
+        months: Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octrobre,Novembre,Décembre
+        months_short: Jan,Fév,Mars,Avr,Mai,Juin,Jui,Août,Sept,Oct,Nov,Déc
+        weekdays: Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi
+        weekdays_abbrev: Dim,Lun,Mar,Mer,Jeu,Ven,Sam
+        weekdays_short: D,L,M,M,J,V,S
+    message:
+        yes: Oui
+        no: Non
+        cancel: Annuler
+        clear: Effacer
+        done: Selectionner
+
+error:
+    load_error: Impossible de charger les données nécessaires
+
+absence:
+    type:
+        justified: Absence justifiée
+        absence: Absence
+        lateness: Retard
+        control: Contrôle
+        several: Plusieurs types
+    props:
+        time: Horaire
+        justified: Justifiée
+    plain:
+        students: Étudiants
