@@ -28,13 +28,13 @@ class Group
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="groups", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $semester;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User\Student", mappedBy="classes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User\Student", mappedBy="classes", cascade={"persist"})
      */
     private $students;
 

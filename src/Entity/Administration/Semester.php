@@ -37,6 +37,11 @@ class Semester
      */
     private $course;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Group", mappedBy="semester", orphanRemoval=true)
+     */
+    private $groups;
+
     public function __construct() {
         $this->active = false;
     }
@@ -105,6 +110,37 @@ class Semester
     public function setCourse(Course $course): self
     {
         $this->course = $course;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+            $group->setSemester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            // set the owning side to null (unless already changed)
+            if ($group->getModule() === $this) {
+                $group->setModule(null);
+            }
+        }
 
         return $this;
     }
