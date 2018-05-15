@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\SemesterRepository")
+ * @Serializer\ExclusionPolicy("none")
  */
 class Semester
 {
@@ -39,6 +40,8 @@ class Semester
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Group", mappedBy="semester", orphanRemoval=true)
+     * Excluded because causes serialization to break in Api\AbsenceController.getAll. Take a closer look ?
+     * @Serializer\Exclude
      */
     private $groups;
 
@@ -137,8 +140,8 @@ class Semester
         if ($this->groups->contains($group)) {
             $this->groups->removeElement($group);
             // set the owning side to null (unless already changed)
-            if ($group->getModule() === $this) {
-                $group->setModule(null);
+            if ($group->getSemester() === $this) {
+                $group->setSemester(null);
             }
         }
 
