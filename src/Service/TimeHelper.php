@@ -7,6 +7,8 @@ use App\Entity\Period;
 
 class TimeHelper
 {
+    const JSON_TIME_FORMAT = 'Y-m-d\TH:i:s';
+
     private $translator;
 
     public function __construct(TranslatorInterface $translator)
@@ -16,41 +18,35 @@ class TimeHelper
 
     public function getPeriodMonths(Period $period, bool $withHash = false): Array
     {
-        $MONTHS = explode(',', $this->translator->trans('global.time.months'));
-        $DAYS_SHORT = explode(',', $this->translator->trans('global.time.days_short'));
+        $monthsTrans = explode(',', $this->translator->trans('global.time.months'));
+        $daysShortTrans = explode(',', $this->translator->trans('global.time.days_short'));
 
         $months = [];
-        $startDate = $period->getStart();
-        $endDate = $period->getEnd();
 
-        [$startYear, $startMonth, $startDay] = array_map(
+        // Get current state from start date
+        [$year, $month, $dayInMonth, $dayInWeek] = array_map(
             'intval',
-            explode('-', $startDate->format('Y-n-j'))
+            explode(' ', $period->getStart()->format('Y n j N'))
         );
 
-        $dayInWeek = (int) $startDate->format('N');
-
+        // Get end state from end date
         [$endYear, $endMonth, $endDay] = array_map(
             'intval',
-            explode('-', $endDate->format('Y-n-j'))
+            explode(' ', $period->getEnd()->format('Y n j'))
         );
 
-        $dayInMonth = $startDay;
-        $month = $startMonth;
-        $year = $startYear;
-
-        $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
+        // Start processing months and days
         while ($year !== $endYear || $month !== $endMonth) {
             $days = [];
+            $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
             while ($dayInMonth <= $nbDayInMonth) {
                 $newDay = $withHash ?
                     [
-                        'name' => $DAYS_SHORT[$dayInWeek],
+                        'name' => $daysShortTrans[$dayInWeek],
                         'hash' => "$year-$month-$dayInMonth",
                     ]
-                    : $DAYS_SHORT[$dayInWeek];
+                    : $daysShortTrans[$dayInWeek];
 
                 $days[$dayInMonth] = $newDay;
 
@@ -59,7 +55,7 @@ class TimeHelper
             }
 
             $newMonth = [
-                'name' => $MONTHS[$month - 1],
+                'name' => $monthsTrans[$month - 1],
                 'days' => $days,
             ];
 
@@ -76,7 +72,6 @@ class TimeHelper
             }
 
             $dayInMonth = 1;
-            $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         }
 
         // Compute days for last month
@@ -85,10 +80,10 @@ class TimeHelper
         while ($dayInMonth <= $endDay) {
             $newDay = $withHash ?
                 [
-                    'name' => $DAYS_SHORT[$dayInWeek],
+                    'name' => $daysShortTrans[$dayInWeek],
                     'hash' => "$year-$month-$dayInMonth",
                 ]
-                : $DAYS_SHORT[$dayInWeek];
+                : $daysShortTrans[$dayInWeek];
 
             $days[$dayInMonth] = $newDay;
 
@@ -97,7 +92,7 @@ class TimeHelper
         }
 
         $newMonth = [
-            'name' => $MONTHS[$month - 1],
+            'name' => $monthsTrans[$month - 1],
             'days' => $days,
         ];
 

@@ -31,7 +31,7 @@ class AbsenceApiController extends BaseController
         } else {
             $period = reset($semesters)->getPeriod();
 
-            $firstDay = $period->getStart()->format('Y-m-d\TH:i:s');
+            $firstDay = $period->getStart()->format(TimeHelper::JSON_TIME_FORMAT);
 
             $months = $timeHelper
                 ->getPeriodMonths($period, true);
