@@ -39,6 +39,29 @@ class SemesterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findFuture()
+    {
+        $now = new DateTime();
+        return $this->findAfter($now, 'startDate');
+    }
+
+    public function findAfter(\DateTime $datetime, string $boundary = 'startDate'): Array
+    {
+        if (!in_array($boundary, ['startDate', 'endDate'])) {
+            throw new Exception('Boundary is neither \'startDate\' nor \'endDate\'');
+        }
+
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->andWhere($qb->expr()->gt("s.$boundary", ':datetime'))
+                ->setParameter('datetime', $datetime)
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
     public function findCurrentPeriod(): Period
     {
         $now = new \DateTime();

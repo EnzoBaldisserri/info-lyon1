@@ -19,4 +19,22 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
+    public function findEditable(): Array
+    {
+        $now = new \DateTime();
+        return $this->findEditableAt($now);
+    }
+
+    public function findEditableAt(\DateTime $datetime): Array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->andWhere($qb->expr()->gte('c.implementationDate', ':datetime'))
+              ->setParameter('datetime', $datetime)
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
+    }
 }

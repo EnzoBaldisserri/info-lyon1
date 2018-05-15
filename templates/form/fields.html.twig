@@ -1,0 +1,18 @@
+{% block form_row %}
+    {{ form_widget(form) }}
+    {{ form_label(form) }}
+    {{ form_errors(form) }}
+{% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <span class="helper-text">
+                {% for error in errors %}
+                    {% if not loop.first %}, {% endif %}
+                    {{ error.message }}
+                {% endfor %}
+            </span>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

@@ -1,4 +1,11 @@
+# Global translations
 global:
+    message:
+        yes: Oui
+        no: Non
+        cancel: Annuler
+        clear: Effacer
+        done: Accepter
     date:
         format: d/m/Y
     time:
@@ -7,13 +14,11 @@ global:
         months: Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre
         days: Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi
         days_short: D,L,M,M,J,V,S
-    message:
-        yes: Oui
-        no: Non
-        cancel: Annuler
-        clear: Effacer
-        done: Accepter
-        no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
+    button:
+        add: Ajouter
+        create: Créer
+        delete: Supprimer
+        send: Envoyer
 
 app:
     title: info-lyon1
@@ -28,8 +33,10 @@ app:
         schedule: Emploi du temps
 
 error:
+    no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
     no_current_semester: Aucun semestre en cours
 
+# Page related translations
 absence:
     title: Absences
     type:
@@ -51,6 +58,54 @@ absence:
     plain:
         students: Étudiants
 
+administration:
+    title: Administration
+    course_management:
+        title: Gestion des parcours
+        tu_relation:
+            title: Relation Parcours/UE
+            linked: UE liées au parcours
+            available: UE disponibles
+    semester_management:
+        title: Gestion des semestres
+        list: Liste
+    creation:
+        title: Création
+
+# Entity related translations
+course:
+    form:
+        choice_label: '%courseType% - PPN %implementationYear%'
+        props:
+            semester:
+                placeholder: Selectionnez un semestre...
+                label: Type de semestre
+            implementation_date:
+                label: Date d'entrée en application
+        new:
+            title: Ajouter un parcours
+        edit:
+            title: Parcours à modifier
+        delete:
+            confirm: Êtes-vous sûr de vouloir supprimer ce parcours ?
+
+semester:
+    props:
+        start_date: Date de début
+        end_date: Date de fin
+        type: Type de semestre
+        groups: Groupes
+        manage: Gérer
+    form:
+        props:
+            course:
+                label: Parcours
+            start_date:
+                label: Début du semestre
+            end_date:
+                label: Fin du semestre
+
+# User related translations
 fosub:
     login:
         title: Connexion

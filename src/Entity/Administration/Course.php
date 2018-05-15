@@ -33,6 +33,11 @@ class Course
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return sprintf('S%d', $this->semester);
+    }
+
     public function getSemester(): ?int
     {
         return $this->semester;

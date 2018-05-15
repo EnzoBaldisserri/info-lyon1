@@ -59,6 +59,11 @@ class Semester
         return 'S' . $this->course->getSemester();
     }
 
+    public function getNumber(): ?int
+    {
+        return $this->course->getSemester();
+    }
+
     public function getStartDate(): ?\DateTimeInterface
     {
         return $this->startDate;

@@ -38,19 +38,8 @@ class Group
      */
     private $students;
 
-    /**
-     * @Serializer\Accessor(getter="getName")
-     */
-    private $name;
-
-    /**
-     * @Serializer\Accessor(getter="getFullname")
-     */
-    private $fullname;
-
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->students = new ArrayCollection();
     }
 
@@ -59,22 +48,24 @@ class Group
         return $this->id;
     }
 
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
     public function getName(): ?string
     {
-        if (!isset($this->name)) {
-            $this->name = 'G' . $this->number;
-        }
-
-        return $this->name;
+        return sprintf('G%d', $this->number);
     }
 
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
     public function getFullname(): ?string
     {
-        if (!isset($this->fullname)) {
-            $this->fullname = $this->getName() . $this->semester->getName();
-        }
-
-        return $this->fullname;
+        return sprintf('G%d%s', $this->number, $this->semester->getName());
     }
 
     public function getNumber(): ?int
