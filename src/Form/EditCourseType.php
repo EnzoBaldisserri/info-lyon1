@@ -27,7 +27,7 @@ class EditCourseType extends AbstractType
             ->add('implementationDate', DateType::class, [
                 'label' => 'course.form.props.implementation_date.label',
                 'required' => true,
-                'attr' => ['min' => date('Y-m-d')],
+                'attr' => ['data-minDate' => date('Y-m-d')],
             ])
             ->add('semester', ChoiceType::class, [
                 'label' => 'course.form.props.semester.label',

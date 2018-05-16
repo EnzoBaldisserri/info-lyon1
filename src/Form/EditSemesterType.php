@@ -31,12 +31,12 @@ class EditSemesterType extends AbstractType
             ->add('startDate', DateType::class, [
                 'label' => 'semester.form.props.start_date.label',
                 'required' => true,
-                'attr' => ['min' => date('Y-m-d')],
+                'attr' => ['data-minDate' => date('Y-m-d')],
             ])
             ->add('endDate', DateType::class, [
                 'required' => true,
                 'label' => 'semester.form.props.end_date.label',
-                'attr' => ['min' => date('Y-m-d')],
+                'attr' => ['data-minDate' => date('Y-m-d')],
             ])
             ->add('course', EntityType::class, [
                 'required' => true,

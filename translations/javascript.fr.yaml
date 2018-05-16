@@ -1,12 +1,14 @@
 global:
     date:
-        format: dd/mm/YYYY
+        format: dd/mm/yyyy
     time:
         months: Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octrobre,Novembre,Décembre
         months_short: Jan,Fév,Mars,Avr,Mai,Juin,Jui,Août,Sept,Oct,Nov,Déc
         weekdays: Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi
         weekdays_abbrev: Dim,Lun,Mar,Mer,Jeu,Ven,Sam
         weekdays_short: D,L,M,M,J,V,S
+        first_day: 1
+        twelve_hour: false
     message:
         yes: Oui
         no: Non

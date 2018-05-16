@@ -51,13 +51,9 @@
         {{ form_start(new_course) }}
             <div class="card-content">
                 <span class="card-title">{{ 'course.form.new.title'|trans }}</span>
-                <div class="row no-margin">
-                    <div class="input-field col s12 m6 l3">
-                        {{ form_row(new_course.implementationDate) }}
-                    </div>
-                    <div class="input-field col s12 m6 l3">
-                        {{ form_row(new_course.semester) }}
-                    </div>
+                <div class="row">
+                    {{ form_row(new_course.implementationDate, { 'attr': {'class': 'col s12 m6'} }) }}
+                    {{ form_row(new_course.semester, { 'attr': {'class': 'input-field col s12 m6'} }) }}
                 </div>
             </div>
             <div class="card-action">
@@ -117,10 +113,8 @@
             <div class="card-content">
                 <span class="card-title">{{ 'administration.creation.title'|trans }}</span>
                 <div class="row">
-                    <div class="input-field col s12 m6 l5">
-                        {{ form_row(new_semester.course) }}
-                    </div>
-                    <div class="input-field col s12 m6 l5 offset-l1">
+                    {{ form_row(new_semester.course, { 'attr': {'class': 'col s12 m6 l5'} }) }}
+                    <div class="col s12 m6 l5 offset-l1">
                         {{ form_row(new_semester.startDate) }}
                         {{ form_row(new_semester.endDate) }}
                     </div>

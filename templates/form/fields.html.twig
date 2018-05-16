@@ -1,7 +1,9 @@
 {% block form_row %}
-    {{ form_widget(form) }}
-    {{ form_label(form) }}
-    {{ form_errors(form) }}
+    <div {{ block('widget_container_attributes') }}>
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+    </div>
 {% endblock form_row %}
 
 {% block form_errors %}
@@ -16,3 +18,15 @@
         {% endif %}
     {% endspaceless %}
 {% endblock form_errors %}
+
+{% block date_widget %}
+    <input
+        type="text"
+        class="datepicker"
+        {{ block('widget_attributes') }}
+        {% if value is not empty %}
+        data-defaultDate="{{ value|join('-') }}"
+        data-setDefaultDate="true"
+        {% endif %}
+    />
+{% endblock date_widget %}
