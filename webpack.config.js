@@ -25,7 +25,7 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|public/,
         use: [
           'babel-loader',
           'eslint-loader',
@@ -33,7 +33,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|public/,
         use: [
           MiniCssExtractPlugin.loader,
           {
