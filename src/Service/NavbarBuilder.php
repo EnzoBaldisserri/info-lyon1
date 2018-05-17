@@ -8,30 +8,30 @@ class NavbarBuilder
 {
     const MENU = [
         'ROLE_STUDENT' => [
-            'app.menu.absences'       => 'absence_homepage',
-            'app.menu.marks'          => 'mark_homepage',
+            'app.menu.absences'       => 'absence_index',
+            'app.menu.marks'          => 'mark_index',
         ],
         'ROLE_TEACHER' => [
-            'app.menu.absences'       => 'absence_homepage',
-            'app.menu.controls'       => 'control_homepage',
+            'app.menu.absences'       => 'absence_index',
+            'app.menu.controls'       => 'control_index',
         ],
         'ROLE_SECRETARIAT' => [
-            'app.menu.absences'       => 'absence_homepage',
+            'app.menu.absences'       => 'absence_index',
         ],
         'ROLE_PROJECT_MEMBER'   => [
-            'app.menu.project'        => 'project_homepage',
+            'app.menu.project'        => 'project_index',
         ],
         'ROLE_FORUM_ACCESS' => [
-            'app.menu.forum'          => 'forum_homepage',
+            'app.menu.forum'          => 'forum_index',
         ],
         'ROLE_FOLLOW_UP' => [
-            'app.menu.follow_up'      => 'followup_homepage',
+            'app.menu.follow_up'      => 'followup_index',
         ],
         'ROLE_ADMINISTRATIVE' => [
-            'app.menu.administration' => 'administration_homepage',
+            'app.menu.administration' => 'administration_index',
         ],
         'ROLE_SCHEDULED' => [
-            'app.menu.schedule'       => 'schedule_homepage',
+            'app.menu.schedule'       => 'schedule_index',
         ]
     ];
 

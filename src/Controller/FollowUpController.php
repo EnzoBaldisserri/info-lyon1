@@ -11,7 +11,7 @@ use App\Controller\BaseController;
 class FollowUpController extends BaseController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="index")
      */
     public function index()
     {

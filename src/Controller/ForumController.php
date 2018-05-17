@@ -11,7 +11,7 @@ use App\Controller\BaseController;
 class ForumController extends BaseController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="index")
      */
     public function index()
     {

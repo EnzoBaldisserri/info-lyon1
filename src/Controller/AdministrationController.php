@@ -15,7 +15,7 @@ use App\Form\EditSemesterType;
 class AdministrationController extends BaseController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="index")
      */
     public function index()
     {

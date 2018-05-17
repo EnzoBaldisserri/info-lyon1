@@ -12,7 +12,7 @@ use App\Service\ScheduleFetcher;
 class ScheduleController extends BaseController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="index")
      */
     public function index(ScheduleFetcher $fetcher)
     {

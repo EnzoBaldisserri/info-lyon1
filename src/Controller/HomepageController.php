@@ -15,21 +15,17 @@ class HomepageController extends BaseController
         $user = $this->getUser();
 
         if ($user === null) {
-            throw $this->createAccessDeniedException('Accès interdit');
+            throw $this->createAccessDeniedException('Access denied');
         }
 
         if ($user->hasRole('ROLE_STUDENT')) {
-            return $this->redirectToRoute('absence_homepage');
+            return $this->redirectToRoute('dashboard_index');
         }
 
-        if ($user->hasRole('ROLE_TEACHER')) {
-            return $this->redirectToRoute('absence_homepage');
+        if ($user->hasRole('ROLE_TEACHER') || $user->hasRole('ROLE_SECRETARIAT')) {
+            return $this->redirectToRoute('absence_index');
         }
 
-        if ($user->hasRole('ROLE_SECRETARIAT')) {
-            return $this->redirectToRoute('absence_homepage');
-        }
-
-        throw $this->createAccessDeniedException('Accès interdit');
+        throw $this->createAccessDeniedException('Access denied');
     }
 }
