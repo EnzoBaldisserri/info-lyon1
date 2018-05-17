@@ -1,0 +1,24 @@
+{{ form_start(form, { 'action': action|default(null) }) }}
+    <div class="card {{ color|default('grey lighten-5') }}">
+        <div class="card-content">
+            {% if title is defined %}
+                <span class="card-title">{{ title }}</span>
+            {% endif %}
+            <div class="row">
+                {{ form_row(form.course, { 'attr': {'class': 'col s12 m8'} }) }}
+            </div>
+            <div class="row">
+                {{ form_row(form.startDate, { 'attr': {'class': 'col s12 m6'} }) }}
+                {{ form_row(form.endDate, { 'attr': {'class': 'col s12 m6'} }) }}
+            </div>
+        </div>
+        <div class="card-action">
+            <button type="submit" class="btn btn-flat waves-effect waves-light">
+                {{ 'global.button.create'|trans }}
+            </button>
+            {% for action in actions|default([]) %}
+                <a href="{{ action.path }}" class="btn btn-flat">{{ action.text }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{{ form_end(form) }}

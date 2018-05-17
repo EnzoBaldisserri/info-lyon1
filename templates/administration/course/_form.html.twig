@@ -1,0 +1,21 @@
+{{ form_start(form, { 'action': action|default(null) }) }}
+    <div class="card {{ colors|default('grey lighten-5') }}">
+        <div class="card-content">
+            {% if title is defined %}
+                <span class="card-title">{{ title }}</span>
+            {% endif %}
+            <div class="row">
+                {{ form_row(form.implementationDate, { 'attr': {'class': 'input-field col s12 m6'} }) }}
+                {{ form_row(form.semester, { 'attr': {'class': 'input-field col s12 m6'} }) }}
+            </div>
+        </div>
+        <div class="card-action">
+            <button type="submit" class="btn btn-flat waves-effect waves-light">
+                {{ 'global.button.create'|trans }}
+            </button>
+            {% for action in actions|default([]) %}
+                <a href="{{ action.path }}" class="btn btn-flat">{{ action.text }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{{ form_end(form) }}

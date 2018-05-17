@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'administration.creation.title'|trans }}</h1>
+
+    {{ include('administration/semester/_form.html.twig', {
+        'title': false,
+        'actions': [{
+            'path': path('administration_index'),
+            'text': 'semester.form.message.back_to_list'|trans,
+        }]
+    }) }}
+{% endblock %}

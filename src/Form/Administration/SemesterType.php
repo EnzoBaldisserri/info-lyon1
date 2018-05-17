@@ -1,33 +1,29 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Administration;
 
+use App\Entity\Administration\Semester;
+use App\Entity\Administration\Course;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use App\Entity\Administration\Semester;
-use App\Entity\Administration\Course;
 
-class EditSemesterType extends AbstractType
+
+class SemesterType extends AbstractType
 {
-    private $router;
     private $translator;
 
-    public function __construct(UrlGeneratorInterface $router, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->router = $router;
         $this->translator = $translator;
     }
 
-    public function buildForm(FormBuilderInterface $builder, Array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->router->generate('entity_semester_new'))
             ->add('startDate', DateType::class, [
                 'label' => 'semester.form.props.start_date.label',
                 'required' => true,
@@ -40,7 +36,8 @@ class EditSemesterType extends AbstractType
             ])
             ->add('course', EntityType::class, [
                 'required' => true,
-                'label' => 'semester.form.props.course.label',
+                'label' => false,
+                'placeholder' => 'semester.form.props.course.placeholder',
                 'class' => Course::class,
                 'choice_label' => function($course) {
                     return $this->translator->trans('course.form.choice_label', [
@@ -52,9 +49,6 @@ class EditSemesterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

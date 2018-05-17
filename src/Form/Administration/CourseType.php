@@ -1,34 +1,19 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Administration;
 
+use App\Entity\Administration\Course;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Entity\Administration\Course;
 
-class EditCourseType extends AbstractType
+class CourseType extends AbstractType
 {
-    private $router;
-
-    public function __construct(UrlGeneratorInterface $router)
-    {
-        $this->router = $router;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, Array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction($this->router->generate('entity_course_new'))
-            ->add('implementationDate', DateType::class, [
-                'label' => 'course.form.props.implementation_date.label',
-                'required' => true,
-                'attr' => ['data-minDate' => date('Y-m-d')],
-            ])
             ->add('semester', ChoiceType::class, [
                 'label' => 'course.form.props.semester.label',
                 'required' => true,
@@ -41,12 +26,14 @@ class EditCourseType extends AbstractType
                 'choice_translation_domain' => false,
                 'placeholder' => 'course.form.props.semester.placeholder'
             ])
+            ->add('implementationDate', DateType::class, [
+                'label' => 'course.form.props.implementation_date.label',
+                'required' => true,
+                'attr' => ['data-minDate' => date('Y-m-d')],
+            ])
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

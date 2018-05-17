@@ -70,7 +70,7 @@ administration:
         title: Gestion des semestres
         list: Liste
     creation:
-        title: Création
+        title: Créer un semestre
 
 # Entity related translations
 course:
@@ -104,6 +104,8 @@ semester:
                 label: Début du semestre
             end_date:
                 label: Fin du semestre
+        message:
+            back_to_list: Revenir à l'administration
 
 # User related translations
 fosub:
