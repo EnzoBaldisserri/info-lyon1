@@ -68,7 +68,6 @@ administration:
             available: UE disponibles
     semester_management:
         title: Gestion des semestres
-        list: Liste
     creation:
         title: Créer un semestre
 
@@ -82,10 +81,12 @@ course:
                 label: Type de semestre
             implementation_date:
                 label: Date d'entrée en application
+        button:
+            create: Créer un parcours
         new:
-            title: Ajouter un parcours
+            title: Créer un parcours
         edit:
-            title: Parcours à modifier
+            placeholder: Selectionnez le parcours à modifier
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce parcours ?
 
@@ -99,13 +100,15 @@ semester:
     form:
         props:
             course:
-                label: Parcours
+                placeholder: Sélectionner un parcours...
             start_date:
                 label: Début du semestre
             end_date:
                 label: Fin du semestre
         message:
             back_to_list: Revenir à l'administration
+        button:
+            create: Créer un semestre
 
 # User related translations
 fosub:

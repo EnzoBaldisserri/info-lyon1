@@ -6,8 +6,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\BaseController;
 use App\Entity\Administration\Course;
 use App\Entity\Administration\Semester;
-use App\Form\EditCourseType;
-use App\Form\EditSemesterType;
+use App\Repository\Administration\CourseRepository;
+use App\Repository\Administration\SemesterRepository;
+use App\Form\Administration\CourseType;
+use App\Form\Administration\SemesterType;
 
 /**
  * @Route("/administration", name="administration_")
@@ -17,34 +19,29 @@ class AdministrationController extends BaseController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(CourseRepository $courseRepository, SemesterRepository $semesterRepository)
     {
-        $doctrine = $this->getDoctrine();
-
-        $editableCourses = $doctrine
-            ->getRepository(Course::class)
+        $editableCourses = $courseRepository
             ->findEditable();
 
-        $semesters = $doctrine
-            ->getRepository(Semester::class)
+        $semesters = $semesterRepository
             ->findAfter(new \DateTime('-1 year'), 'endDate');
 
         // Course form
         $defaultCourse = (new Course())
             ->setImplementationDate(\DateTime::createFromFormat(
                 'Y-m-d',
-                sprintf('%d-09-01', ((int) date('Y')) + (date('d-m') >= '09-01' ? 1 : 0))
+                sprintf('%d-09-01', ((int) date('Y')) + (date('m-d') >= '09-01' ? 1 : 0))
             ));
 
-        $newCourse = $this->createForm(EditCourseType::class, $defaultCourse);
+        $newCourse = $this->createForm(CourseType::class, $defaultCourse);
 
         // Semester form
-        $nextSemesterBounds = $this->getNextSemesterBounds();
+        $nextPeriod = $semesterRepository->findNextPeriod();
         $defaultSemester = (new Semester())
-            ->setStartDate($nextSemesterBounds['start'])
-            ->setEndDate($nextSemesterBounds['end']);
+            ->setPeriod($nextPeriod);
 
-        $newSemester = $this->createForm(EditSemesterType::class, $defaultSemester);
+        $newSemester = $this->createForm(SemesterType::class, $defaultSemester);
 
         return $this->createHtmlResponse('administration/index.html.twig', [
             'editable_courses' => $editableCourses,
@@ -52,30 +49,5 @@ class AdministrationController extends BaseController
             'new_course' => $newCourse->createView(),
             'new_semester' => $newSemester->createView(),
         ]);
-    }
-
-    private function getNextSemesterBounds()
-    {
-        $currentPeriod = $this->getDoctrine()
-            ->getRepository(Semester::class)
-            ->findCurrentPeriod();
-
-        $start = $currentPeriod->getEnd()->modify('+1 day');
-        $end = $currentPeriod->getStart()
-            ->modify('-1 day')
-            ->modify('+1 year');
-
-        return [
-            'start' => $start,
-            'end' => $end,
-        ];
-    }
-
-    /**
-     * @Route("/semester/{id}", name="semester")
-     */
-    public function semester(Semester $semester)
-    {
-
     }
 }

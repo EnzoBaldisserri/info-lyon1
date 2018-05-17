@@ -99,6 +99,14 @@ class Semester
         return new Period($this->startDate, $this->endDate);
     }
 
+    public function setPeriod(Period $period): self
+    {
+        $this->setStartDate($period->getStart());
+        $this->setEndDate($period->getEnd());
+
+        return $this;
+    }
+
     public function isActive(\DateTimeInterface $datetime = null): ?bool
     {
         if ($datetime === null) {

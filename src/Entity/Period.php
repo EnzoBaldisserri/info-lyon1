@@ -27,6 +27,12 @@ class Period
         }
     }
 
+    public function __clone()
+    {
+        $this->start = clone $this->start;
+        $this->end = clone $this->end;
+    }
+
     public function getStart(): \DateTime
     {
         return $this->start;

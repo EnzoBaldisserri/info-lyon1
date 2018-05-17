@@ -58,6 +58,13 @@ class SemesterRepository extends ServiceEntityRepository
                 ->setParameter('datetime', $datetime)
         ;
 
+        $qb->addOrderBy("s.$boundary", 'DESC');
+
+        $qb
+            ->join('s.course', 'c')
+            ->addOrderBy('c.semester', 'ASC')
+        ;
+
         return $qb->getQuery()
             ->getResult();
     }
@@ -86,5 +93,17 @@ class SemesterRepository extends ServiceEntityRepository
         }
 
         return $semester->getPeriod();
+    }
+
+    public function findNextPeriod()
+    {
+        $current = clone $this->findCurrentPeriod();
+
+        return new Period(
+            $current->getEnd()->modify('+1 day'),
+            $current->getStart()
+                ->modify('-1 day')
+                ->modify('+1 year')
+        );
     }
 }
