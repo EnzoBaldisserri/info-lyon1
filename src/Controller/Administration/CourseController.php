@@ -26,7 +26,7 @@ class CourseController extends Controller
                 sprintf('%d-09-01', ((int) date('Y')) + (date('m-d') >= '09-01' ? 1 : 0))
             ));
 
-        $form = $this->createForm(CourseType::class, $course);
+        $form = $this->createForm(CourseType::class, $course, [ 'creation' => true ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,5 +1,9 @@
-<form method="post" action="{{ path('administration_course_delete', {'id': course.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form
+    method="post"
+    action="{{ path('administration_course_delete', {'id': course.id}) }}"
+    data-confirm="{{ 'course.form.delete.confirm'|trans }}"
+>
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
-    <button class="btn">Delete</button>
+    <button class="btn btn-flat waves-effect waves-red">{{ 'global.button.delete'|trans }}</button>
 </form>

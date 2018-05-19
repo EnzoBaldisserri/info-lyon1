@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'administration.creation.title'|trans }}</h1>
+    <h1>{{ 'semester.form.new.title'|trans }}</h1>
 
     {{ include('administration/semester/_form.html.twig', {
-        'title': false,
+        'button_label': 'global.button.create'|trans,
         'actions': [{
+            'text': 'administration.message.come_back'|trans,
             'path': path('administration_index'),
-            'text': 'semester.form.message.back_to_list'|trans,
         }]
     }) }}
 {% endblock %}

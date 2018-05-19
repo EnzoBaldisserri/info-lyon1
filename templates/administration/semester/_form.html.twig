@@ -1,4 +1,4 @@
-{{ form_start(form, { 'action': action|default(null) }) }}
+{{ form_start(form, form_options|default({})) }}
     <div class="card {{ color|default('grey lighten-5') }}">
         <div class="card-content">
             {% if title is defined %}
@@ -17,7 +17,13 @@
                 {{ 'global.button.create'|trans }}
             </button>
             {% for action in actions|default([]) %}
-                <a href="{{ action.path }}" class="btn btn-flat">{{ action.text }}</a>
+                {% if action.content is defined %}
+                    {{ action.content|raw }}
+                {% else %}
+                    <a href="{{ action.path }}" class="btn btn-flat waves-effect waves-light">
+                        {{ action.text }}
+                    </a>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

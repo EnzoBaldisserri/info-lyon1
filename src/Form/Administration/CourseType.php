@@ -8,11 +8,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CourseType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['creation']) {
+            $dateAttr = [ 'data-minDate' => date('Y-m-d') ];
+        }
+
         $builder
             ->add('semester', ChoiceType::class, [
                 'label' => 'course.form.props.semester.label',
@@ -29,9 +41,9 @@ class CourseType extends AbstractType
             ->add('implementationDate', DateType::class, [
                 'label' => 'course.form.props.implementation_date.label',
                 'required' => true,
-                'attr' => ['data-minDate' => date('Y-m-d')],
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
+                'attr' => $dateAttr ?? [],
             ])
         ;
     }
@@ -40,6 +52,7 @@ class CourseType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Course::class,
+            'creation' => false,
         ]);
     }
 }

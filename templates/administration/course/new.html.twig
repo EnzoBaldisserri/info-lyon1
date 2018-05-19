@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Course{% endblock %}
-
 {% block body %}
-    <h1>Create new Course</h1>
+    <h1>{{ 'course.form.new.title'|trans }}</h1>
 
-    {{ include('administration_course/_form.html.twig') }}
-
-    <a href="{{ path('administration_course_index') }}">back to list</a>
+    {{ include('administration/course/_form.html.twig', {
+        'button_label': 'global.button.create'|trans,
+        'actions': [{
+            'text': 'administration.message.come_back'|trans,
+            'path': path('administration_index')
+        }]
+    }) }}
 {% endblock %}

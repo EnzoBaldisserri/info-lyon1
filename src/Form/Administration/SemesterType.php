@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Translation\TranslatorInterface;
 
-
 class SemesterType extends AbstractType
 {
     private $translator;
@@ -23,20 +22,24 @@ class SemesterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['creation']) {
+            $dateAttr = [ 'data-minDate' => date('Y-m-d') ];
+        }
+
         $builder
             ->add('startDate', DateType::class, [
                 'label' => 'semester.form.props.start_date.label',
                 'required' => true,
-                'attr' => ['data-minDate' => date('Y-m-d')],
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
+                'attr' => $dateAttr ?? [],
             ])
             ->add('endDate', DateType::class, [
                 'required' => true,
                 'label' => 'semester.form.props.end_date.label',
-                'attr' => ['data-minDate' => date('Y-m-d')],
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
+                'attr' => $dateAttr ?? [],
             ])
             ->add('course', EntityType::class, [
                 'required' => true,
@@ -57,6 +60,7 @@ class SemesterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Semester::class,
+            'creation' => false,
         ]);
     }
 }

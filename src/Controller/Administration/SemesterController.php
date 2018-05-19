@@ -24,7 +24,7 @@ class SemesterController extends Controller
         $semester = (new Semester())
             ->setPeriod($nextPeriod);
 
-        $form = $this->createForm(SemesterType::class, $semester);
+        $form = $this->createForm(SemesterType::class, $semester, [ 'creation' => true ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

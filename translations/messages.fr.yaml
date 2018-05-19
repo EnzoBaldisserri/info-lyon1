@@ -20,6 +20,7 @@ global:
     button:
         add: Ajouter
         create: Créer
+        update: Mettre à jour
         delete: Supprimer
         send: Envoyer
 
@@ -71,11 +72,16 @@ administration:
             available: UE disponibles
     semester_management:
         title: Gestion des semestres
-    creation:
-        title: Créer un semestre
+    message:
+        come_back: Revenir à l'administration
 
 # Entity related translations
 course:
+    props:
+        semester: Type
+        implementationDate: Date de mise en oeuvre
+        implementationYear: PPN
+        manage: Gérer
     form:
         choice_label: '%courseType% - PPN %implementationYear%'
         props:
@@ -86,10 +92,12 @@ course:
                 label: Date d'entrée en application
         button:
             create: Créer un parcours
+        message:
+            editable_empty: Pas de parcours modifiables
         new:
             title: Créer un parcours
         edit:
-            placeholder: Selectionnez le parcours à modifier
+            title: Modifier un parcours
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce parcours ?
 
@@ -108,10 +116,14 @@ semester:
                 label: Début du semestre
             end_date:
                 label: Fin du semestre
-        message:
-            back_to_list: Revenir à l'administration
         button:
             create: Créer un semestre
+        new:
+            title: Créer un semestre
+        edit:
+            title: Modifier un semestre
+        delete:
+            confirm: Êtes-vous sûr de vouloir supprimer ce semestre ?
 
 # User related translations
 fosub:
