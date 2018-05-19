@@ -9,7 +9,7 @@
 {% block form_errors %}
     {% spaceless %}
         {% if errors|length > 0 %}
-            <span class="helper-text">
+            <span class="helper-text text-error">
                 {% for error in errors %}
                     {% if not loop.first %}, {% endif %}
                     {{ error.message }}
