@@ -46,7 +46,31 @@ class Semester
     private $groups;
 
     public function __construct() {
-        $this->active = false;
+        $this->groups = new ArrayCollection();
+    }
+
+    public function isActive(\DateTimeInterface $datetime = null): ?bool
+    {
+        if ($datetime === null) {
+            $datetime = new \DateTime();
+        }
+
+        // Check if datetime is between begin and end
+        return $this->startDate < $datetime && $datetime < $this->endDate;
+    }
+
+    public function isEditable(): bool
+    {
+        // if semester isn't finished
+        $today = new \DateTime();
+        return $today < $this->endDate;
+    }
+
+    public function isDeletable(): bool
+    {
+        // if semester hasn't started
+        $today = (new \DateTime());
+        return $today < $this->startDate;
     }
 
     public function getId()
@@ -105,17 +129,6 @@ class Semester
         $this->setEndDate($period->getEnd());
 
         return $this;
-    }
-
-    public function isActive(\DateTimeInterface $datetime = null): ?bool
-    {
-        if ($datetime === null) {
-            $datetime = new \DateTime();
-        }
-
-        // Check if datetime is between begin and end
-        return $this->startDate->diff($datetime)->invert === 0
-            && $this->endDate->diff($datetime)->invert === 1;
     }
 
     public function getCourse(): ?Course

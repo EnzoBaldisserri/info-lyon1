@@ -54,6 +54,11 @@ class SemesterController extends Controller
      */
     public function edit(Request $request, Semester $semester): Response
     {
+        if (!$semester->isEditable()) {
+            // TODO Add notification
+            return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
+        }
+
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
@@ -74,6 +79,11 @@ class SemesterController extends Controller
      */
     public function delete(Request $request, Semester $semester): Response
     {
+        if (!$semester->isDeletable()) {
+            // TODO Add notification
+            return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$semester->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($semester);

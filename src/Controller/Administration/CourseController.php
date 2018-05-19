@@ -34,7 +34,7 @@ class CourseController extends Controller
             $em->persist($course);
             $em->flush();
 
-            return $this->redirectToRoute('administration_course_index');
+            return $this->redirectToRoute('administration_index');
         }
 
         return $this->render('administration/course/new.html.twig', [
