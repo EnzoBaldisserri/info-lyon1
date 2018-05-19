@@ -21,33 +21,15 @@ class AdministrationController extends BaseController
      */
     public function index(CourseRepository $courseRepository, SemesterRepository $semesterRepository)
     {
-        $editableCourses = $courseRepository
+        $courses = $courseRepository
             ->findEditable();
 
         $semesters = $semesterRepository
             ->findAfter(new \DateTime('-1 year'), 'endDate');
 
-        // Course form
-        $defaultCourse = (new Course())
-            ->setImplementationDate(\DateTime::createFromFormat(
-                'Y-m-d',
-                sprintf('%d-09-01', ((int) date('Y')) + (date('m-d') >= '09-01' ? 1 : 0))
-            ));
-
-        $newCourse = $this->createForm(CourseType::class, $defaultCourse);
-
-        // Semester form
-        $nextPeriod = $semesterRepository->findNextPeriod();
-        $defaultSemester = (new Semester())
-            ->setPeriod($nextPeriod);
-
-        $newSemester = $this->createForm(SemesterType::class, $defaultSemester);
-
         return $this->createHtmlResponse('administration/index.html.twig', [
-            'editable_courses' => $editableCourses,
+            'courses' => $courses,
             'semesters' => $semesters,
-            'new_course' => $newCourse->createView(),
-            'new_semester' => $newSemester->createView(),
         ]);
     }
 }
