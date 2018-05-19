@@ -25,8 +25,9 @@
         class="datepicker"
         {{ block('widget_attributes') }}
         {% if value is not empty %}
-        data-defaultDate="{{ value|join('-') }}"
-        data-setDefaultDate="true"
+            value="{{ value }}"
+            data-defaultDate="{{ value }}"
+            data-setDefaultDate="true"
         {% endif %}
     />
 {% endblock date_widget %}

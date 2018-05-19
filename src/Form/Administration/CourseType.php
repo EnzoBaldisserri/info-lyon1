@@ -30,6 +30,8 @@ class CourseType extends AbstractType
                 'label' => 'course.form.props.implementation_date.label',
                 'required' => true,
                 'attr' => ['data-minDate' => date('Y-m-d')],
+                'widget' => 'single_text',
+                'format' => $this->translator->trans('global.form.datetype.format'),
             ])
         ;
     }

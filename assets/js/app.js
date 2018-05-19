@@ -8,13 +8,50 @@ Routing.setRoutingData(routes);
 window.Routing = Routing;
 window.Translator = Translator;
 
+function parseDateString(dateString) {
+  const format = Translator.trans('global.form.datetype.format');
+  const rules = {
+    d: (date, string) => date.setDate(+string),
+    dd: (date, string) => date.setDate(+string),
+    m: (date, string) => date.setMonth(+string - 1),
+    mm: (date, string) => date.setMonth(+string - 1),
+    yy: (date, string) => {
+      const shortYear = +string;
+      const currentYear = new Date().getFullYear();
+      const shortCurrentYear = +(currentYear.toString().slice(-2));
+      const currentCentury = Math.round(currentYear / 100) * 100;
+
+      date.setFullYear(shortYear <= shortCurrentYear ?
+        currentCentury + shortYear
+        : (currentCentury - 100) + shortYear);
+    },
+    yyyy: (date, string) => date.setFullYear(+string),
+  };
+
+  const date = new Date();
+
+  Object.entries(rules).forEach(([identifier, rule]) => {
+    const regex = new RegExp(`(?<![dmy])${identifier}(?![dmy])`, 'gm');
+
+    let result = regex.exec(format);
+    while (result !== null) {
+      const value = dateString.substr(result.index, identifier.length);
+      rule(date, value);
+
+      result = regex.exec(format);
+    }
+  });
+
+  return date;
+}
+
 function initializeDatePickers($pickers) {
   const defaults = {
     autoClose: true,
     showClearButton: true,
     firstDay: Translator.trans('global.time.first_day'),
-    format: Translator.trans('global.date.format'),
-    parse: dateString => new Date(...dateString.split(/-\//)),
+    format: Translator.trans('global.form.datetype.format'),
+    parse: dateString => parseDateString(dateString),
     i18n: {
       cancel: Translator.trans('global.message.cancel'),
       clear: Translator.trans('global.message.clear'),

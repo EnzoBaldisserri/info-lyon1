@@ -28,11 +28,15 @@ class SemesterType extends AbstractType
                 'label' => 'semester.form.props.start_date.label',
                 'required' => true,
                 'attr' => ['data-minDate' => date('Y-m-d')],
+                'widget' => 'single_text',
+                'format' => $this->translator->trans('global.form.datetype.format'),
             ])
             ->add('endDate', DateType::class, [
                 'required' => true,
                 'label' => 'semester.form.props.end_date.label',
                 'attr' => ['data-minDate' => date('Y-m-d')],
+                'widget' => 'single_text',
+                'format' => $this->translator->trans('global.form.datetype.format'),
             ])
             ->add('course', EntityType::class, [
                 'required' => true,
