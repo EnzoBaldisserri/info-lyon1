@@ -2,12 +2,12 @@
 
 namespace App\Controller\Api;
 
+use App\Controller\BaseController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Translation\TranslatorInterface;
-use App\Controller\BaseController;
-use App\Entity\Administration\Semester;
-use App\Entity\Administration\Group;
+use App\Repository\Administration\SemesterRepository;
+use App\Repository\Administration\GroupRepository;
 use App\Service\TimeHelper;
 
 /**
@@ -18,13 +18,15 @@ class AbsenceApiController extends BaseController
     /**
      * @Route("/get_all", name="getall")
      */
-    public function getAll(TimeHelper $timeHelper, TranslatorInterface $translator)
-    {
+    public function getAll(
+        TimeHelper $timeHelper,
+        TranslatorInterface $translator,
+        SemesterRepository $semesterRepository,
+        GroupRepository $groupRepository
+    ) {
         $doctrine = $this->getDoctrine();
 
-        $semesters = $doctrine
-            ->getRepository(Semester::class)
-            ->findCurrent();
+        $semesters = $semesterRepository->findCurrent();
 
         if (empty($semesters)) {
             $error = $translate->trans('error.no_current_semester');
@@ -33,11 +35,9 @@ class AbsenceApiController extends BaseController
 
             $firstDay = $period->getStart()->format(TimeHelper::JSON_TIME_FORMAT);
 
-            $months = $timeHelper
-                ->getPeriodMonths($period, true);
+            $months = $timeHelper->getPeriodMonths($period, true);
 
-            $groups = $doctrine
-                ->getRepository(Group::class)
+            $groups = $groupRepository
                 ->findInSemestersWithAbsences($semesters);
         }
 
