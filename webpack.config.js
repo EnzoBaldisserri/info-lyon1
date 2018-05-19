@@ -11,7 +11,6 @@ module.exports = {
   entry: {
     'absence-table': './assets/js/absence-table/index.js',
     student_absence: './assets/js/student/absence.js',
-    administration: './assets/js/administrative/administration.js',
     app: './assets/js/app.js',
     fos_layout: './assets/js/fos_layout.js',
   },
