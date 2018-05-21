@@ -1,6 +1,15 @@
-input:required + label::after,
-label.required::after {
-  content: '*';
+// Page title
+.title.row {
+  // Move margin from h1 to .title for better centering
+  margin: 2.8rem 0 1.68rem 0;
+
+  h1 {
+    margin: 0;
+  }
+
+  .material-icons {
+    font-size: 2rem;
+  }
 }
 
 // Alerts

@@ -74,6 +74,6 @@ class CourseController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('administration_course_index');
+        return $this->redirectToRoute('administration_index');
     }
 }

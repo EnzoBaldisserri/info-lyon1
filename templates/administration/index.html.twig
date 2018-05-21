@@ -64,16 +64,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th>{{ 'course.props.implementationDate'|trans }}</th>
                         <th>{{ 'course.props.semester'|trans }}</th>
+                        <th>{{ 'course.props.implementationDate'|trans }}</th>
                         <th>{{ 'course.props.manage'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for course in courses %}
                         <tr>
-                            <td>{{ course.implementationDate|date('global.date.format'|trans) }}</td>
                             <td>{{ course.name }}</td>
+                            <td>{{ course.implementationDate|date('global.date.format'|trans) }}</td>
                             <td>
                                 <a href="{{ path('administration_course_edit', { 'id': course.id }) }}">
                                     <i class="material-icons">edit</i>

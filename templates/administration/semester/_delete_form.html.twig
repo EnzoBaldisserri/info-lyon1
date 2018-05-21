@@ -5,5 +5,7 @@
 >
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ semester.id) }}">
-    <button class="btn btn-flat waves-effect waves-red">{{ 'global.button.delete'|trans }}</button>
+    <button type="submit" class="btn btn-flat waves-effect waves-red">
+        <i class="material-icons">delete</i>
+    </button>
 </form>

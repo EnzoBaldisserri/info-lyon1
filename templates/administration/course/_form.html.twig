@@ -13,15 +13,9 @@
             <button type="submit" class="btn btn-flat waves-effect waves-light">
                 {{ button_label }}
             </button>
-            {% for action in actions|default([]) %}
-                {% if action.content is defined %}
-                    {{ action.content|raw }}
-                {% else %}
-                    <a href="{{ action.path }}" class="btn btn-flat waves-effect waves-light">
-                        {{ action.text }}
-                    </a>
-                {% endif %}
-            {% endfor %}
+            <a href="{{ path('administration_index') }}" class="btn btn-flat waves-effect waves-light">
+                {{ 'administration.message.come_back'|trans }}
+            </a>
         </div>
     </div>
 {{ form_end(form) }}

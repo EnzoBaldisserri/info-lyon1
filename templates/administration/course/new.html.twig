@@ -5,9 +5,5 @@
 
     {{ include('administration/course/_form.html.twig', {
         'button_label': 'global.button.create'|trans,
-        'actions': [{
-            'text': 'administration.message.come_back'|trans,
-            'path': path('administration_index')
-        }]
     }) }}
 {% endblock %}

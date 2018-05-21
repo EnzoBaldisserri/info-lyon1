@@ -32,7 +32,7 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
+            return $this->redirectToRoute('administration_index');
         }
 
         return $this->render('administration/semester/new.html.twig', [
@@ -81,7 +81,11 @@ class SemesterController extends Controller
     {
         if (!$semester->isDeletable()) {
             // TODO Add notification
-            return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
+            if ($semester->isEditable()) {
+                return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
+            } else {
+                return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
+            }
         }
 
         if ($this->isCsrfTokenValid('delete'.$semester->getId(), $request->request->get('_token'))) {
