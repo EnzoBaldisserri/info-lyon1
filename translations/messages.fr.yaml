@@ -1,11 +1,5 @@
 # Global translations
 global:
-    message:
-        yes: Oui
-        no: Non
-        cancel: Annuler
-        clear: Effacer
-        done: Accepter
     date:
         format: d/m/Y
     time:
@@ -23,6 +17,12 @@ global:
         update: Mettre à jour
         delete: Supprimer
         send: Envoyer
+    message:
+        yes: Oui
+        no: Non
+        cancel: Annuler
+        clear: Effacer
+        done: Accepter
 
 app:
     title: info-lyon1

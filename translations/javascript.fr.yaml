@@ -15,7 +15,7 @@ global:
         no: Non
         cancel: Annuler
         clear: Effacer
-        done: Selectionner
+        done: Accepter
 
 error:
     load_error: Impossible de charger les données nécessaires
