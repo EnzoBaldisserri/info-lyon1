@@ -31,7 +31,7 @@ function parseDateString(dateString) {
   const date = new Date();
 
   Object.entries(rules).forEach(([identifier, rule]) => {
-    const regex = new RegExp(`(?<![dmy])${identifier}(?![dmy])`, 'gm');
+    const regex = new RegExp(`(?<![dmy])${identifier}(?![dmy])`, 'g');
 
     let result = regex.exec(format);
     while (result !== null) {

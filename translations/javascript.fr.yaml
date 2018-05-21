@@ -9,7 +9,7 @@ global:
         twelve_hour: false
     form:
         datetype:
-            format: dd/mm/yyyy
+            format: dd/mm/yyyy # no uppercase character !
     message:
         yes: Oui
         no: Non

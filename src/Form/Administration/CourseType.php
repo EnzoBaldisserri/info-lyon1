@@ -22,7 +22,8 @@ class CourseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['creation']) {
-            $dateAttr = [ 'data-minDate' => date('Y-m-d') ];
+            $dateFormat = $this->translator->trans('global.date.format');
+            $dateAttr = [ 'data-minDate' => date($dateFormat) ];
         }
 
         $builder

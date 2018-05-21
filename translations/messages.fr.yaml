@@ -16,7 +16,7 @@ global:
         days_short: D,L,M,M,J,V,S
     form:
         datetype:
-            format: dd/mm/YYYY
+            format: dd/MM/YYYY
     button:
         add: Ajouter
         create: Créer
