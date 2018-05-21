@@ -30,7 +30,7 @@ class Course
     private $implementationDate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\TeachingUnit", mappedBy="courses")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\TeachingUnit", mappedBy="courses", cascade={"persist"})
      */
     private $teachingUnits;
 

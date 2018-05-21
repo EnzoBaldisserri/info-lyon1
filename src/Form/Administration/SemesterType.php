@@ -4,6 +4,7 @@ namespace App\Form\Administration;
 
 use App\Entity\Administration\Semester;
 use App\Entity\Administration\Course;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -52,6 +53,12 @@ class SemesterType extends AbstractType
                         '%courseType%' => $course->getName(),
                         '%implementationYear%' => $course->getImplementationDate()->format('Y'),
                     ]);
+                },
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->addOrderBy('c.implementationDate', 'DESC')
+                        ->addOrderBy('c.semester', 'ASC')
+                    ;
                 },
             ])
         ;

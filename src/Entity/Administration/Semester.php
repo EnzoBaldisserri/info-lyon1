@@ -33,13 +33,13 @@ class Semester
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Group", mappedBy="semester", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Group", mappedBy="semester", cascade={"persist", "remove"})
      * Excluded because causes serialization to break in Api\AbsenceController.getAll. Take a closer look ?
      * @Serializer\Exclude
      */

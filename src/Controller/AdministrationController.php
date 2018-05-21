@@ -21,15 +21,15 @@ class AdministrationController extends BaseController
      */
     public function index(CourseRepository $courseRepository, SemesterRepository $semesterRepository)
     {
-        $courses = $courseRepository
-            ->findEditable();
-
         $semesters = $semesterRepository
             ->findAfter(new \DateTime('-1 year'), 'endDate');
 
+        $courses = $courseRepository
+            ->findEditable();
+
         return $this->createHtmlResponse('administration/index.html.twig', [
-            'courses' => $courses,
             'semesters' => $semesters,
+            'courses' => $courses,
         ]);
     }
 }

@@ -28,7 +28,7 @@ class Group
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="groups", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="groups", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $semester;

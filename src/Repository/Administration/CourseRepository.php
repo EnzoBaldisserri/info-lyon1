@@ -34,6 +34,11 @@ class CourseRepository extends ServiceEntityRepository
               ->setParameter('datetime', $datetime)
         ;
 
+        $qb
+            ->addOrderBy('c.implementationDate', 'DESC')
+            ->addOrderBy('c.semester', 'ASC')
+        ;
+
         return $qb->getQuery()
             ->getResult();
     }
