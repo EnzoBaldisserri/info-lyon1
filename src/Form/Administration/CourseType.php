@@ -3,11 +3,13 @@
 namespace App\Form\Administration;
 
 use App\Entity\Administration\Course;
+use App\Entity\Administration\TeachingUnit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class CourseType extends AbstractType
@@ -45,6 +47,16 @@ class CourseType extends AbstractType
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
                 'attr' => $dateAttr ?? [],
+            ])
+            ->add('teachingUnits', EntityType::class, [
+                'required' => false,
+                'multiple' => true,
+                'label' => 'course.form.props.teaching_units.label',
+                'class' => TeachingUnit::class,
+                'choice_label' => function($tu) {
+                    return $tu->getFullName();
+                },
+                'choice_translation_domain' => false,
             ])
         ;
     }

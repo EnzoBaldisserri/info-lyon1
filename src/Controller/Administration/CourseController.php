@@ -30,6 +30,10 @@ class CourseController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($course->getTeachingUnits() as $teachingUnit) {
+                $teachingUnit->addCourse($course);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($course);
             $em->flush();
@@ -48,10 +52,28 @@ class CourseController extends Controller
      */
     public function edit(Request $request, Course $course): Response
     {
+        $formerTeachingUnits = $course->getTeachingUnits()->toArray();
+
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $currentTeachingUnits = $course->getTeachingUnits();
+
+            // Add new teaching units
+            foreach ($currentTeachingUnits as $teachingUnit) {
+                if (!in_array($teachingUnit, $formerTeachingUnits, true)) {
+                    $teachingUnit->addCourse($course);
+                }
+            }
+
+            // Remove former teaching units
+            foreach ($formerTeachingUnits as $teachingUnit) {
+                if (!$currentTeachingUnits->contains($teachingUnit)) {
+                    $teachingUnit->removeCourse($course);
+                }
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('administration_course_edit', ['id' => $course->getId()]);

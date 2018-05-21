@@ -2,6 +2,7 @@
 
 namespace App\Entity\Administration;
 
+use App\Entity\Administration\Course;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,11 +20,6 @@ class TeachingUnit
     private $id;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $implementationDate;
-
-    /**
      * @ORM\Column(type="string", length=45)
      */
     private $code;
@@ -34,10 +30,14 @@ class TeachingUnit
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="date")
      */
-    private $course;
+    private $implementationDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Course", inversedBy="teachingUnits", cascade={"persist", "remove"})
+     */
+    private $courses;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Module", mappedBy="teachingUnit", orphanRemoval=true)
@@ -46,24 +46,13 @@ class TeachingUnit
 
     public function __construct()
     {
+        $this->courses = new ArrayCollection();
         $this->modules = new ArrayCollection();
     }
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getImplementationDate(): ?\DateTimeInterface
-    {
-        return $this->implementationDate;
-    }
-
-    public function setImplementationDate(\DateTimeInterface $implementationDate): self
-    {
-        $this->implementationDate = $implementationDate;
-
-        return $this;
     }
 
     public function getCode(): ?string
@@ -90,14 +79,45 @@ class TeachingUnit
         return $this;
     }
 
-    public function getCourse(): ?Course
+    public function getFullName(): ?string
     {
-        return $this->course;
+        return sprintf('%s - %s', $this->code, $this->name);
     }
 
-    public function setCourse(?Course $course): self
+    public function getImplementationDate(): ?\DateTimeInterface
     {
-        $this->course = $course;
+        return $this->implementationDate;
+    }
+
+    public function setImplementationDate(\DateTimeInterface $implementationDate): self
+    {
+        $this->implementationDate = $implementationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Course[]
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): self
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses[] = $course;
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): self
+    {
+        if ($this->courses->contains($course)) {
+            $this->courses->removeElement($course);
+        }
 
         return $this;
     }
@@ -132,5 +152,4 @@ class TeachingUnit
 
         return $this;
     }
-
 }

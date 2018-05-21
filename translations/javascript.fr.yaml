@@ -1,4 +1,6 @@
 global:
+    date:
+        format: dd/mm/yyyy
     time:
         months: Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octrobre,Novembre,Décembre
         months_short: Jan,Fév,Mars,Avr,Mai,Juin,Jui,Août,Sept,Oct,Nov,Déc

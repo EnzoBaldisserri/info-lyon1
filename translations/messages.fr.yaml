@@ -10,7 +10,7 @@ global:
         days_short: D,L,M,M,J,V,S
     form:
         datetype:
-            format: dd/MM/YYYY
+            format: dd/MM/yyyy
     button:
         add: Ajouter
         create: Créer
@@ -90,6 +90,8 @@ course:
                 label: Type de semestre
             implementation_date:
                 label: Date d'entrée en application
+            teaching_units:
+                label: Unités d'Enseignement liées au parcours
         button:
             create: Créer un parcours
         message:
