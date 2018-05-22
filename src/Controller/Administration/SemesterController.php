@@ -24,7 +24,7 @@ class SemesterController extends Controller
         $semester = (new Semester())
             ->setPeriod($nextPeriod);
 
-        $form = $this->createForm(SemesterType::class, $semester, [ 'creation' => true ]);
+        $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -32,7 +32,7 @@ class SemesterController extends Controller
             $em->persist($semester);
             $em->flush();
 
-            return $this->redirectToRoute('administration_index');
+            return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
         }
 
         return $this->render('administration/semester/new.html.twig', [
@@ -63,6 +63,8 @@ class SemesterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // TODO Verify semester's course didn't change
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);

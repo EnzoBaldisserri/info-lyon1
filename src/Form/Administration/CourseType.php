@@ -4,6 +4,8 @@ namespace App\Form\Administration;
 
 use App\Entity\Administration\Course;
 use App\Entity\Administration\TeachingUnit;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,11 +25,6 @@ class CourseType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['creation']) {
-            $dateFormat = $this->translator->trans('global.date.format');
-            $dateAttr = [ 'data-minDate' => date($dateFormat) ];
-        }
-
         $builder
             ->add('semester', ChoiceType::class, [
                 'label' => 'course.form.props.semester.label',
@@ -46,7 +43,6 @@ class CourseType extends AbstractType
                 'required' => true,
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
-                'attr' => $dateAttr ?? [],
             ])
             ->add('teachingUnits', EntityType::class, [
                 'required' => false,
@@ -59,6 +55,29 @@ class CourseType extends AbstractType
                 'choice_translation_domain' => false,
             ])
         ;
+
+        $dateFormat = $this->translator->trans('global.date.format');
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($dateFormat) {
+                $course = $event->getData();
+                $form = $event->getForm();
+
+                // If creating the course
+                if (!$course || null === $course->getId()) {
+                    // Add min date to implementation date
+                    $config = $form->get('implementationDate')->getConfig();
+
+                    $form->add('implementationDate', DateType::class, array_replace(
+                        $config->getOptions(),
+                        [
+                            'attr' => [ 'data-minDate' => date($dateFormat) ],
+                        ]
+                    ));
+                }
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
