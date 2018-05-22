@@ -99,6 +99,14 @@ class SemesterType extends AbstractType
                             'attr' => ['readonly' => 'readonly'],
                         ]
                     ));
+
+                    // Add groups
+                    $form->add('groups', CollectionType::class, [
+                        'label' => false,
+                        'entry_type' => GroupType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                    ]);
                 }
             }
         );

@@ -3,6 +3,7 @@
 namespace App\Repository\User;
 
 use App\Entity\User\Student;
+use App\Entity\Administration\Semester;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,4 +20,9 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
+    public function findAvailableForSemester(Semester $semester): Array
+    {
+        // TODO find students available for semester
+        return $this->findAll();
+    }
 }

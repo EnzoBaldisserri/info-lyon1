@@ -103,6 +103,14 @@ course:
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce parcours ?
 
+group:
+    form:
+        props:
+            number:
+                label: Numéro du groupe
+            students:
+                label: Étudiants
+
 semester:
     props:
         start_date: Date de début
@@ -118,6 +126,10 @@ semester:
                 label: Fin du semestre
             course:
                 placeholder: Sélectionner un parcours...
+            groups:
+                title: Groupes
+                empty: Pas de groupe
+                add: Ajouter un groupe
         button:
             create: Créer un semestre
         new:

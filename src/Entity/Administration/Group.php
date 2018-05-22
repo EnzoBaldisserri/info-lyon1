@@ -85,7 +85,7 @@ class Group
         return $this->semester;
     }
 
-    public function setSemester(Semester $semester): self
+    public function setSemester(?Semester $semester): self
     {
         $this->semester = $semester;
 

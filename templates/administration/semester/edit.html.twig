@@ -14,3 +14,8 @@
         'button_label': 'global.button.update'|trans,
     }) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/semester_form.js') }}"></script>
+{% endblock %}

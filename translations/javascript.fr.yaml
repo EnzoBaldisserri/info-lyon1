@@ -34,3 +34,9 @@ absence:
         justified: Justifiée
     plain:
         students: Étudiants
+
+semester:
+    form:
+        props:
+            groups:
+                empty: Pas de groupe

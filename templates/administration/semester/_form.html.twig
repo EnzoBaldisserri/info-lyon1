@@ -1,4 +1,16 @@
 {% import 'form/form_macros.html.twig' as forms %}
+{% import _self as func %}
+
+{% macro print_group(group) %}
+    <div class="row valign-wrapper">
+        {{ form_row(group.number, { 'attr': {'class': 'input-field col s10'} }) }}
+        <div class="col s2 center-align">
+            <i class="material-icons" class="btn btn-flat waves-effect waves-red" data-action="delete">delete</i>
+        </div>
+    </div>
+    {{ form_row(group.students, { 'attr': {'class': 'input-field'} }) }}
+{% endmacro %}
+
 {{ form_start(form, form_options|default({})) }}
     <div class="row">
         {{ form_row(form.startDate, { 'attr': {'class': 'col s12 m6'} }) }}
@@ -7,19 +19,51 @@
     <div class="row">
         {{ form_row(form.course, { 'attr': {'class': 'col s12 m8'} }) }}
     </div>
+    {% if form.groups is defined %}
+        <div class="card grey lighten-5">
+            <div class="card-content">
+                <span class="card-title">{{ 'semester.form.props.groups.title'|trans }}</span>
+                <div class="row">
+                    <div class="col s12 l6">
+                        <ul class="collection"
+                            id="group-list"
+                            {% if form.groups is empty %}data-empty{% endif %}
+                            data-prototype="{{ func.print_group(form.groups.vars.prototype)|e('html_attr') }}"
+                            data-widget-container="{{ '<li class="collection-item row">__content__</li>'|e('html_attr') }}"
+                        >
+                            {% for group in form.groups %}
+                                <li class="collection-item row">
+                                    {{ func.print_group(group) }}
+                                </li>
+                            {% else %}
+                                <li class="collection-item">{{ 'semester.form.props.groups.empty'|trans }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col s12 l6">
+                        <ul class="collection">
+                            {% for student in students %}
+                                <li class="collection-item"
+                                    data-student-id="{{ student.id }}"
+                                >
+                                    {{ student.fullName }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                {{ form_row(form.course, { 'attr': {'class': 'col s12 m8'} }) }}
+            <div class="card-action">
+                <button
+                    type="button"
+                    id="add-group"
+                    class="btn btn-flat waves-effect waves-light"
+                    data-list="#group-list"
+                >
+                    {{ 'semester.form.props.groups.add'|trans }}
+                </button>
             </div>
         </div>
-        <div class="card-action">
-            <button type="submit" class="btn btn-flat waves-effect waves-light">
-                {{ button_label }}
-            </button>
-            <a href="{{ path('administration_index') }}" class="btn btn-flat waves-effect waves-light">
-                {{ 'administration.message.come_back'|trans }}
-            </a>
-        </div>
-    </div>
+    {% endif %}
     {{ forms.actions(button_label, path('administration_index'), 'administration.message.come_back'|trans) }}
 {{ form_end(form) }}
