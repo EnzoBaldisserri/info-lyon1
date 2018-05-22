@@ -1,12 +1,12 @@
+{% import 'form/form_macros.html.twig' as forms %}
 {{ form_start(form, form_options|default({})) }}
-    <div class="card {{ color|default('grey lighten-5') }}">
-        <div class="card-content">
-            {% if title is defined %}
-                <span class="card-title">{{ title }}</span>
-            {% endif %}
-            <div class="row">
-                {{ form_row(form.startDate, { 'attr': {'class': 'col s12 m6'} }) }}
-                {{ form_row(form.endDate, { 'attr': {'class': 'col s12 m6'} }) }}
+    <div class="row">
+        {{ form_row(form.startDate, { 'attr': {'class': 'col s12 m6'} }) }}
+        {{ form_row(form.endDate, { 'attr': {'class': 'col s12 m6'} }) }}
+    </div>
+    <div class="row">
+        {{ form_row(form.course, { 'attr': {'class': 'col s12 m8'} }) }}
+    </div>
             </div>
             <div class="row">
                 {{ form_row(form.course, { 'attr': {'class': 'col s12 m8'} }) }}
@@ -21,4 +21,5 @@
             </a>
         </div>
     </div>
+    {{ forms.actions(button_label, path('administration_index'), 'administration.message.come_back'|trans) }}
 {{ form_end(form) }}

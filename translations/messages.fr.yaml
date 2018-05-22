@@ -112,12 +112,12 @@ semester:
         manage: Gérer
     form:
         props:
-            course:
-                placeholder: Sélectionner un parcours...
             start_date:
                 label: Début du semestre
             end_date:
                 label: Fin du semestre
+            course:
+                placeholder: Sélectionner un parcours...
         button:
             create: Créer un semestre
         new:
