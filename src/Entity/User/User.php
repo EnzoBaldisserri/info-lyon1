@@ -105,4 +105,9 @@ abstract class User extends BaseUser
 
         return $this;
     }
+
+    public function getFullName(): ?string
+    {
+        return sprintf('%s %s', $this->firstname, $this->surname);
+    }
 }
