@@ -35,6 +35,11 @@ class Student extends User
         $this->absences = new ArrayCollection();
     }
 
+    public function getFullName(): ?string
+    {
+        return sprintf('%s %s', $this->surname, $this->firstname);
+    }
+
     /**
      * @return Collection|Group[]
      */

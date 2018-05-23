@@ -32,19 +32,19 @@ abstract class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User\Notification", mappedBy="user", orphanRemoval=true)
      */
-    private $notifications;
+    protected $notifications;
 
     /**
      * @ORM\Column(type="string", length=45)
      * @Serializer\Expose
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @ORM\Column(type="string", length=45)
      * @Serializer\Expose
      */
-    private $surname;
+    protected $surname;
 
     public function __construct()
     {

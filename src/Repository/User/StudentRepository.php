@@ -23,6 +23,14 @@ class StudentRepository extends ServiceEntityRepository
     public function findAvailableForSemester(Semester $semester): Array
     {
         // TODO find students available for semester
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->addOrderBy('s.surname', 'ASC')
+            ->addOrderBy('s.firstname', 'ASC')
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
     }
 }
