@@ -60,32 +60,13 @@ class SemesterController extends Controller
             return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
         }
 
-        $formerGroups = $semester->getGroups()->toArray();
-
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             // TODO Verify semester's course didn't change
 
-            $currentGroups = $semester->getGroups();
-
-            // Add new groups
-            foreach ($currentGroups as $group) {
-                if (!in_array($group, $formerGroups, true)) {
-                    $group->setSemester($semester);
-                }
-            }
-
-            // Remove former groups
-            foreach ($formerGroups as $group) {
-                if (!$currentGroups->contains($group)) {
-                    $em->remove($group);
-                }
-            }
-
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
         }

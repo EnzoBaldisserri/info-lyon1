@@ -39,8 +39,13 @@ class Semester
     private $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Administration\Group", mappedBy="semester", cascade={"persist", "remove"})
-     * Excluded because causes serialization to break in Api\AbsenceController.getAll. Take a closer look ?
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Administration\Group",
+     *     mappedBy="semester",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     * TODO Excluded because causes serialization to break in Api\AbsenceController.getAll. Take a closer look ?
      * @Serializer\Exclude
      */
     private $groups;
