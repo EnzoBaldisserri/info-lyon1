@@ -25,7 +25,7 @@
                 <span class="card-title">{{ 'semester.form.props.groups.title'|trans }}</span>
                 <div class="row">
                     <div class="col s12 l6">
-                        <ul class="collection"
+                        <ul class="collection droppable"
                             id="group-list"
                             {% if form.groups is empty %}data-empty{% endif %}
                             data-prototype="{{ func.print_group(form.groups.vars.prototype)|e('html_attr') }}"
@@ -40,11 +40,12 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <div class="col s12 l6">
-                        <ul class="collection">
+                    <div class="col l6 hide-on-med-and-down">
+                        <ul class="collection droppable" id="student-list">
                             {% for student in students %}
                                 <li class="collection-item"
                                     data-student-id="{{ student.id }}"
+                                    draggable="true"
                                 >
                                     {{ student.fullName }}
                                 </li>
@@ -58,7 +59,6 @@
                     type="button"
                     id="add-group"
                     class="btn btn-flat waves-effect waves-light"
-                    data-list="#group-list"
                 >
                     {{ 'semester.form.props.groups.add'|trans }}
                 </button>

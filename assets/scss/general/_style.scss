@@ -30,6 +30,17 @@
   }
 }
 
+// Cards
+.card-content .row:last-child {
+  margin-bottom: 0;
+}
+
+// Drag and drop
+[draggable=true] {
+  cursor: pointer;
+}
+
+// Icons
 .material-icons {
   user-select: none;
   vertical-align: middle;
@@ -38,9 +49,4 @@
   main & {
     color: $secondary-color;
   }
-}
-
-// Cards
-.card-content .row:last-child {
-  margin-bottom: 0;
 }

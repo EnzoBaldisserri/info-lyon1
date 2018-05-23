@@ -102,10 +102,12 @@ class SemesterType extends AbstractType
 
                     // Add groups
                     $form->add('groups', CollectionType::class, [
-                        'label' => false,
+                        'label' => false, // Displayed as card title
                         'entry_type' => GroupType::class,
+                        'entry_options' => ['label' => false],
                         'allow_add' => true,
                         'allow_delete' => true,
+                        'prototype_name' => '__group__',
                         'by_reference' => false,
                     ]);
                 }
