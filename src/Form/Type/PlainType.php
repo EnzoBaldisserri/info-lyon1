@@ -13,6 +13,22 @@ class PlainType extends AbstractType
     {
         $value = $form->getViewData();
 
+        if (true === $value) {
+            $value = 'true';
+        } elseif (false === $value) {
+            $value = 'false';
+        } elseif (null === $value) {
+            $value = 'null';
+        } else if (is_array($value)) {
+            $value = implode(',', $value);
+        } else if (is_object($value)) {
+            if (method_exists($value, '__toString')) {
+                $value = $value->__toString();
+            } else {
+                $value = get_class($value);
+            }
+        }
+
         $view->vars['value'] = (string) $value;
     }
 
