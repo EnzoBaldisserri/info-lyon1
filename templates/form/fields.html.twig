@@ -1,5 +1,5 @@
 {% block form_row %}
-    <div {{ block('widget_container_attributes') }}>
+    <div {{ block('attributes') }}>
         {{ form_widget(form) }}
         {{ form_label(form) }}
         {{ form_errors(form) }}
@@ -19,10 +19,6 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
-{% block plain_widget %}
-    {{ value|e }}
-{% endblock %}
-
 {% block date_widget %}
     <input
         type="text"
@@ -35,3 +31,16 @@
         {% endif %}
     />
 {% endblock date_widget %}
+
+{% block plain_widget %}
+{% endblock %}
+
+{% block plain_label %}
+{% endblock %}
+
+{% block plain_row %}
+    <div {{ block('widget_attributes') }}>
+        {% if label is defined %}{{ label|trans }}{% endif %} {{ value|e }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
