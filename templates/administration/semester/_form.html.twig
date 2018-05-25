@@ -8,7 +8,19 @@
             <i class="material-icons" class="btn btn-flat waves-effect waves-red" data-action="delete">delete</i>
         </div>
     </div>
-    {{ form_row(group.students, { 'attr': {'class': 'input-field'} }) }}
+    <ul
+        class="collection with-header droppable"
+        data-prototype="{{ form_row(group.students.vars.prototype)|e('html_attr') }}"
+        data-widget-container="{{ '<li class="collection-item" draggable=true>__content__</li>'|e('html_attr') }}"
+        data-counter="{{ group.students|length }}"
+    >
+        <li class="collection-header">{{ 'group.form.props.students.title'|trans }}</li>
+        {% for student in group.students %}
+            <li class="collection-item" draggable="true">
+                {{ form_row(student) }}
+            </li>
+        {% endfor %}
+    </ul>
 {% endmacro %}
 
 {{ form_start(form, form_options|default({})) }}
@@ -25,7 +37,7 @@
                 <span class="card-title">{{ 'semester.form.props.groups.title'|trans }}</span>
                 <div class="row">
                     <div class="col s12 l6">
-                        <ul class="collection droppable"
+                        <ul class="collection"
                             id="group-list"
                             {% if form.groups is empty %}data-empty{% endif %}
                             data-prototype="{{ func.print_group(form.groups.vars.prototype)|e('html_attr') }}"

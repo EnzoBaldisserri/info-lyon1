@@ -5,6 +5,7 @@ namespace App\Form\Administration;
 use App\Entity\Administration\Semester;
 use App\Entity\Administration\Course;
 use App\Form\Administration\GroupEntity;
+use App\Form\Type\PlainType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -40,24 +41,6 @@ class SemesterType extends AbstractType
                 'widget' => 'single_text',
                 'format' => $this->translator->trans('global.form.datetype.format'),
             ])
-            ->add('course', EntityType::class, [
-                'required' => true,
-                'label' => false,
-                'placeholder' => 'semester.form.props.course.placeholder',
-                'class' => Course::class,
-                'choice_label' => function($course) {
-                    return $this->translator->trans('course.form.choice_label', [
-                        '%courseType%' => $course->getName(),
-                        '%implementationYear%' => $course->getImplementationDate()->format('Y'),
-                    ]);
-                },
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->addOrderBy('c.implementationDate', 'DESC')
-                        ->addOrderBy('c.semester', 'ASC')
-                    ;
-                },
-            ])
         ;
 
         $dateFormat = $this->translator->trans('global.date.format');
@@ -89,16 +72,36 @@ class SemesterType extends AbstractType
                             'attr' => [ 'data-minDate' => date($dateFormat) ]
                         ]
                     ));
-                } else {
-                    // Add readonly to course
-                    $config = $form->get('course')->getConfig();
 
-                    $form->add('course', EntityType::class, array_replace(
-                        $config->getOptions(),
-                        [
-                            'attr' => ['readonly' => 'readonly'],
-                        ]
-                    ));
+                    // Add customizable course
+                    $form->add('course', EntityType::class, [
+                        'required' => true,
+                        'label' => false,
+                        'placeholder' => 'semester.form.props.course.placeholder',
+                        'class' => Course::class,
+                        'choice_label' => function($course) {
+                            return $this->translator->trans('course.form.choice_label', [
+                                '%courseType%' => $course->getName(),
+                                '%implementationYear%' => $course->getImplementationDate()->format('Y'),
+                            ]);
+                        },
+                        'query_builder' => function(EntityRepository $er) {
+                            return $er->createQueryBuilder('c')
+                                ->addOrderBy('c.implementationDate', 'DESC')
+                                ->addOrderBy('c.semester', 'ASC')
+                            ;
+                        },
+                    ]);
+                } else {
+                    // Add readonly course
+                    $course = $semester->getCourse();
+
+                    $form->add('course', PlainType::class, [
+                        'data' => $this->translator->trans('course.form.choice_label', [
+                            '%courseType%' => $course->getName(),
+                            '%implementationYear%' => $course->getImplementationDate()->format('Y'),
+                        ]),
+                    ]);
 
                     // Add groups
                     $form->add('groups', CollectionType::class, [

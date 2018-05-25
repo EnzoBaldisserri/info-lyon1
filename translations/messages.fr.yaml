@@ -109,7 +109,7 @@ group:
             number:
                 label: Numéro du groupe
             students:
-                label: Étudiants
+                title: Étudiants
 
 semester:
     props:

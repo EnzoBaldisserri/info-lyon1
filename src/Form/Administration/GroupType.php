@@ -3,13 +3,14 @@
 namespace App\Form\Administration;
 
 use App\Entity\Administration\Group;
-use App\Entity\User\Student;
-use Doctrine\ORM\EntityRepository;
+use App\Form\User\SimpleStudentType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class GroupType extends AbstractType
 {
@@ -20,21 +21,26 @@ class GroupType extends AbstractType
                 'required' => true,
                 'label' => 'group.form.props.number.label',
             ])
-            ->add('students', EntityType::class, [
-                'label' => false, // Displayed as collection header
-                'multiple' => true,
-                'class' => Student::class,
-                'choice_label' => function($student) {
-                    return $student->getFullName();
-                },
-                'query_builder' => function(EntityRepository $er) {
-                    $er->createQueryBuilder('s')
-                        ->addOrderBy('s.surname', 'ASC')
-                        ->addOrderBy('s.firstname', 'ASC')
-                    ;
-                }
-            ])
         ;
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function(FormEvent $event) {
+                $group = $event->getData();
+                $form = $event->getForm();
+
+                $form->add('students', CollectionType::class, [
+                    'label' => false, // Displayed as collection header
+                    'data' => $group ? $group->getStudents() : [],
+                    'entry_type' => SimpleStudentType::class,
+                    'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype_name' => '__student__',
+                    'mapped' => false,
+                ]);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
