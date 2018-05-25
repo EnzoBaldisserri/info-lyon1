@@ -60,11 +60,55 @@ class SemesterController extends Controller
             return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
         }
 
+        // Store former students
+        $formerGroupsStudents = array_reduce(
+            $semester->getGroups()->toArray(),
+            function ($groups, $group) {
+                $groups[$group->getId()] = $group->getStudents()->toArray();
+                return $groups;
+            },
+            array()
+        );
+
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // TODO Verify semester's course didn't change
+
+            // Move students
+            foreach ($form->get('groups') as $groupForm) {
+                $group = $groupForm->getData();
+
+                $formerStudents = $formerGroupsStudents[$group->getId()] ?? [];
+
+                $currentStudentsIds = array_map(
+                    function($studentForm) { return $studentForm->get('id')->getData(); },
+                    iterator_to_array($groupForm->get('students'))
+                );
+                $currentStudents = $studentRepository->findBy(['id' => $currentStudentsIds]);
+
+                // Add new students
+                foreach ($currentStudents as $student) {
+                    if (!in_array($student, $formerStudents, true)) {
+                        $group->addStudent($student);
+                    }
+                }
+
+                // Remove students that aren't in the group anymore
+                foreach ($formerStudents as $student) {
+                    if (!in_array($student, $currentStudents, true)) {
+                        $student->removeClass($group);
+                    }
+                }
+
+                // Fix problem with form, trying to create students from null values
+                foreach ($group->getStudents() as $student) {
+                    if ($student->getId() === null) {
+                        $group->removeStudent($student);
+                    }
+                }
+            }
 
             $this->getDoctrine()->getManager()->flush();
 
