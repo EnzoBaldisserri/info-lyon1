@@ -42,8 +42,24 @@ class StudentRepository extends ServiceEntityRepository
 
     public function findAvailableForSemester(Semester $semester): Array
     {
-        // TODO find students available for semester
+        // Filter students that already have a group for this period
+        $qb = $this->createQueryBuilder('stu');
+
+        $qb
+            ->join('stu.classes', 'grp')
+            ->join('grp.semester', 'sem')
+            ->andWhere($qb->expr()->eq('sem.startDate', ':startDate'))
+        ;
+
+        $unavailables = $qb->getQuery();
+
         $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->andWhere($qb->expr()->notIn('s', $unavailables->getDQL()))
+              ->setParameter('startDate', $semester->getStartDate());
+
+        // TODO find students potentially interested for semester
 
         $qb
             ->addOrderBy('s.surname', 'ASC')
