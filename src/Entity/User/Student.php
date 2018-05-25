@@ -27,10 +27,6 @@ class Student extends User
     public function __construct() {
         parent::__construct();
 
-        if (!$this->hasRole('ROLE_STUDENT')) {
-            $this->addRole('ROLE_STUDENT');
-        }
-
         $this->classes = new ArrayCollection();
         $this->absences = new ArrayCollection();
     }

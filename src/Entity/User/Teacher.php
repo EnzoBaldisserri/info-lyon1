@@ -33,9 +33,6 @@ class Teacher extends User
     public function __construct() {
         parent::__construct();
 
-        if (!$this->hasRole('ROLE_TEACHER')) {
-            $this->addRole('ROLE_TEACHER');
-        }
         $this->referents = new ArrayCollection();
         $this->educations = new ArrayCollection();
         $this->projects = new ArrayCollection();

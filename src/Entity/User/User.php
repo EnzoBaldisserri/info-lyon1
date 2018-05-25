@@ -30,11 +30,6 @@ abstract class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User\Notification", mappedBy="user", orphanRemoval=true)
-     */
-    protected $notifications;
-
-    /**
      * @ORM\Column(type="string", length=45)
      * @Serializer\Expose
      */
@@ -46,9 +41,43 @@ abstract class User extends BaseUser
      */
     protected $surname;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User\Notification", mappedBy="user", orphanRemoval=true)
+     */
+    protected $notifications;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return sprintf('%s %s', $this->firstname, $this->surname);
     }
 
     /**
@@ -80,34 +109,5 @@ abstract class User extends BaseUser
         }
 
         return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getSurname(): ?string
-    {
-        return $this->surname;
-    }
-
-    public function setSurname(string $surname): self
-    {
-        $this->surname = $surname;
-
-        return $this;
-    }
-
-    public function getFullName(): ?string
-    {
-        return sprintf('%s %s', $this->firstname, $this->surname);
     }
 }

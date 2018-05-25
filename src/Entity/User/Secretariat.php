@@ -10,11 +10,5 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Secretariat extends User
 {
-    public function __construct() {
-        parent::__construct();
 
-        if (!$this->hasRole('ROLE_SECRETARIAT')) {
-            $this->addRole('ROLE_SECRETARIAT');
-        }
-    }
 }
