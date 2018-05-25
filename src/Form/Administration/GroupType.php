@@ -4,6 +4,7 @@ namespace App\Form\Administration;
 
 use App\Entity\Administration\Group;
 use App\Form\User\SimpleStudentType;
+use App\Repository\User\StudentRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class GroupType extends AbstractType
 {
+    private $studentRepository;
+
+    public function __construct(StudentRepository $studentRepository)
+    {
+        $this->studentRepository = $studentRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,7 +39,7 @@ class GroupType extends AbstractType
 
                 $form->add('students', CollectionType::class, [
                     'label' => false, // Displayed as collection header
-                    'data' => $group ? $group->getStudents() : [],
+                    'data' => $group ? $this->studentRepository->findInGroup($group) : [],
                     'entry_type' => SimpleStudentType::class,
                     'entry_options' => ['label' => false],
                     'allow_add' => true,
