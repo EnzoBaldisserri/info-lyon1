@@ -67,17 +67,17 @@ class Schedule
         $years = array_keys($lessons);
 
         if (count($years) === 1 && $period !== $maxNarrowing) {
-            $lessons = $lessons[$years[0]];
+            $lessons = $lessons[reset($years)];
             $period = 'year';
 
             $weeks = array_keys($lessons);
             if (count($weeks) === 1 && $period !== $maxNarrowing) {
-                $lessons = $lessons[$weeks[0]];
+                $lessons = $lessons[reset($weeks)];
                 $period = 'week';
 
                 $days = array_keys($lessons);
                 if (count($days) === 1 && $period !== $maxNarrowing) {
-                    $lessons = $lessons[$days[0]];
+                    $lessons = $lessons[reset($days)];
                     $period = 'day';
                 }
             }
