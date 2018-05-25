@@ -3,6 +3,20 @@ window.addEventListener('DOMContentLoaded', () => {
   const $studentList = document.getElementById('student-list');
   const $addGroup = document.getElementById('add-group');
 
+  const addToStudentList = (student) => {
+    const $new = document.createElement('li');
+    $new.classList.add('collection-item');
+    $new.draggable = true;
+    $new.setAttribute('data-student-id', student.id.toString());
+    $new.textContent = student.name;
+
+    const $nextSibling = Array.from($studentList.children).find($stud =>
+      $stud.textContent.trim().localeCompare(student.name) === 1);
+
+    // If next sibling is null, insert at the end
+    $studentList.insertBefore($new, $nextSibling);
+  };
+
   // ADD GROUP
   let groupCounter = $groupList.children.length;
 
@@ -57,9 +71,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (action === 'delete') {
-      // Remove the list item
+      // Find the group item
       const $item = e.target.closest('.collection-item');
 
+      // Move students to the 'no-group' list
+      const $students = $item.querySelectorAll('.collection > .collection-item');
+      $students.forEach(($student) => {
+        const student = {
+          id: $student.querySelector('[name$="[id]"]').value,
+          name: $student.textContent.trim(),
+        };
+
+        addToStudentList(student);
+      });
+
+      // Remove the group item
       $item.remove();
 
       // Update list state
@@ -152,17 +178,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $studentList.addEventListener('drop', (e) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain'));
 
-    const $new = document.createElement('li');
-    $new.classList.add('collection-item');
-    $new.draggable = true;
-    $new.setAttribute('data-student-id', data.id.toString());
-    $new.textContent = data.name;
-
-    const $nextSibling = Array.from($studentList.children).find($stud =>
-      $stud.textContent.trim().localeCompare(data.name) === 1);
-
-    // If next sibling is null, insert at the end
-    $studentList.insertBefore($new, $nextSibling);
+    addToStudentList(data);
 
     draggedElement.remove();
   });
