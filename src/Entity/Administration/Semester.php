@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
+// TODO Add validation constraints
+// See https://symfony.com/doc/current/reference/constraints.html
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\SemesterRepository")
  * @Serializer\ExclusionPolicy("none")

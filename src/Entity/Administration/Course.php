@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// TODO Add validation constraints
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\CourseRepository")
  */
