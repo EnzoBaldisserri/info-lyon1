@@ -60,6 +60,12 @@ class StudentRepository extends ServiceEntityRepository
               ->setParameter('startDate', $semester->getStartDate());
 
         // TODO find students potentially interested for semester
+        /*
+         * - Students that succeded semester n-1
+         * - Students that failed semester n
+         * - Students that failed a semester at some point, but got to the next anyway
+         * ...
+         */
 
         $qb
             ->addOrderBy('s.surname', 'ASC')
