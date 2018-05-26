@@ -20,7 +20,7 @@ class PlainType extends AbstractType
         } elseif (null === $value) {
             $value = 'null';
         } else if (is_array($value)) {
-            $value = implode(',', $value);
+            $value = implode($options['array_glue'], $value);
         } else if (is_object($value)) {
             if (method_exists($value, '__toString')) {
                 $value = $value->__toString();
@@ -37,6 +37,7 @@ class PlainType extends AbstractType
         $resolver->setDefaults([
             'label' => false,
             'mapped' => false,
+            'array_glue' => ',',
         ]);
     }
 }

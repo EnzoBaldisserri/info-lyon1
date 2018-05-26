@@ -40,7 +40,7 @@
 
 {% block plain_row %}
     <div {{ block('widget_attributes') }}>
-        {% if label is defined %}{{ label|trans }}{% endif %} {{ value|e }}
+        {% if label is not empty %}{{ label|trans }}{% endif %} {{ value|e }}
         {{ form_errors(form) }}
     </div>
 {% endblock %}
