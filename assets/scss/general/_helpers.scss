@@ -1,4 +1,15 @@
 // Block helpers
+
+// Inline helpers
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+// Flex helpers
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -16,14 +27,3 @@
 .flex-nowrap {
   flex-wrap: nowrap;
 }
-
-// Inline helpers
-.text-uppercase {
-  text-transform: uppercase;
-}
-
-.text-capitalize {
-  text-transform: capitalize;
-}
-
-// Flex helpers
