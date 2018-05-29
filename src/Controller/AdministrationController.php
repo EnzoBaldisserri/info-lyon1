@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\BaseController;
 use App\Entity\Administration\Course;
 use App\Entity\Administration\Semester;
 use App\Repository\Administration\CourseRepository;

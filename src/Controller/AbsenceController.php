@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Controller\BaseController;
 use App\Entity\Absence\Absence;
 use App\Entity\Absence\AbsenceType;
 use App\Entity\Administration\Semester;

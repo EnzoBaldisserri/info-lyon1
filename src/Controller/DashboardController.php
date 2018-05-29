@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\BaseController;
 
 /**
  * @Route("/dashboard", name="dashboard_")
