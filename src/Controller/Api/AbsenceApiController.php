@@ -16,7 +16,7 @@ use App\Service\TimeHelper;
 class AbsenceApiController extends BaseController
 {
     /**
-     * @Route("/get_all", name="getall")
+     * @Route("/get/all", name="get_all")
      */
     public function getAll(
         TimeHelper $timeHelper,
