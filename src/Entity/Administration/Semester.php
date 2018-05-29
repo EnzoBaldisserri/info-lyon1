@@ -48,7 +48,7 @@ class Semester
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
-     * TODO Excluded because causes serialization to break in Api\AbsenceController.getAll. Take a closer look ?
+     * Excluded because causes serialization to break in Api\AbsenceController.getAll
      * @Serializer\Exclude
      */
     private $groups;

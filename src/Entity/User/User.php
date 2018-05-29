@@ -16,7 +16,7 @@ use FOS\UserBundle\Model\User as BaseUser;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="userType", type="string", length=20)
  *
- * @Serializer\ExclusionPolicy("ALL")
+ * @Serializer\ExclusionPolicy("all")
  */
 abstract class User extends BaseUser
 {

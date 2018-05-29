@@ -8,9 +8,12 @@ use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\User\StudentRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Student extends User
 {
@@ -21,6 +24,8 @@ class Student extends User
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="student", orphanRemoval=true)
+     *
+     * @Serializer\Expose
      */
     private $absences;
 
