@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Translation\TranslatorInterface;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\Administration\GroupRepository;
-use App\Service\TimeHelper;
+use App\Helper\TimeHelper;
 
 /**
  * @Route("/absence", name="api_absence_")
@@ -28,7 +28,7 @@ class AbsenceApiController extends BaseController
         $semesters = $semesterRepository->findCurrent();
 
         if (empty($semesters)) {
-            $error = $translate->trans('error.no_current_semester');
+            $error = $translate->trans('error.semester.no_current');
         } else {
             $period = reset($semesters)->getPeriod();
 

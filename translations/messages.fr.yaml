@@ -38,7 +38,8 @@ app:
 
 error:
     no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
-    no_current_semester: Aucun semestre en cours
+    semester:
+        no_current: Pas de semestre en cours
 
 # Page related translations
 absence:
