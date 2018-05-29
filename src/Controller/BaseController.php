@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
+use App\Service\NavbarBuilder;
+use App\Repository\User\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Service\NavbarBuilder;
 
 abstract class BaseController extends AbstractController
 {
     private $navbarBuilder;
+    private $notificationRepository;
 
-    public function __construct(NavbarBuilder $navbarBuilder)
+    public function __construct(NavbarBuilder $navbarBuilder, NotificationRepository $notificationRepository)
     {
         $this->navbarBuilder = $navbarBuilder;
+        $this->notificationRepository = $notificationRepository;
     }
 
     protected function createHtmlResponse(string $view, Array $parameters = [], Response $response = null): Response
@@ -21,6 +23,10 @@ abstract class BaseController extends AbstractController
         $this->checkUserParameters($parameters);
 
         $parameters['navigation'] = $this->navbarBuilder->getNavigation();
+        $parameters['notifications'] = $this->notificationRepository->findBy(
+            ['user' => $this->getUser()],
+            ['datetime' => 'DESC']
+        );
 
         return parent::render($view, $parameters, $response);
     }

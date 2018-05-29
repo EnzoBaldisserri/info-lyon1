@@ -5,7 +5,7 @@ namespace App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\User\NotificationRepository")
  */
 class Notification
 {
@@ -17,17 +17,17 @@ class Notification
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=255)
      */
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $icon;
 
@@ -37,10 +37,20 @@ class Notification
     private $link;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datetime;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User\User", inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->datetime = new \DateTime();
+    }
 
     public function getId()
     {
@@ -91,6 +101,18 @@ class Notification
     public function setLink(?string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getDatetime(): \DateTime
+    {
+        return $this->datetime;
+    }
+
+    public function setDatetime(\DateTime $datetime): self
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }
