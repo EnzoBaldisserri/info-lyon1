@@ -2,10 +2,10 @@
 
 namespace App\Controller\Administration;
 
+use App\Controller\BaseController;
 use App\Entity\Administration\Course;
 use App\Form\Administration\CourseType;
 use App\Repository\Administration\CourseRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/administration/course")
  */
-class CourseController extends Controller
+class CourseController extends BaseController
 {
     /**
      * @Route("/new", name="administration_course_new", methods="GET|POST")

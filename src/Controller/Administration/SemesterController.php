@@ -2,11 +2,12 @@
 
 namespace App\Controller\Administration;
 
+use App\Controller\BaseController;
 use App\Entity\Administration\Semester;
 use App\Form\Administration\SemesterType;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Service\NotificationBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/administration/semester")
  */
-class SemesterController extends Controller
+class SemesterController extends BaseController
 {
     /**
      * @Route("/new", name="administration_semester_new", methods="GET|POST")
@@ -56,7 +57,11 @@ class SemesterController extends Controller
     public function edit(Request $request, Semester $semester, StudentRepository $studentRepository): Response
     {
         if (!$semester->isEditable()) {
-            // TODO Add notification
+            $this->createNotification()
+                ->setContent('error.semester.not_editable')
+                ->setType(NotificationBuilder::WARNING)
+                ->save();
+
             return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
         }
 
@@ -131,7 +136,11 @@ class SemesterController extends Controller
     public function delete(Request $request, Semester $semester): Response
     {
         if (!$semester->isDeletable()) {
-            // TODO Add notification
+            $this->createNotification()
+                ->setContent('error.semester.not_deletable')
+                ->setType(NotificationBuilder::WARNING)
+                ->save();
+
             if ($semester->isEditable()) {
                 return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
             } else {

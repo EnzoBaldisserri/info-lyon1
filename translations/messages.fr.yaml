@@ -39,6 +39,8 @@ app:
 error:
     no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
     semester:
+        not_editable: Le semestre ne peut pas être modifié
+        not_deletable: Le semestre ne peut pas être supprimé
         no_current: Pas de semestre en cours
 
 # Page related translations
