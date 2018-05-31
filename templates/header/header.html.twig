@@ -3,12 +3,15 @@
         <a href="{{ path("app_homepage") }}" class="brand-logo text-uppercase">{{ 'app.title'|trans }}</a>
 
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            {% include 'header/computer_navbar.html.twig' with {'navigation': navigation|default } only %}
-            {% include 'header/mobile_navbar.html.twig' only %}
+            {% include 'header/computer_navbar.html.twig' with {
+                'navigation': navigation|default,
+                'notifications': notifications|default,
+            } only %}
+            {% include 'header/mobile_navbar.html.twig' with { 'notifications': notifications|default } only %}
         {% endif %}
     </div>
 </nav>
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    {% include 'header/mobile_sidenav.html.twig' with {'navigation': navigation|default } only %}
+    {% include 'header/mobile_sidenav.html.twig' with { 'navigation': navigation|default } only %}
 {% endif %}

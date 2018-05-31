@@ -3,6 +3,42 @@
         <li><a href="{{ path(link) }}">{{ name|trans }}</a></li>
     {% endfor %}
     <li>
+        {% if notifications is empty %}
+            <a class="dropdown-button notification-wrapper" data-target="navbar-notifications">
+                <i class="material-icons">notifications_none</i>
+            </a>
+            <ul id="navbar-notifications" class="dropdown-content">
+                <li><p>{{ 'notification.empty'|trans }}</p></li>
+            </ul>
+        {% else %}
+            <a class="dropdown-trigger notification-wrapper" data-target="navbar-notifications">
+                <i class="material-icons">notifications</i>
+                <span
+                    class="badge new materialize-red lighten-2"
+                    data-badge-caption="{# Removes 'new' caption #}"
+                >
+                    {{ notifications|length}}
+                </span>
+            </a>
+            <ul id="navbar-notifications" class="dropdown-content">
+                {% for notification in notifications %}
+                    <li data-notif-id="{{ notification.id }}"
+                        {% if notification.link %}
+                            data-link="{{ notification.link|e('html_attr') }}"
+                        {% endif %}
+                        class="notif notif-{{ notification.type }} valign-wrapper"
+                    >
+                        <i class="material-icons">{{ notification.icon }}</i>
+                        {{ notification.content }}
+                    </li>
+                {% endfor %}
+                <li id="navbar-notifications-clear">
+                    <i class="material-icons black-text center-align">clear_all</i>
+                </li>
+            </ul>
+        {% endif %}
+    </li>
+    <li>
         <a id="navbar-user-trigger" class="dropdown-trigger" data-target="navbar-user">
             <i class="material-icons">account_circle</i>
         </a>

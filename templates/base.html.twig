@@ -15,7 +15,10 @@
     <body>
         <header>
             {% block header %}
-                {% include 'header/header.html.twig' with {'navigation' : navigation|default } only %}
+                {% include 'header/header.html.twig' with {
+                    'navigation': navigation|default,
+                    'notifications': notifications|default
+                } only %}
             {% endblock %}
         </header>
         {% block bodyContainer %}

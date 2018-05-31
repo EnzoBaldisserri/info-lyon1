@@ -24,6 +24,9 @@ global:
         clear: Effacer
         done: Accepter
 
+notification:
+    empty: Pas de notification
+
 app:
     title: info-lyon1
     menu:
