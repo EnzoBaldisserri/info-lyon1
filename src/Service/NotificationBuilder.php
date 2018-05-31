@@ -67,7 +67,7 @@ class NotificationBuilder
             throw new Exception('Duration "' . $duration . '" does not exist');
         }
 
-        $this->content = $this->type = $this->icon = $this->link = null;
+        $this->content = $this->type = $this->icon = $this->link = $this->receiver = null;
         $this->duration = $duration;
 
         return $this;
