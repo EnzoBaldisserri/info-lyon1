@@ -136,14 +136,4 @@ window.addEventListener('DOMContentLoaded', () => {
   M.FormSelect.init(document.querySelectorAll('select'));
   initializeDatePickers(document.querySelectorAll('.datepicker'));
   initializeTimePickers(document.querySelectorAll('.timepicker'));
-
-  // Form confirmation
-  // eslint-disable-next-line no-alert
-  const confirm = e => window.confirm(e.target.getAttribute('data-confirm'));
-
-  document.querySelectorAll('a[data-confirm]')
-    .forEach($anchor => $anchor.addEventListener('click', confirm));
-
-  document.querySelectorAll('form[data-confirm]')
-    .forEach($form => $form.addEventListener('submit', confirm));
 });

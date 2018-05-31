@@ -1,7 +1,7 @@
 <form
     method="post"
     action="{{ path('administration_course_delete', {'id': course.id}) }}"
-    data-confirm="{{ 'course.form.delete.confirm'|trans }}"
+    onsubmit="return confirm('{{ 'course.form.delete.confirm'|trans }}');"
 >
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
