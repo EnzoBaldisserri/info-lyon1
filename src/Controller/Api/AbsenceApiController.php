@@ -10,7 +10,7 @@ use App\Repository\Administration\GroupRepository;
 use App\Helper\TimeHelper;
 
 /**
- * @Route("/absence", name="api_absence_")
+ * @Route("/absence", name="absence_")
  */
 class AbsenceApiController extends BaseController
 {
