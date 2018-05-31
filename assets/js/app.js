@@ -121,17 +121,14 @@ function initializeTimePickers($pickers) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Navigation
-  M.Dropdown.init(
-    document.getElementById('navbar-user-trigger'),
-    {
-      alignment: 'right',
-      constrainWidth: false,
-      coverTrigger: false,
-    },
-  );
-
+  // Initialize specific mobile sidenav
   M.Sidenav.init(document.getElementById('mobile-sidenav'));
+
+  // Initialize components
+  M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {
+    constrainWidth: false,
+    coverTrigger: false,
+  });
 
   M.FormSelect.init(document.querySelectorAll('select'));
   initializeDatePickers(document.querySelectorAll('.datepicker'));
