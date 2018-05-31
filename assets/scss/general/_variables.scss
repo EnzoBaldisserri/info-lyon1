@@ -17,6 +17,10 @@ $color-secondary-dark: darken($color-secondary, 5%);
 $color-white: #ffffff;
 $color-light-grey: color('grey', 'base');
 $color-dark: color('grey', 'darken-4');
+$color-black: rgba(0, 0, 0, 0.87);
+$color-error: color('red', 'base');
+$color-warning: color('amber', 'base');
+$color-success: color('light-green', 'accent-3');
 
 $default-transition: all 0.2s ease;
 

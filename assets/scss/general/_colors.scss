@@ -8,9 +8,10 @@ $custom-colors:
     ('secondary-light', $color-primary-light),
     ('secondary-dark', $color-secondary-dark),
     ('dark', $color-dark),
-    ('error', color('red', 'base')),
-    ('warning', color('amber', 'darken-1')),
-    ('success', color('light-green', 'accent-3'))
+    ('black', $color-black),
+    ('error', $color-error),
+    ('warning', $color-warning),
+    ('success', $color-success)
   ),
   // Light colors (dark text)
   (
