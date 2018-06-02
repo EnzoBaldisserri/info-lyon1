@@ -23,8 +23,10 @@ global:
         cancel: Annuler
         clear: Effacer
         done: Accepter
+        close: Fermer
 
 notification:
+    title: Notifications
     empty: Pas de notification
 
 app:

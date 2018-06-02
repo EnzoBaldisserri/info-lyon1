@@ -22,17 +22,18 @@
             </a>
             <ul id="navbar-notifications" class="dropdown-content">
                 {% for notification in notifications %}
-                    <li data-notif-id="{{ notification.id }}"
+                    <li
+                        class="notif notif-{{ notification.type }} valign-wrapper"
+                        data-id="{{ notification.id }}"
                         {% if notification.link %}
                             data-link="{{ notification.link|e('html_attr') }}"
                         {% endif %}
-                        class="notif notif-{{ notification.type }} valign-wrapper"
                     >
-                        <i class="material-icons">{{ notification.icon }}</i>
-                        {{ notification.content }}
+                        <i class="material-icons">{{ notification.icon|e }}</i>
+                        {{ notification.content|e }}
                     </li>
                 {% endfor %}
-                <li id="navbar-notifications-clear">
+                <li class="clear">
                     <i class="material-icons black-text center-align">clear_all</i>
                 </li>
             </ul>

@@ -133,4 +133,6 @@ window.addEventListener('DOMContentLoaded', () => {
   M.FormSelect.init(document.querySelectorAll('select'));
   initializeDatePickers(document.querySelectorAll('.datepicker'));
   initializeTimePickers(document.querySelectorAll('.timepicker'));
+
+  M.Modal.init(document.querySelectorAll('.modal'));
 });
