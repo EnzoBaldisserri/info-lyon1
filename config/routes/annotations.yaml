@@ -1,3 +1,11 @@
+api_controllers:
+    resource: ../../src/Controller/Api/
+    type: annotation
+    prefix: /api
+    name_prefix: api_
+    options:
+        expose: true
+
 controllers:
     resource: ../../src/Controller/
     type: annotation
