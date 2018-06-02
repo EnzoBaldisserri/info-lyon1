@@ -3,28 +3,22 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use App\Service\AfterLoginRedirection;
 
 class HomepageController extends BaseController
 {
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/", name="homepage")
      */
-    public function index()
+    public function index(TokenStorageInterface $tokenStorage, AfterLoginRedirection $afterLoginRedirection)
     {
-        $user = $this->getUser();
+        $token = $tokenStorage->getToken();
 
-        if ($user === null) {
-            throw $this->createAccessDeniedException('Access denied');
+        if ($token === null) {
+            $this->redirectToRoute('fos_user_security_login');
         }
 
-        if ($user->hasRole('ROLE_STUDENT')) {
-            return $this->redirectToRoute('dashboard_index');
-        }
-
-        if ($user->hasRole('ROLE_TEACHER') || $user->hasRole('ROLE_SECRETARIAT')) {
-            return $this->redirectToRoute('absence_index');
-        }
-
-        throw $this->createAccessDeniedException('Access denied');
+        return $afterLoginRedirection->getRedirection($token);
     }
 }

@@ -57,6 +57,7 @@ security:
             form_login:
                 provider: fos_users
                 csrf_token_generator: security.csrf.token_manager
+                success_handler: App\Service\AfterLoginRedirection
 
             logout: true
             remember_me:

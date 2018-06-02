@@ -41,6 +41,9 @@ app:
 
 error:
     no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
+    login:
+        no_role: "Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.
+            Vous ne pouvez pas accéder à ce site."
     semester:
         not_editable: Le semestre ne peut pas être modifié
         not_deletable: Le semestre ne peut pas être supprimé
