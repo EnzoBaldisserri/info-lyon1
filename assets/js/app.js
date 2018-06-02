@@ -120,6 +120,44 @@ function initializeTimePickers($pickers) {
   });
 }
 
+function updateNotificationWrappers() {
+  const $navbarNotif = document.getElementById('navbar-notifications');
+  const $mobileNotif = document.getElementById('mobile-notifications');
+
+  const nbNotif = $navbarNotif.children.length - 1; // remove .notif-clear
+  const empty = nbNotif === 0;
+
+  document.querySelectorAll('.notif-badge')
+    .forEach(($el) => {
+      /* eslint-disable no-param-reassign */
+      if (empty) {
+        // sibling is notification icon
+        $el.previousElementSibling.textContent = 'notifications_none';
+        $el.remove();
+      } else {
+        $el.textContent = nbNotif.toString();
+      }
+      /* eslint-enable no-param-reassign */
+    });
+
+  if (empty) {
+    $navbarNotif.insertAdjacentHTML(
+      'afterbegin',
+      `<li class="valign-wrapper notif pointer-events-none">
+          <i class="material-icons">done</i>
+          ${Translator.trans('notification.empty')}
+      </li>`,
+    );
+    $mobileNotif.querySelector('.notification-wrapper').insertAdjacentHTML(
+      'afterbegin',
+      `<div class="collection-item valign-wrapper notif pointer-events-none">
+          <i class="material-icons">done</i>
+          ${Translator.trans('notification.empty')}
+      </div>`,
+    );
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   // Initialize specific mobile sidenav
   M.Sidenav.init(document.getElementById('mobile-sidenav'));
@@ -135,4 +173,64 @@ window.addEventListener('DOMContentLoaded', () => {
   initializeTimePickers(document.querySelectorAll('.timepicker'));
 
   M.Modal.init(document.querySelectorAll('.modal'));
+
+  // Handle notifications
+  const $header = document.querySelector('header');
+  $header.addEventListener('click', (e) => {
+    const $notif = e.target.closest('.notif');
+    if ($notif !== null) {
+      const fetchParameters = {
+        method: 'DELETE',
+        redirect: 'error',
+      };
+
+      // We are in a notification or a notif-clear
+      const id = $notif.getAttribute('data-id');
+      if (id !== null) {
+        const route = Routing.generate('api_notification_delete', { id });
+
+        fetch(route, fetchParameters)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(Translator.trans('error.load_error'));
+            }
+
+            return response.json();
+          })
+          .then((response) => {
+            if (response.error) {
+              throw new Error(response.error);
+            }
+
+            document.querySelectorAll(`.notif[data-id="${id}"]`)
+              .forEach($el => $el.remove());
+
+            if ($notif.hasAttribute('data-link')) {
+              window.location.href = $notif.getAttribute('data-link');
+            }
+          })
+          .then(updateNotificationWrappers);
+      } else if ($notif.classList.contains('notif-clear')) {
+        const route = Routing.generate('api_notification_clear');
+
+        fetch(route, fetchParameters)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(Translator.trans('error.load_error'));
+            }
+
+            return response.json();
+          })
+          .then((response) => {
+            if (response.error) {
+              throw new Error(response.error);
+            }
+
+            document.querySelectorAll('.notif')
+              .forEach($el => $el.remove());
+          })
+          .then(updateNotificationWrappers);
+      }
+    }
+  });
 });

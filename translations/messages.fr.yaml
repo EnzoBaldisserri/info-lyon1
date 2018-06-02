@@ -25,10 +25,6 @@ global:
         done: Accepter
         close: Fermer
 
-notification:
-    title: Notifications
-    empty: Pas de notification
-
 app:
     title: info-lyon1
     menu:
@@ -46,10 +42,18 @@ error:
     login:
         no_role: "Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.
             Vous ne pouvez pas accéder à ce site."
+    notification:
+        not_owner: Cette notification ne vous appartient pas
+        not_user: Vous n'êtes pas connecté
     semester:
         not_editable: Le semestre ne peut pas être modifié
         not_deletable: Le semestre ne peut pas être supprimé
         no_current: Pas de semestre en cours
+
+# General
+notification:
+    title: Notifications
+    empty: Pas de notification
 
 # Page related translations
 absence:

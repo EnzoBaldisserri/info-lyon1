@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Translation\TranslatorInterface;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\Administration\GroupRepository;

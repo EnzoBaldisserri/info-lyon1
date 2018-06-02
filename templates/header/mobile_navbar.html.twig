@@ -3,14 +3,14 @@
 </a>
 <ul class="right hide-on-large-only">
     <li>
-        <a href="#mobile-notifications" class="modal-trigger notification-wrapper">
+        <a class="modal-trigger notif-badge-container" href="#mobile-notifications">
             {% if notifications is empty %}
                 <i class="material-icons right">notifications_none</i>
             {% else %}
                 <i class="material-icons right">notifications</i>
-                <span class="badge new materialize-red lighten-2"
+                <span class="badge notif-badge new materialize-red lighten-2"
                       data-badge-caption="{# Remove 'new' #}"
-                  >
+                >
                       {{ notifications|length }}
                 </span>
             {% endif %}
@@ -18,34 +18,32 @@
     </li>
 </ul>
 
-<div id="mobile-notifications" class="modal modal-fixed-footer black-text">
-    <div class="modal-content">
+<div id="mobile-notifications" class="modal bottom-sheet">
+    <div class="modal-content black-text">
         <h4 class="center-align">{{ 'notification.title'|trans }}</h4>
-        <div class="collection">
-            {% if notifications is empty %}
-                <div class="collection-item">{{ 'notification.empty'|trans }}</div>
-            {% else %}
-                {% for notification in notifications %}
-                    <div
-                        class="collection-item notif notif-{{ notification.type }}"
-                        data-id="{{ notification.id }}"
-                        {% if notification.link %}
-                            data-link="{{ notification.link|e('html_attr') }}"
-                        {% endif %}
-                     >
-                        <div class="valign-wrapper">
-                            <i class="material-icons">{{ notification.icon|e }}</i>
-                            <span>{{ notification.content|e }}</span>
-                        </div>
+        <div class="collection notification-wrapper">
+            {% for notification in notifications %}
+                <div
+                    class="collection-item notif notif-{{ notification.type }}"
+                    data-id="{{ notification.id }}"
+                    {% if notification.link %}
+                        data-link="{{ notification.link|e('html_attr') }}"
+                    {% endif %}
+                 >
+                    <div class="valign-wrapper">
+                        <i class="material-icons">{{ notification.icon|e }}</i>
+                        <span>{{ notification.content|e }}</span>
                     </div>
-                {% endfor %}
-                <div class="clear">
-                    <i class="material-icons black-text center-align">clear_all</i>
                 </div>
-            {% endif %}
+            {% else %}
+                <div class="collection-item valign-wrapper notif pointer-events-none">
+                    <i class="material-icons">done</i>
+                    {{ 'notification.empty'|trans }}
+                </div>
+            {% endfor %}
+            <div class="notif notif-clear">
+                <i class="material-icons black-text center-align">clear_all</i>
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <a class="btn waves-effect waves-light modal-action modal-close">{{ 'global.message.close'|trans }}</a>
     </div>
 </div>

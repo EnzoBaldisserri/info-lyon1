@@ -1,16 +1,25 @@
 @import '../variables';
 
-// Persisted notifications in navbar
-.notification-wrapper {
-  .badge {
+// Notifications in navbar
+#navbar-notifications {
+  min-width: 300px;
+  max-width: 600px;
+}
+
+// Badge for desktop and mobile
+.notif-badge-container {
+  position: relative;
+
+  .notif-badge {
+
     position: absolute;
-    top: 20%;
+    top: 0.7rem;
 
     $size: 1.3rem;
-    width: $size;
-    min-width: $size;
-    height: $size;
-    line-height: $size;
+    width: $size !important;
+    min-width: $size !important;
+    height: $size !important;
+    line-height: $size !important;
 
     border-radius: 50% !important;
 
@@ -20,18 +29,6 @@
 
     @media #{$medium-and-down} {
       margin-left: 28px;
-    }
-  }
-}
-
-#navbar-notifications {
-  max-width: 600px;
-
-  li {
-    padding: 0.4rem 0.4rem;
-
-    .material-icons {
-      padding: 0 .4rem;
     }
   }
 }
@@ -47,23 +44,26 @@
 }
 
 // Common
+.notif {
+  padding: 0.4rem 0.4rem;
+
+  .material-icons {
+    padding: 0 .4rem;
+  }
+}
 
 .notif-info {
-  background-color: $color-white;
-  color: $color-black;
+  background-color: $color-white !important;
 }
 
 .notif-success {
-  background-color: $color-success;
-  color: $color-white;
+  background-color: $color-success !important;
 }
 
 .notif-warning {
-  background-color: $color-warning;
-  color: $color-white;
+  background-color: $color-warning !important;
 }
 
-.notif-danger {
-  background-color: $color-error;
-  color: $color-white;
+.notif-error {
+  background-color: $color-error !important;
 }
