@@ -37,7 +37,7 @@ class SemesterController extends BaseController
             return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
         }
 
-        return $this->render('administration/semester/new.html.twig', [
+        return $this->createHtmlResponse('administration/semester/new.html.twig', [
             'semester' => $semester,
             'form' => $form->createView(),
         ]);
@@ -48,7 +48,7 @@ class SemesterController extends BaseController
      */
     public function show(Semester $semester): Response
     {
-        return $this->render('administration/semester/show.html.twig', ['semester' => $semester]);
+        return $this->createHtmlResponse('administration/semester/show.html.twig', ['semester' => $semester]);
     }
 
     /**
@@ -123,7 +123,7 @@ class SemesterController extends BaseController
         $students = $studentRepository
             ->findAvailableForSemester($semester);
 
-        return $this->render('administration/semester/edit.html.twig', [
+        return $this->createHtmlResponse('administration/semester/edit.html.twig', [
             'semester' => $semester,
             'students' => $students,
             'form' => $form->createView(),

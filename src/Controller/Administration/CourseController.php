@@ -41,7 +41,7 @@ class CourseController extends BaseController
             return $this->redirectToRoute('administration_index');
         }
 
-        return $this->render('administration/course/new.html.twig', [
+        return $this->createHtmlResponse('administration/course/new.html.twig', [
             'course' => $course,
             'form' => $form->createView(),
         ]);
@@ -79,7 +79,7 @@ class CourseController extends BaseController
             return $this->redirectToRoute('administration_course_edit', ['id' => $course->getId()]);
         }
 
-        return $this->render('administration/course/edit.html.twig', [
+        return $this->createHtmlResponse('administration/course/edit.html.twig', [
             'course' => $course,
             'form' => $form->createView(),
         ]);
