@@ -10,7 +10,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
-class AfterLoginRedirection implements AuthenticationSuccessHandlerInterface
+class HomepageRedirection implements AuthenticationSuccessHandlerInterface
 {
     private $router;
     private $translator;
