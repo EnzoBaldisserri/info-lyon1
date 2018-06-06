@@ -8,9 +8,7 @@
                 <i class="material-icons right">notifications_none</i>
             {% else %}
                 <i class="material-icons right">notifications</i>
-                <span class="badge notif-badge new materialize-red lighten-2"
-                      data-badge-caption="{# Remove 'new' #}"
-                >
+                <span class="notif-badge">
                       {{ notifications|length }}
                 </span>
             {% endif %}
@@ -24,7 +22,7 @@
         <div class="collection notification-wrapper">
             {% for notification in notifications %}
                 <div
-                    class="collection-item notif notif-{{ notification.type }}"
+                    class="collection-item notif {{ notification.type }}"
                     data-id="{{ notification.id }}"
                     {% if notification.link %}
                         data-link="{{ notification.link|e('html_attr') }}"

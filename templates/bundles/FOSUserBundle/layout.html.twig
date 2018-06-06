@@ -13,3 +13,9 @@
         {% endblock %}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {# Remove translations #}
+    <script src="{{ asset('build/materialize.js') }}"></script>
+    <script src="{{ asset('build/app.js') }}"></script>
+{% endblock %}

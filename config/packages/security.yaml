@@ -46,11 +46,6 @@ security:
             pattern: ^/login$
             anonymous: true
 
-        # TODO Handle security for the API
-        api:
-            pattern: ^/api/
-            anonymous: true
-
         main:
             pattern: ^/
             anonymous: false
@@ -69,6 +64,7 @@ security:
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, role: ROLE_USER }
         - { path: ^/control/, role: ROLE_TEACHER }
         - { path: ^/mark/, role: ROLE_STUDENT }
         - { path: ^/project/, role: ROLE_PROJECT_MEMBER }

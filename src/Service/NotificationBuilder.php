@@ -22,7 +22,7 @@ class NotificationBuilder
         self::INFORMATION => 'info_outline',
         self::SUCCESS => 'done',
         self::WARNING => 'warning',
-        self::ERROR => 'report_problem'
+        self::ERROR => 'report'
     ];
 
     const DURATION_FLASH = 0;

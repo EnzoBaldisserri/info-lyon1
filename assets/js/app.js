@@ -1,4 +1,5 @@
 import Translator from 'bazinga-translator';
+import axios from 'axios';
 import Routing from '../../public/bundles/fosjsrouting/js/router.min';
 import routes from '../../public/bundles/fos_js_routes.json';
 
@@ -120,44 +121,6 @@ function initializeTimePickers($pickers) {
   });
 }
 
-function updateNotificationWrappers() {
-  const $navbarNotif = document.getElementById('navbar-notifications');
-  const $mobileNotif = document.getElementById('mobile-notifications');
-
-  const nbNotif = $navbarNotif.children.length - 1; // remove .notif-clear
-  const empty = nbNotif === 0;
-
-  document.querySelectorAll('.notif-badge')
-    .forEach(($el) => {
-      /* eslint-disable no-param-reassign */
-      if (empty) {
-        // sibling is notification icon
-        $el.previousElementSibling.textContent = 'notifications_none';
-        $el.remove();
-      } else {
-        $el.textContent = nbNotif.toString();
-      }
-      /* eslint-enable no-param-reassign */
-    });
-
-  if (empty) {
-    $navbarNotif.insertAdjacentHTML(
-      'afterbegin',
-      `<li class="valign-wrapper notif pointer-events-none">
-          <i class="material-icons">done</i>
-          ${Translator.trans('notification.empty')}
-      </li>`,
-    );
-    $mobileNotif.querySelector('.notification-wrapper').insertAdjacentHTML(
-      'afterbegin',
-      `<div class="collection-item valign-wrapper notif pointer-events-none">
-          <i class="material-icons">done</i>
-          ${Translator.trans('notification.empty')}
-      </div>`,
-    );
-  }
-}
-
 window.addEventListener('DOMContentLoaded', () => {
   // Initialize specific mobile sidenav
   M.Sidenav.init(document.getElementById('mobile-sidenav'));
@@ -176,27 +139,58 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Handle notifications
   const $header = document.querySelector('header');
+
+  const updateNotificationWrappers = () => {
+    const $navbarNotif = document.getElementById('navbar-notifications');
+    const $mobileNotif = document.getElementById('mobile-notifications');
+
+    const nbNotif = $navbarNotif.children.length - 1; // remove .notif-clear
+    const empty = nbNotif === 0;
+
+    $header.querySelectorAll('.notif-badge')
+      .forEach(($el) => {
+        /* eslint-disable no-param-reassign */
+        if (empty) {
+          // sibling is notification icon
+          $el.previousElementSibling.textContent = 'notifications_none';
+          $el.remove();
+        } else {
+          $el.textContent = nbNotif.toString();
+        }
+        /* eslint-enable no-param-reassign */
+      });
+
+    if (empty) {
+      $navbarNotif.insertAdjacentHTML(
+        'afterbegin',
+        `<li class="valign-wrapper notif pointer-events-none">
+            <i class="material-icons">done</i>
+            ${Translator.trans('notification.empty')}
+        </li>`,
+      );
+      $mobileNotif.querySelector('.notification-wrapper').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="collection-item valign-wrapper notif pointer-events-none">
+            <i class="material-icons">done</i>
+            ${Translator.trans('notification.empty')}
+        </div>`,
+      );
+    }
+  };
+
+  const catchError = error => M.toast({
+    html: `<i class="material-icons">report</i> ${error.message}`,
+    classes: 'error valign-wrapper',
+  });
+
   $header.addEventListener('click', (e) => {
     const $notif = e.target.closest('.notif');
     if ($notif !== null) {
-      const fetchParameters = {
-        method: 'DELETE',
-        redirect: 'error',
-      };
-
       // We are in a notification or a notif-clear
       const id = $notif.getAttribute('data-id');
       if (id !== null) {
-        const route = Routing.generate('api_notification_delete', { id });
-
-        fetch(route, fetchParameters)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(Translator.trans('error.load_error'));
-            }
-
-            return response.json();
-          })
+        axios.delete(Routing.generate('api_notification_delete', { id }))
+          .then(response => response.data)
           .then((response) => {
             if (response.error) {
               throw new Error(response.error);
@@ -209,27 +203,21 @@ window.addEventListener('DOMContentLoaded', () => {
               window.location.href = $notif.getAttribute('data-link');
             }
           })
-          .then(updateNotificationWrappers);
+          .then(updateNotificationWrappers)
+          .catch(catchError);
       } else if ($notif.classList.contains('notif-clear')) {
-        const route = Routing.generate('api_notification_clear');
-
-        fetch(route, fetchParameters)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(Translator.trans('error.load_error'));
-            }
-
-            return response.json();
-          })
+        axios.delete(Routing.generate('api_notification_clear'))
+          .then(response => response.data)
           .then((response) => {
             if (response.error) {
               throw new Error(response.error);
             }
 
-            document.querySelectorAll('.notif')
+            document.querySelectorAll('.notif:not(.notif-clear)')
               .forEach($el => $el.remove());
           })
-          .then(updateNotificationWrappers);
+          .then(updateNotificationWrappers)
+          .catch(catchError);
       }
     }
   });

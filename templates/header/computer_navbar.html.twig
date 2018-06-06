@@ -16,17 +16,14 @@
         {% else %}
             <a class="dropdown-trigger notif-badge-container" data-target="navbar-notifications">
                 <i class="material-icons">notifications</i>
-                <span
-                    class="badge notif-badge new materialize-red lighten-2"
-                    data-badge-caption="{# Removes 'new' caption #}"
-                >
+                <span class="notif-badge">
                     {{ notifications|length}}
                 </span>
             </a>
             <ul id="navbar-notifications" class="dropdown-content notification-wrapper">
                 {% for notification in notifications %}
                     <li
-                        class="notif notif-{{ notification.type }} valign-wrapper"
+                        class="valign-wrapper notif {{ notification.type }}"
                         data-id="{{ notification.id }}"
                         {% if notification.link %}
                             data-link="{{ notification.link|e('html_attr') }}"

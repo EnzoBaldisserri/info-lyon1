@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 import Loader from '../react-utils/Loader';
 
 import TableStatic from './TableStatic/TableStatic';
@@ -21,15 +22,8 @@ class AbsenceTable extends Component {
   }
 
   componentDidMount() {
-    fetch(Routing.generate('api_absence_get_all'))
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(Translator.trans('error.load_error'));
-        }
-
-        return response.json();
-      })
-
+    axios.get(Routing.generate('api_absence_get_all'))
+      .then(response => response.data)
       .then((data) => {
         if (data.error) {
           throw new Error(data.error);

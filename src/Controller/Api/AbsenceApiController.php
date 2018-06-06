@@ -22,6 +22,8 @@ class AbsenceApiController extends BaseController
         SemesterRepository $semesterRepository,
         GroupRepository $groupRepository
     ) {
+        $this->denyAccessUnlessGranted('ROLE_SECRETARIAT');
+
         $doctrine = $this->getDoctrine();
 
         $semesters = $semesterRepository->findCurrent();
