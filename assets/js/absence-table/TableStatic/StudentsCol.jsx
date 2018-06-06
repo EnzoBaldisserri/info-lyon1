@@ -1,34 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import AbsenceContext from '../AbsenceContext';
 import StudentRow from './StudentRow';
 
-const StudentsCol = (props) => {
-  const groups = props.groups.map((group) => {
-    const students = group.students.map(student =>
-      <StudentRow student={student} key={student.id} />);
-
-    return (
-      <div className="group" key={group.id}>
-        { students }
-      </div>
-    );
-  });
-
-  return (
-    <div className="students">
-      { groups }
-    </div>
-  );
-};
-
-StudentsCol.propTypes = {
-  groups: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    students: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-    })),
-  })).isRequired,
-};
+const StudentsCol = () => (
+  <div className="students">
+    <AbsenceContext.Consumer>
+      { ({ groups }) => groups.map(group => (
+        <div className="group" key={group.id}>
+          { group.students.map(student => <StudentRow student={student} key={student.id} />) }
+        </div>
+      )) }
+    </AbsenceContext.Consumer>
+  </div>
+);
 
 export default StudentsCol;

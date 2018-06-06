@@ -1,31 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
+import AbsenceContext from '../AbsenceContext';
 import MonthsRow from './MonthsRow';
 import DaysRow from './DaysRow';
 
-const TableHeader = (props) => {
-  const { months } = props;
+const TableHeader = () => (
+  <thead>
+    <AbsenceContext.Consumer>
+      { ({ months }) => {
+        // day shape: [numberInMonth, { name, hash }]
+        const days = months.reduce((carry, month) => ([
+          ...carry,
+          ...Object.entries(month.days),
+        ]), []);
 
-  // day shape: [numberInMonth, { name, hash }]
-  const days = months.reduce((carry, month) => ([
-    ...carry,
-    ...Object.entries(month.days),
-  ]), []);
-
-  return (
-    <thead>
-      <MonthsRow months={months} />
-      <DaysRow days={days} number />
-      <DaysRow days={days} />
-    </thead>
-  );
-};
-
-TableHeader.propTypes = {
-  months: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  })).isRequired,
-};
+        return (
+          <Fragment>
+            <MonthsRow months={months} />
+            <DaysRow days={days} number />
+            <DaysRow days={days} />
+          </Fragment>
+        );
+      }}
+    </AbsenceContext.Consumer>
+  </thead>
+);
 
 export default TableHeader;

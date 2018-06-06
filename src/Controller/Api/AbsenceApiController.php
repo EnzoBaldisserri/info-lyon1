@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\Administration\GroupRepository;
+use App\Repository\Absence\AbsenceTypeRepository;
 use App\Helper\TimeHelper;
 
 /**
@@ -19,14 +20,16 @@ class AbsenceApiController extends BaseController
     public function getAll(
         TimeHelper $timeHelper,
         TranslatorInterface $translator,
+        AbsenceTypeRepository $absenceTypeRepository,
         SemesterRepository $semesterRepository,
         GroupRepository $groupRepository
     ) {
         $this->denyAccessUnlessGranted('ROLE_SECRETARIAT');
 
-        $doctrine = $this->getDoctrine();
-
         $semesters = $semesterRepository->findCurrent();
+
+        $absenceTypes = $absenceTypeRepository
+            ->findAllWithNames();
 
         if (empty($semesters)) {
             $error = $translate->trans('error.semester.no_current');
@@ -46,6 +49,7 @@ class AbsenceApiController extends BaseController
             'firstDay' => $firstDay ?? null,
             'months' => $months ?? [],
             'groups' => $groups ?? [],
+            'absenceTypes' => $absenceTypes,
         ]);
     }
 }

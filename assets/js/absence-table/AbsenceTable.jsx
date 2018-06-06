@@ -2,9 +2,11 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Loader from '../react-utils/Loader';
 
+import AbsenceContext from './AbsenceContext';
 import TableStatic from './TableStatic/TableStatic';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
+// import AbsenceEditor from './AbsenceEditor/AbsenceEditor';
 
 class AbsenceTable extends Component {
   constructor(props) {
@@ -15,8 +17,6 @@ class AbsenceTable extends Component {
     this.state = {
       loaded: false,
       error: null,
-      months: [],
-      groups: [],
       tableScroll: null,
     };
   }
@@ -83,8 +83,6 @@ class AbsenceTable extends Component {
     const {
       error,
       loaded,
-      months,
-      groups,
     } = this.state;
 
     if (error) {
@@ -103,13 +101,15 @@ class AbsenceTable extends Component {
 
     return (
       <Fragment>
-        <TableStatic groups={groups} />
-        <div className="dynamic" ref={this.tableContainer}>
-          <table role="grid">
-            <TableHeader months={months} />
-            <TableBody groups={groups} />
-          </table>
-        </div>
+        <AbsenceContext.Provider value={this.state}>
+          <TableStatic />
+          <div className="dynamic" ref={this.tableContainer}>
+            <table role="grid">
+              <TableHeader />
+              <TableBody />
+            </table>
+          </div>
+        </AbsenceContext.Provider>
       </Fragment>
     );
   }
