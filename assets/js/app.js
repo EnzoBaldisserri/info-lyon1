@@ -161,6 +161,9 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
     if (empty) {
+      $header.querySelectorAll('.notif-clear')
+        .forEach($el => $el.remove());
+
       $navbarNotif.insertAdjacentHTML(
         'afterbegin',
         `<li class="valign-wrapper notif pointer-events-none">
