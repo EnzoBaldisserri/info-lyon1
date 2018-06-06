@@ -5,6 +5,7 @@ namespace App\Repository\Absence;
 use App\Entity\Absence\AbsenceType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @method AbsenceType|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,25 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class AbsenceTypeRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $translator;
+
+    public function __construct(RegistryInterface $registry, TranslatorInterface $translator)
     {
         parent::__construct($registry, AbsenceType::class);
+
+        $this->translator = $translator;
     }
 
+    public function findAllWithNames(): Array
+    {
+        $absenceTypesRaw = $this->findAll();
+
+        $absenceTypes = [];
+        foreach ($absenceTypesRaw as $type) {
+            $name = $type->getName();
+            $absenceTypes[$name] = $this->translator->trans("absence.type.$name");
+        }
+
+        return $absenceTypes;
+    }
 }
