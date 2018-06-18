@@ -2,31 +2,26 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-function isJustified(absences) {
-  return absences.reduce(
-    (carry, absence) => carry && absence.justified,
-    true,
-  );
-}
+const isNotJustified = absence => !absence.justified;
 
-function getType(absences) {
-  return absences.reduce(
-    (carry, absence) => ((carry === null || carry === absence.type.name) ? absence.type.name : 'several'),
-    null,
-  );
-}
+const areJustified = absences => !absences.some(isNotJustified);
 
-function getClass(absences) {
+const getType = absences => absences.reduce(
+  (carry, absence) => ((carry === null || carry === absence.type.name) ? absence.type.name : 'several'),
+  null,
+);
+
+const getClasses = (absences) => {
   if (absences.length === 0) {
     return null;
   }
 
-  const typeClass = isJustified(absences) ?
+  const typeClass = areJustified(absences) ?
     'abs-justified'
     : `abs-${getType(absences)}`;
 
   return `abs ${typeClass}`;
-}
+};
 
 function formatTime(time) {
   const date = new Date(time);
@@ -39,6 +34,17 @@ function formatTime(time) {
 }
 
 class AbsenceDay extends PureComponent {
+  static propTypes = {
+    absences: PropTypes.arrayOf(PropTypes.shape({
+      student: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }),
+      type: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }),
+    })).isRequired,
+  }
+
   state = {
     open: false,
   }
@@ -64,7 +70,7 @@ class AbsenceDay extends PureComponent {
     }
 
     const classes = classNames(
-      getClass(absences),
+      getClasses(absences),
       { open },
     );
 
@@ -84,7 +90,7 @@ class AbsenceDay extends PureComponent {
               </div>
               <div>
                 { Translator.trans('absence.props.justified') } :&nbsp;
-                { absence.justified ? Translator.trans('global.message.yes') : Translator.trans('global.message.no') }
+                { Translator.trans(`global.message.${absence.justified ? 'yes' : 'no'}`) }
               </div>
               <div>{ Translator.trans(`absence.type.${absence.type.name}`) }</div>
             </div>
@@ -94,16 +100,5 @@ class AbsenceDay extends PureComponent {
     );
   }
 }
-
-AbsenceDay.propTypes = {
-  absences: PropTypes.arrayOf(PropTypes.shape({
-    student: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-    }),
-    type: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  })).isRequired,
-};
 
 export default AbsenceDay;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import AbsenceContext from '../AbsenceContext';
+import { AbsenceConsumer } from '../AbsenceContext';
 import StudentRow from './StudentRow';
 
 const TableBody = () => (
   <tbody>
-    <AbsenceContext.Consumer>
+    <AbsenceConsumer>
       { ({ groups }) => groups.map(group =>
         group.students.map((student, index) => (
           <StudentRow
@@ -14,7 +14,7 @@ const TableBody = () => (
             key={student.id}
           />
         ))) }
-    </AbsenceContext.Consumer>
+    </AbsenceConsumer>
   </tbody>
 );
 

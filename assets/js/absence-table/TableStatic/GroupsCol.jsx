@@ -1,11 +1,11 @@
 import React from 'react';
 
-import AbsenceContext from '../AbsenceContext';
+import { AbsenceConsumer } from '../AbsenceContext';
 
 const cellHeight = 26;
 const GroupsCol = () => (
   <div className="groups">
-    <AbsenceContext.Consumer>
+    <AbsenceConsumer>
       { ({ groups }) => groups.map(group => (
         <div
           key={group.id}
@@ -15,7 +15,7 @@ const GroupsCol = () => (
           {group.fullname}
         </div>
       )) }
-    </AbsenceContext.Consumer>
+    </AbsenceConsumer>
   </div>
 );
 

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Loader from '../react-utils/Loader';
 
-import AbsenceContext from './AbsenceContext';
+import { AbsenceProvider } from './AbsenceContext';
 import TableStatic from './TableStatic/TableStatic';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
@@ -101,7 +101,7 @@ class AbsenceTable extends Component {
 
     return (
       <Fragment>
-        <AbsenceContext.Provider value={this.state}>
+        <AbsenceProvider value={this.state}>
           <TableStatic />
           <div className="dynamic" ref={this.tableContainer}>
             <table role="grid">
@@ -109,7 +109,7 @@ class AbsenceTable extends Component {
               <TableBody />
             </table>
           </div>
-        </AbsenceContext.Provider>
+        </AbsenceProvider>
       </Fragment>
     );
   }

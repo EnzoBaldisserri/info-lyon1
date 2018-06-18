@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 import StudentSummary from './StudentSummary';
 
 class StudentRow extends Component {
+  static propTypes = {
+    student: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      firstname: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    }).isRequired,
+  }
+
   state = {
     open: false,
   }
@@ -38,13 +46,5 @@ class StudentRow extends Component {
     );
   }
 }
-
-StudentRow.propTypes = {
-  student: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    firstname: PropTypes.string.isRequired,
-    surname: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default StudentRow;

@@ -6,4 +6,7 @@ const AbsenceContext = React.createContext({
   absenceTypes: [],
 });
 
+export const AbsenceProvider = AbsenceContext.Provider;
+export const AbsenceConsumer = AbsenceContext.Consumer;
+
 export default AbsenceContext;

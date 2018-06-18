@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 
-import AbsenceContext from '../AbsenceContext';
+import { AbsenceConsumer } from '../AbsenceContext';
 import MonthsRow from './MonthsRow';
 import DaysRow from './DaysRow';
 
 const TableHeader = () => (
   <thead>
-    <AbsenceContext.Consumer>
+    <AbsenceConsumer>
       { ({ months }) => {
         // day shape: [numberInMonth, { name, hash }]
         const days = months.reduce((carry, month) => ([
@@ -22,7 +22,7 @@ const TableHeader = () => (
           </Fragment>
         );
       }}
-    </AbsenceContext.Consumer>
+    </AbsenceConsumer>
   </thead>
 );
 
