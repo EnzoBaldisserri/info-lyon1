@@ -24,7 +24,7 @@ class GroupRepository extends ServiceEntityRepository
 
     public function findInSemestersWithAbsences(Array $semesters)
     {
-        $oneSemester = reset($semesters);
+        $period = reset($semesters)->getPeriod();
 
         $qb = $this->createQueryBuilder('g');
 
@@ -62,8 +62,8 @@ class GroupRepository extends ServiceEntityRepository
                 $qb->expr()->isNull('a.startTime'),
                 $qb->expr()->between('a.startTime', ':start', ':end')
             ))
-              ->setParameter('start', $oneSemester->getStartDate())
-              ->setParameter('end', $oneSemester->getEndDate())
+              ->setParameter('start', $period->getStartDate())
+              ->setParameter('end', $period->getEndDate())
             ->addOrderBy('a.startTime', 'ASC')
         ;
 
@@ -72,7 +72,7 @@ class GroupRepository extends ServiceEntityRepository
 
         // Compute days of the semester
         // With a hash used as a key in React
-        $days = $this->getDaysWithHash($oneSemester);
+        $days = $this->getDaysWithHash($period);
 
         // Group absences in days
         foreach ($groups as $group) {
@@ -88,16 +88,16 @@ class GroupRepository extends ServiceEntityRepository
         return $groups;
     }
 
-    private function getDaysWithHash(Semester $semester): Array
+    private function getDaysWithHash(Period $period): Array
     {
         $days = [];
 
-        $semDate = $semester->getStartDate();
-        $endDate = $semester->getEndDate();
+        $currDate = $period->getStartDate();
+        $endDate = $period->getEndDate();
 
         // While semDate is before end
-        while ($semDate->diff($endDate)->invert === 0) {
-            $date = $semDate->format('Y-m-d');
+        while ($currDate <= $endDate) {
+            $date = $currDate->format('Y-m-d');
 
             $days[$date] = [
                 'hash' => $date,

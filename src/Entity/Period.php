@@ -18,7 +18,7 @@ class Period
      */
     public function __construct(\DateTime $firstDate, \DateTime $secondDate)
     {
-        if ($firstDate->diff($secondDate)->invert === 0) {
+        if ($firstDate <= $secondDate) {
             $this->start = $firstDate;
             $this->end = $secondDate;
         } else {
