@@ -18,6 +18,11 @@ class AbsenceTable extends Component {
       loaded: false,
       error: null,
       tableScroll: null,
+      // Loaded from server
+      firstDay: null,
+      months: [],
+      groups: [],
+      absenceTypes: [],
     };
   }
 
@@ -32,6 +37,7 @@ class AbsenceTable extends Component {
         this.setState({
           loaded: true,
           ...data,
+          firstDay: new Date(data.firstDay),
         });
 
         return data;
@@ -83,6 +89,10 @@ class AbsenceTable extends Component {
     const {
       error,
       loaded,
+      firstDay,
+      months,
+      groups,
+      absenceTypes,
     } = this.state;
 
     if (error) {
@@ -99,9 +109,16 @@ class AbsenceTable extends Component {
       );
     }
 
+    const provided = {
+      firstDay,
+      months,
+      groups,
+      absenceTypes,
+    };
+
     return (
       <Fragment>
-        <AbsenceProvider value={this.state}>
+        <AbsenceProvider value={provided}>
           <TableStatic />
           <div className="dynamic" ref={this.tableContainer}>
             <table role="grid">
