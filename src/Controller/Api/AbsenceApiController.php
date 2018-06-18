@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Translation\TranslatorInterface;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\Administration\GroupRepository;
@@ -16,6 +17,7 @@ class AbsenceApiController extends BaseController
 {
     /**
      * @Route("/get/all", name="get_all")
+     * @Method({"GET"})
      */
     public function getAll(
         TimeHelper $timeHelper,
