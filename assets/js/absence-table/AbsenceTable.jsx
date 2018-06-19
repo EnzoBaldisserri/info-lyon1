@@ -34,43 +34,43 @@ class AbsenceTable extends Component {
           throw new Error(data.error);
         }
 
-        this.setState({
-          loaded: true,
+        const parsedData = {
           ...data,
           firstDay: new Date(data.firstDay),
+        };
+
+        this.setState({
+          loaded: true,
+          ...parsedData,
         });
 
-        return data;
+        return parsedData;
       })
 
       .then((data) => {
-        if (data.firstDay) {
-          const firstDate = new Date(data.firstDay);
+        // Center current day
+        const today = new Date();
+        const timeDifference = today - data.firstDay;
 
-          // Center current day
-          const today = new Date();
-          const timeDifference = today.getTime() - firstDate.getTime();
+        if (timeDifference > 0) {
+          const cellWidth = 26;
+          const dayDifference = timeDifference / (1000 * 3600 * 24);
 
-          if (timeDifference > 0) {
-            const cellWidth = 26;
-            const dayDifference = timeDifference / (1000 * 3600 * 24);
-
-            this.setState({
-              tableScroll: Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0),
-            });
-          }
-
-          // Highlight week-ends
-          document.head.insertAdjacentHTML(
-            'beforeend',
-            `<style>
-              tbody td:nth-child(7n + ${8 - firstDate.getDay()}),
-              tbody td:nth-child(7n + ${7 - firstDate.getDay()}) {
-                background-color: rgba(255, 183, 77, .6);
-              }
-            </style>`,
-          );
+          this.setState({
+            tableScroll: Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0),
+          });
         }
+
+        // Highlight week-ends
+        document.head.insertAdjacentHTML(
+          'beforeend',
+          `<style>
+            tbody td:nth-child(7n + ${8 - data.firstDay.getDay()}),
+            tbody td:nth-child(7n + ${7 - data.firstDay.getDay()}) {
+              background-color: rgba(255, 183, 77, .6);
+            }
+          </style>`,
+        );
       })
 
       .catch(error => this.setState({ error }));

@@ -16,92 +16,36 @@ class TimeHelper
         $this->translator = $translator;
     }
 
-    public function getPeriodMonths(Period $period, bool $withHash = false): Array
+    public function getPeriodMonths(Period $period, bool $withRepr = false): Array
     {
         $monthsTrans = explode(',', $this->translator->trans('global.time.months'));
         $daysShortTrans = explode(',', $this->translator->trans('global.time.days_short'));
 
         $months = [];
 
-        // Get current state from start date
-        [$year, $month, $dayInMonth, $dayInWeek] = array_map(
-            'intval',
-            explode(' ', $period->getStart()->format('Y n j N'))
-        );
+        $date = clone $period->getStart();
 
-        // Get end state from end date
-        [$endYear, $endMonth, $endDay] = array_map(
-            'intval',
-            explode(' ', $period->getEnd()->format('Y n j'))
-        );
+        while ($date <= $period->getEnd()) {
+            [$dayInWeek, $dayInMonth, $month] = explode(' ', $date->format('w j n'));
 
-        // Start processing months and days
-        while ($year !== $endYear || $month !== $endMonth) {
-            $days = [];
-            $nbDayInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-            while ($dayInMonth <= $nbDayInMonth) {
-                $newDay = $withHash ?
-                    [
-                        'name' => $daysShortTrans[$dayInWeek],
-                        'hash' => "$year-$month-$dayInMonth",
-                    ]
-                    : $daysShortTrans[$dayInWeek];
-
-                $days[$dayInMonth] = $newDay;
-
-                $dayInMonth += 1;
-                $dayInWeek = ($dayInWeek + 1) % 7;
+            if (!isset($months[$month])) {
+                $months[$month] = [
+                    'name' => $monthsTrans[$month - 1],
+                    'repr' => $date->format('Y-m'),
+                    'days' => [],
+                ];
             }
 
-            $newMonth = [
-                'name' => $monthsTrans[$month - 1],
-                'days' => $days,
-            ];
-
-            if ($withHash) {
-                $newMonth['hash'] = "$year-$month";
-            }
-
-            $months[] = $newMonth;
-
-            $month += 1;
-            if ($month > 12) {
-                $month = 1;
-                $year += 1;
-            }
-
-            $dayInMonth = 1;
-        }
-
-        // Compute days for last month
-        $days = [];
-
-        while ($dayInMonth <= $endDay) {
-            $newDay = $withHash ?
+            $months[$month]['days'][$dayInMonth] = $withRepr ?
                 [
                     'name' => $daysShortTrans[$dayInWeek],
-                    'hash' => "$year-$month-$dayInMonth",
+                    'repr' => $date->format('Y-m-d'),
                 ]
                 : $daysShortTrans[$dayInWeek];
 
-            $days[$dayInMonth] = $newDay;
-
-            $dayInMonth += 1;
-            $dayInWeek = ($dayInWeek + 1) % 7;
+            $date->modify('+1 day');
         }
 
-        $newMonth = [
-            'name' => $monthsTrans[$month - 1],
-            'days' => $days,
-        ];
-
-        if ($withHash) {
-            $newMonth['hash'] = "$year-$month";
-        }
-
-        $months[] = $newMonth;
-
-        return $months;
+        return array_values($months);
     }
 }

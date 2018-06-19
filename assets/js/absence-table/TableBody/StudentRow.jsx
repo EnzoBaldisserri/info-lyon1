@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { AbsenceConsumer } from '../AbsenceContext';
 import AbsenceDay from './AbsenceDay';
 
 const StudentRow = (props) => {
@@ -9,16 +10,21 @@ const StudentRow = (props) => {
     ...restProps
   } = props;
 
-  const absences = student.absences.map(day => (
-    <AbsenceDay
-      absences={day.absences}
-      key={day.hash}
-    />
-  ));
-
   return (
     <tr {...restProps}>
-      { absences }
+      <AbsenceConsumer>
+        { ({ months }) => months.map(({ days }) => Object.values(days).map((day) => {
+          const absences = student.absences
+            .filter(absence => absence.start_time.slice(0, 10) === day.repr);
+
+          return (
+            <AbsenceDay
+              absences={absences}
+              key={day.repr}
+            />
+          );
+        })) }
+      </AbsenceConsumer>
     </tr>
   );
 };

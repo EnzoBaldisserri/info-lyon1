@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
+use App\Entity\Period;
 
 /**
  * @method Group|null find($id, $lockMode = null, $lockVersion = null)
@@ -62,61 +63,12 @@ class GroupRepository extends ServiceEntityRepository
                 $qb->expr()->isNull('a.startTime'),
                 $qb->expr()->between('a.startTime', ':start', ':end')
             ))
-              ->setParameter('start', $period->getStartDate())
-              ->setParameter('end', $period->getEndDate())
+              ->setParameter('start', $period->getStart())
+              ->setParameter('end', $period->getEnd())
             ->addOrderBy('a.startTime', 'ASC')
         ;
 
-        $groups = $qb->getQuery()
+        return $qb->getQuery()
             ->getResult();
-
-        // Compute days of the semester
-        // With a hash used as a key in React
-        $days = $this->getDaysWithHash($period);
-
-        // Group absences in days
-        foreach ($groups as $group) {
-            $students = $group->getStudents();
-
-            foreach ($students as $student) {
-                $absences = $student->getAbsences();
-                $organizedAbsences = $this->organizeAbsences($absences, $days);
-                $student->setAbsences($organizedAbsences);
-            }
-        }
-
-        return $groups;
-    }
-
-    private function getDaysWithHash(Period $period): Array
-    {
-        $days = [];
-
-        $currDate = $period->getStartDate();
-        $endDate = $period->getEndDate();
-
-        // While semDate is before end
-        while ($currDate <= $endDate) {
-            $date = $currDate->format('Y-m-d');
-
-            $days[$date] = [
-                'hash' => $date,
-                'absences' => [],
-            ];
-            $semDate->modify('+1 day');
-        }
-
-        return $days;
-    }
-
-    private function organizeAbsences(Iterable $absences, Array $days): Collection
-    {
-        foreach ($absences as $absence) {
-            $date = $absence->getStartTime()->format('Y-m-d');
-
-            $days[$date]['absences'][] = $absence;
-        }
-
-        return new ArrayCollection(array_values($days));
     }
 }
