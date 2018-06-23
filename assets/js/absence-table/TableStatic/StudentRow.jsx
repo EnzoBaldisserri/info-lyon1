@@ -33,7 +33,7 @@ class StudentRow extends Component {
           { `${firstname} ${surname}` }
         </div>
         <i
-          className="material-icons"
+          className="material-icons action-icon"
           onClick={this.toggleSummary}
           onKeyPress={this.toggleSummary}
           role="button"

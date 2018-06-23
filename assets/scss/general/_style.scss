@@ -44,9 +44,9 @@ main > .title {
 .material-icons {
   user-select: none;
   vertical-align: middle;
-  cursor: pointer;
 
-  main & {
+  &.action-icon {
     color: $secondary-color;
+    cursor: pointer;
   }
 }

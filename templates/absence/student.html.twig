@@ -24,7 +24,7 @@
                     <td>{{ absence.startTime|date('global.date.format'|trans) }}</td>
                     <td>
                         {{ absence.startTime|date('global.time.format'|trans) }}
-                        <i class="material-icons">arrow_forward</i>
+                        <i class="material-icons tiny">arrow_forward</i>
                         {{ absence.endTime|date('global.time.format'|trans) }}
                     </td>
                     <td {% if absence.justified %}class="abs-{{ absence.type.name }}"{% endif %}>

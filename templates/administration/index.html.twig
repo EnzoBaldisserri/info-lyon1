@@ -33,11 +33,11 @@
                             <td>
                                 {% if semester.editable %}
                                     <a href="{{ path('administration_semester_edit', { 'id': semester.id }) }}">
-                                        <i class="material-icons">edit</i>
+                                        <i class="material-icons action-icon">edit</i>
                                     </a>
                                 {% else %}
                                     <a href="{{ path('administration_semester_show', { 'id': semester.id }) }}">
-                                        <i class="material-icons">add_to_queue</i>
+                                        <i class="material-icons action-icon">add_to_queue</i>
                                     </a>
                                 {% endif %}
                             </td>
@@ -76,7 +76,7 @@
                             <td>{{ course.implementationDate|date('global.date.format'|trans) }}</td>
                             <td>
                                 <a href="{{ path('administration_course_edit', { 'id': course.id }) }}">
-                                    <i class="material-icons">edit</i>
+                                    <i class="material-icons action-icon">edit</i>
                                 </a>
                             </td>
                         </tr>
