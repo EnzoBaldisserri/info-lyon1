@@ -163,14 +163,16 @@ window.addEventListener('DOMContentLoaded', () => {
     $created.querySelector('[name$="[id]"]').value = data.id;
     $created.querySelector('[name$="[fullname]"]').textContent = data.name;
 
+    $list.setAttribute('data-counter', studentCounter + 1);
+    $list.querySelector('.num-student').textContent = studentCounter + 1;
+
     // If student was in a group
     if (draggedElement.closest('#group-list') !== null) {
       const $originalGroup = draggedElement.closest('.collection');
       const originalGroupCounter = +$originalGroup.getAttribute('data-counter');
       $originalGroup.setAttribute('data-counter', originalGroupCounter - 1);
+      $originalGroup.querySelector('.num-student').textContent = originalGroupCounter - 1;
     }
-
-    $list.setAttribute('data-counter', studentCounter + 1);
 
     draggedElement.remove();
   });
@@ -179,6 +181,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain'));
 
     addToStudentList(data);
+
+    if (draggedElement.closest('#group-list') !== null) {
+      const $originalGroup = draggedElement.closest('.collection');
+      const originalGroupCounter = +$originalGroup.getAttribute('data-counter');
+      $originalGroup.setAttribute('data-counter', originalGroupCounter - 1);
+      $originalGroup.querySelector('.num-student').textContent = originalGroupCounter - 1;
+    }
 
     draggedElement.remove();
   });
