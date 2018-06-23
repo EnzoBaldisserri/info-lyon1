@@ -8,9 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-
-// TODO Add validation constraints
-// See https://symfony.com/doc/current/reference/constraints.html
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\SemesterRepository")
@@ -27,11 +26,13 @@ class Semester
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date()
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date()
      */
     private $endDate;
 
@@ -55,6 +56,24 @@ class Semester
 
     public function __construct() {
         $this->groups = new ArrayCollection();
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload): void
+    {
+        $groupNumbers = array_map(
+            function($group) { return $group->getNumber(); },
+            $this->groups->toArray()
+        );
+
+        // Check for duplicates
+        if (count($groupNumbers) !== count(array_flip($groupNumbers))) {
+            $context->buildViolation('semester.groups.duplicate_numbers')
+                ->atPath('groups')
+                ->addViolation();
+        };
     }
 
     public function isActive(\DateTimeInterface $datetime = null): ?bool

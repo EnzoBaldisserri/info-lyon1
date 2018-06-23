@@ -6,6 +6,7 @@ use App\Entity\Absence\AbsenceType;
 use App\Entity\Administration\Semester;
 use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Absence\AbsenceRepository")
@@ -21,11 +22,13 @@ class Absence
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $endTime;
 

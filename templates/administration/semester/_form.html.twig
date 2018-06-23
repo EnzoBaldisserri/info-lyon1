@@ -41,6 +41,7 @@
                 {# TODO Enhance view so it's more practical to use #}
                 <div class="row">
                     <div class="col s12 l6">
+                        <span class="red-text">{{ form_errors(form.groups) }}</span>
                         <ul id="group-list"
                             {% if form.groups is empty %}data-empty{% endif %}
                             data-prototype="{{ func.print_group(form.groups.vars.prototype)|e('html_attr') }}"

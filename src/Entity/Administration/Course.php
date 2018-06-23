@@ -6,8 +6,7 @@ use App\Entity\Administration\TeachingUnit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-// TODO Add validation constraints
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\CourseRepository")
@@ -28,6 +27,7 @@ class Course
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\Date()
      */
     private $implementationDate;
 

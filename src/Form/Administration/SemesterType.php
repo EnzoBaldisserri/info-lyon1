@@ -92,6 +92,7 @@ class SemesterType extends AbstractType
                     'allow_delete' => true,
                     'prototype_name' => '__group__',
                     'by_reference' => false,
+                    'error_bubbling' => false,
                 ])
             ;
         }

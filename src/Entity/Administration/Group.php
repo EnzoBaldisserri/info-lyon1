@@ -9,8 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
-// TODO Add validation constraints
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Administration\GroupRepository")
  * @ORM\Table(name="`group`")
