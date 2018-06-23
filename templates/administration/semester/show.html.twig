@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ 'semester.entity'|trans({
+        '%courseType%': semester.course.semester,
+        '%creationYear%': semester.course.implementationDate|date('Y'),
+    }) }}</h2>
+
+    <p class="h5">
+        <i class="material-icons small black-text">date_range</i>
+        {{ semester.startDate|date('global.date.format'|trans) }} -
+        {{ semester.endDate|date('global.date.format'|trans) }}
+    </p>
+
+    <div class="card grey lighten-5">
+        <div class="card-content">
+            <span class="card-title">{{ 'semester.props.groups'|trans }}</span>
+            <div class="row">
+                {% for group in semester.groups %}
+                    <div class="col s12 m6">
+                        <ul class="collection with-header">
+                            <li class="collection-header"><b>{{ 'group.entity'|trans({ '%number%': group.number }) }}</b></li>
+                            {% for student in group.students %}
+                                <li class="collection-item">
+                                    {{ student.fullname }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

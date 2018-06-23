@@ -119,6 +119,7 @@ course:
             confirm: Êtes-vous sûr de vouloir supprimer ce parcours ?
 
 group:
+    entity: Groupe %number%
     form:
         props:
             number:
@@ -127,6 +128,7 @@ group:
                 title: Étudiants
 
 semester:
+    entity: 'Semestre %courseType% - PPN %creationYear%'
     props:
         start_date: Date de début
         end_date: Date de fin
