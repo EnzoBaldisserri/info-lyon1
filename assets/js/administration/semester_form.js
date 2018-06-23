@@ -72,10 +72,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (action === 'delete') {
       // Find the group item
-      const $item = e.target.closest('.collection-item');
+      const $item = e.target.closest('li');
 
       // Move students to the 'no-group' list
-      const $students = $item.querySelectorAll('.collection > .collection-item');
+      const $students = $item.querySelectorAll('.collection-item');
       $students.forEach(($student) => {
         const student = {
           id: $student.querySelector('[name$="[id]"]').value,

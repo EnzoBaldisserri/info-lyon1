@@ -21,6 +21,7 @@
             </li>
         {% endfor %}
     </ul>
+    <hr>
 {% endmacro %}
 
 {{ form_start(form, form_options|default({})) }}
@@ -38,20 +39,27 @@
                 {# TODO Enhance view so it's more practical to use #}
                 <div class="row">
                     <div class="col s12 l6">
-                        <ul class="collection"
-                            id="group-list"
+                        <ul id="group-list"
                             {% if form.groups is empty %}data-empty{% endif %}
                             data-prototype="{{ func.print_group(form.groups.vars.prototype)|e('html_attr') }}"
-                            data-widget-container="{{ '<li class="collection-item row">__content__</li>'|e('html_attr') }}"
+                            data-widget-container="{{ '<li>__content__</li>'|e('html_attr') }}"
                         >
                             {% for group in form.groups %}
-                                <li class="collection-item row">
-                                    {{ func.print_group(group) }}
-                                </li>
+                                <li>{{ func.print_group(group) }}</li>
                             {% else %}
-                                <li class="collection-item">{{ 'semester.form.props.groups.empty'|trans }}</li>
+                                <li>{{ 'semester.form.props.groups.empty'|trans }}</li>
+                                <hr>
                             {% endfor %}
                         </ul>
+                        <div class="center-align">
+                            <button
+                                type="button"
+                                id="add-group"
+                                class="btn-floating btn-large red"
+                            >
+                                <i class="material-icons">add</i>
+                            </button>
+                        </div>
                     </div>
                     <div class="col l6 hide-on-med-and-down">
                         <ul class="collection droppable" id="student-list">
@@ -66,15 +74,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="card-action">
-                <button
-                    type="button"
-                    id="add-group"
-                    class="btn btn-flat waves-effect waves-light"
-                >
-                    {{ 'semester.form.props.groups.add'|trans }}
-                </button>
             </div>
         </div>
     {% endif %}
