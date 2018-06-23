@@ -25,6 +25,11 @@ class CourseType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $course = $builder->getData();
+
+        $creating = !$course || null === $course->getId();
+        $dateFormat = $this->translator->trans('global.date.format');
+
         $builder
             ->add('semester', ChoiceType::class, [
                 'label' => 'course.form.props.semester.label',
@@ -38,12 +43,15 @@ class CourseType extends AbstractType
                 'choice_translation_domain' => false,
                 'placeholder' => 'course.form.props.semester.placeholder'
             ])
-            ->add('implementationDate', DateType::class, [
-                'label' => 'course.form.props.implementation_date.label',
-                'required' => true,
-                'widget' => 'single_text',
-                'format' => $this->translator->trans('global.form.datetype.format'),
-            ])
+            ->add('implementationDate', DateType::class, array_merge(
+                [
+                    'label' => 'course.form.props.implementation_date.label',
+                    'required' => true,
+                    'widget' => 'single_text',
+                    'format' => $this->translator->trans('global.form.datetype.format'),
+                ],
+                $creating ? ['attr' => [ 'data-minDate' => date($dateFormat) ]] : []
+            ))
             ->add('teachingUnits', EntityType::class, [
                 'required' => false,
                 'multiple' => true,
@@ -55,29 +63,6 @@ class CourseType extends AbstractType
                 'choice_translation_domain' => false,
             ])
         ;
-
-        $dateFormat = $this->translator->trans('global.date.format');
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($dateFormat) {
-                $course = $event->getData();
-                $form = $event->getForm();
-
-                // If creating the course
-                if (!$course || null === $course->getId()) {
-                    // Add min date to implementation date
-                    $config = $form->get('implementationDate')->getConfig();
-
-                    $form->add('implementationDate', DateType::class, array_replace(
-                        $config->getOptions(),
-                        [
-                            'attr' => [ 'data-minDate' => date($dateFormat) ],
-                        ]
-                    ));
-                }
-            }
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver)

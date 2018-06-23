@@ -21,15 +21,16 @@ class SimpleStudentType extends AbstractType
                 $form = $event->getForm();
                 $student = $event->getData();
 
-                $form->add('id', HiddenType::class, [
-                    'data' => $student ? $student->getId() : null,
-                    'mapped' => false,
-                ]);
-
-                $form->add('fullname', PlainType::class, [
-                    'data' => $student ? $student->getFullName() : '',
-                    'mapped' => false,
-                ]);
+                $form
+                    ->add('id', HiddenType::class, [
+                        'data' => $student ? $student->getId() : null,
+                        'mapped' => false,
+                    ])
+                    ->add('fullname', PlainType::class, [
+                        'data' => $student ? $student->getFullName() : '',
+                        'mapped' => false,
+                    ])
+                ;
             }
         );
     }

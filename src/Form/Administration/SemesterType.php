@@ -28,94 +28,73 @@ class SemesterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('startDate', DateType::class, [
-                'label' => 'semester.form.props.start_date.label',
-                'required' => true,
-                'widget' => 'single_text',
-                'format' => $this->translator->trans('global.form.datetype.format'),
-            ])
-            ->add('endDate', DateType::class, [
-                'required' => true,
-                'label' => 'semester.form.props.end_date.label',
-                'widget' => 'single_text',
-                'format' => $this->translator->trans('global.form.datetype.format'),
-            ])
-        ;
+        $semester = $builder->getData();
 
+        $creating = !$semester || $semester->getId() === null;
         $dateFormat = $this->translator->trans('global.date.format');
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($dateFormat) {
-                $semester = $event->getData();
-                $form = $event->getForm();
+        $dateConfig = array_merge(
+            [
+                'widget' => 'single_text',
+                'format' => $this->translator->trans('global.form.datetype.format'),
+            ],
+            $creating ? ['attr' => [ 'data-minDate' => date($dateFormat) ]] : []
+        );
 
-                // if creating the semester
-                if (!$semester || null === $semester->getId()) {
-                    // Add min date to start date
-                    $config = $form->get('startDate')->getConfig();
+        $builder
+            ->add('startDate', DateType::class, array_merge(
+                ['label' => 'semester.form.props.start_date.label'],
+                $dateConfig
+            ))
+            ->add('endDate', DateType::class, array_merge(
+                ['label' => 'semester.form.props.end_date.label'],
+                $dateConfig
+            ))
+        ;
 
-                    $form->add('startDate', DateType::class, array_replace(
-                        $config->getOptions(),
-                        [
-                            'attr' => [ 'data-minDate' => date($dateFormat) ]
-                        ]
-                    ));
-
-                    // Add min date to end date
-                    $config = $form->get('endDate')->getConfig();
-
-                    $form->add('endDate', DateType::class, array_replace(
-                        $config->getOptions(),
-                        [
-                            'attr' => [ 'data-minDate' => date($dateFormat) ]
-                        ]
-                    ));
-
-                    // Add customizable course
-                    $form->add('course', EntityType::class, [
-                        'required' => true,
-                        'label' => false,
-                        'placeholder' => 'semester.form.props.course.placeholder',
-                        'class' => Course::class,
-                        'choice_label' => function($course) {
-                            return $this->translator->trans('course.form.choice_label', [
-                                '%courseType%' => $course->getName(),
-                                '%implementationYear%' => $course->getImplementationDate()->format('Y'),
-                            ]);
-                        },
-                        'query_builder' => function(EntityRepository $er) {
-                            return $er->createQueryBuilder('c')
-                                ->addOrderBy('c.implementationDate', 'DESC')
-                                ->addOrderBy('c.semester', 'ASC')
-                            ;
-                        },
-                    ]);
-                } else {
-                    // Add readonly course
-                    $course = $semester->getCourse();
-
-                    $form->add('course', PlainType::class, [
-                        'data' => $this->translator->trans('course.form.choice_label', [
+        // if creating the semester
+        if ($creating) {
+            $builder
+                ->add('course', EntityType::class, [
+                    'required' => true,
+                    'label' => false,
+                    'placeholder' => 'semester.form.props.course.placeholder',
+                    'class' => Course::class,
+                    'choice_label' => function($course) {
+                        return $this->translator->trans('course.form.choice_label', [
                             '%courseType%' => $course->getName(),
                             '%implementationYear%' => $course->getImplementationDate()->format('Y'),
-                        ]),
-                    ]);
+                        ]);
+                    },
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('c')
+                            ->addOrderBy('c.implementationDate', 'DESC')
+                            ->addOrderBy('c.semester', 'ASC')
+                        ;
+                    },
+                ])
+            ;
+        } else {
+            $course = $semester->getCourse();
 
-                    // Add groups
-                    $form->add('groups', CollectionType::class, [
-                        'label' => false, // Displayed as card title
-                        'entry_type' => GroupType::class,
-                        'entry_options' => ['label' => false],
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'prototype_name' => '__group__',
-                        'by_reference' => false,
-                    ]);
-                }
-            }
-        );
+            $builder
+                ->add('course', PlainType::class, [
+                    'data' => $this->translator->trans('course.form.choice_label', [
+                        '%courseType%' => $course->getName(),
+                        '%implementationYear%' => $course->getImplementationDate()->format('Y'),
+                    ]),
+                ])
+                ->add('groups', CollectionType::class, [
+                    'label' => false, // Displayed as card title
+                    'entry_type' => GroupType::class,
+                    'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype_name' => '__group__',
+                    'by_reference' => false,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

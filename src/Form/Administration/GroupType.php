@@ -37,9 +37,11 @@ class GroupType extends AbstractType
                 $group = $event->getData();
                 $form = $event->getForm();
 
+                $creating = !$group || $group->getId() === null;
+
                 $form->add('students', CollectionType::class, [
                     'label' => false, // Displayed as collection header
-                    'data' => $group ? $this->studentRepository->findInGroup($group) : [],
+                    'data' => !$creating ? $this->studentRepository->findInGroup($group) : [],
                     'entry_type' => SimpleStudentType::class,
                     'entry_options' => ['label' => false],
                     'allow_add' => true,
