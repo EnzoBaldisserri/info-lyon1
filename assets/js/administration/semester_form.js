@@ -63,12 +63,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // DELETE GROUP
   $groupList.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const action = e.target.getAttribute('data-action');
-    if (!action) {
+    const $actionHolder = e.target.closest('[data-action]');
+    if (!$actionHolder) {
       return;
     }
+
+    const action = $actionHolder.getAttribute('data-action');
 
     if (action === 'delete') {
       // Find the group item
