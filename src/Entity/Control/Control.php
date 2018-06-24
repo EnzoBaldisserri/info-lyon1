@@ -3,9 +3,6 @@
 namespace App\Entity\Control;
 
 use DateTime;
-use RunTimeException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,28 +48,7 @@ abstract class Control
     private $date;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(type="float")
-     */
-    private $median;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(type="float")
-     */
-    private $average;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(type="float")
-     */
-    private $standardDeviation;
-
-    /**
-     * @var Collection
+     * @var MarkCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Control\Mark", mappedBy="control", orphanRemoval=true)
      */
@@ -80,7 +56,7 @@ abstract class Control
 
     public function __construct()
     {
-        $this->marks = new ArrayCollection();
+        $this->marks = new MarkCollection();
     }
 
     public function getId()
@@ -136,58 +112,10 @@ abstract class Control
         return $this;
     }
 
-    public function getMedian(): ?float
-    {
-        return $this->median;
-    }
-
-    public function setMedian(float $median): self
-    {
-        if ($median > $this->divisor) {
-            throw new RuntimeException('Median is greater than divisor');
-        }
-
-        $this->median = $median;
-
-        return $this;
-    }
-
-    public function getAverage(): ?float
-    {
-        return $this->average;
-    }
-
-    public function setAverage(float $average): self
-    {
-        if ($average > $this->divisor) {
-            throw new RuntimeException('Average is greater than divisor');
-        }
-
-        $this->average = $average;
-
-        return $this;
-    }
-
-    public function getStandardDeviation(): ?float
-    {
-        return $this->standardDeviation;
-    }
-
-    public function setStandardDeviation(float $standardDeviation): self
-    {
-        if ($standardDeviation > $this->divisor) {
-            throw new RuntimeException('Standard deviation is greater than divisor');
-        }
-
-        $this->standardDeviation = $standardDeviation;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Mark[]
+     * @return MarkCollection|Mark[]
      */
-    public function getMarks(): Collection
+    public function getMarks(): MarkCollection
     {
         return $this->marks;
     }

@@ -43,7 +43,7 @@ class Lesson
     private $startTime;
 
     /**
-     * @vat DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      */
