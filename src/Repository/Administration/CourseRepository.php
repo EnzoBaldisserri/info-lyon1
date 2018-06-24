@@ -2,6 +2,7 @@
 
 namespace App\Repository\Administration;
 
+use DateTime;
 use App\Entity\Administration\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,13 +20,20 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
-    public function findEditable(): Array
+    /**
+     * @return Course[]
+     */
+    public function findEditable(): array
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         return $this->findEditableAt($now);
     }
 
-    public function findEditableAt(\DateTime $datetime): Array
+    /**
+     * @param DateTime $datetime
+     * @return Course[]
+     */
+    public function findEditableAt(DateTime $datetime): array
     {
         $qb = $this->createQueryBuilder('c');
 

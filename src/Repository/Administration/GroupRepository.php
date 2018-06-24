@@ -23,7 +23,11 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
-    public function findInSemestersWithAbsences(Array $semesters)
+    /**
+     * @param Semester[] $semesters
+     * @return Group[]
+     */
+    public function findInSemestersWithAbsences(array $semesters)
     {
         $period = reset($semesters)->getPeriod();
 

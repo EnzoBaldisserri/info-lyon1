@@ -2,6 +2,7 @@
 
 namespace App\Entity\Control;
 
+use RuntimeException;
 use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,17 +19,23 @@ class Mark
     private $id;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $value;
 
     /**
+     * @var Control
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Control\Control", inversedBy="marks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $control;
 
     /**
+     * @var Student
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Student")
      * @ORM\JoinColumn(nullable=false)
      */

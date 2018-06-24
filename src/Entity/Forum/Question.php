@@ -2,6 +2,7 @@
 
 namespace App\Entity\Forum;
 
+use DateTime;
 use App\Entity\User\Student;
 use App\Entity\User\Teacher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,50 +22,66 @@ class Question
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $datetime;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $public;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $closed;
 
     /**
+     * @var Teacher
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Teacher")
      * @ORM\JoinColumn(nullable=false)
      */
     private $teacher;
 
     /**
+     * @var Student
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Student")
      * @ORM\JoinColumn(nullable=false)
      */
     private $student;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Forum\Answer", mappedBy="question", orphanRemoval=true)
      */
     private $answers;
 
     public function __construct()
     {
-        $this->datetime = new \DateTime();
+        $this->datetime = new DateTime();
         $this->public = false;
         $this->closed = false;
         $this->answers = new ArrayCollection();
@@ -99,12 +116,12 @@ class Question
         return $this;
     }
 
-    public function getDatetime(): \DateTimeInterface
+    public function getDatetime(): DateTime
     {
         return $this->datetime;
     }
 
-    public function setDatetime(\DateTimeInterface $datetime): self
+    public function setDatetime(DateTime $datetime): self
     {
         $this->datetime = $datetime;
 

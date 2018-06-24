@@ -2,7 +2,7 @@
 
 namespace App\Entity\Administration;
 
-use App\Entity\Absence\Absence;
+use DateTime;
 use App\Entity\Period;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,24 +25,32 @@ class Semester
     private $id;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\Date()
      */
     private $startDate;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\Date()
      */
     private $endDate;
 
     /**
+     * @var Course
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Administration\Group",
      *     mappedBy="semester",
@@ -76,10 +84,10 @@ class Semester
         };
     }
 
-    public function isActive(\DateTimeInterface $datetime = null): ?bool
+    public function isActive(DateTime $datetime = null): ?bool
     {
         if ($datetime === null) {
-            $datetime = new \DateTime();
+            $datetime = new DateTime();
         }
 
         // Check if datetime is between begin and end
@@ -89,14 +97,14 @@ class Semester
     public function isEditable(): bool
     {
         // if semester isn't finished
-        $today = new \DateTime();
+        $today = new DateTime();
         return $today < $this->endDate;
     }
 
     public function isDeletable(): bool
     {
         // if semester hasn't started
-        $today = (new \DateTime());
+        $today = (new DateTime());
         return $today < $this->startDate;
     }
 
@@ -115,12 +123,12 @@ class Semester
         return $this->course->getSemester();
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate(DateTime $startDate): self
     {
         // Start date's time must be the beginning of the day
         $startDate->setTime(0, 0, 0, 0);
@@ -130,12 +138,12 @@ class Semester
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate(DateTime $endDate): self
     {
         // End date's time must be the end of the day
         $endDate->setTime(23, 59, 59, 999);

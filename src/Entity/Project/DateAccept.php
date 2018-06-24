@@ -18,18 +18,24 @@ class DateAccept
     private $id;
 
     /**
+     * @var DateProposal
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Project\DateProposal", inversedBy="dateAccepts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $dateProposal;
 
     /**
+     * @var User
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $accepted;

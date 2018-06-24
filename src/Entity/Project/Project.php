@@ -21,17 +21,23 @@ class Project
     private $id;
 
     /**
+     * @var Teacher
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Teacher", inversedBy="projects")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tutor;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\User\Student")
      */
     private $members;

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Schedule;
 
+use DateTime;
 use App\Entity\Administration\Group;
 use App\Entity\User\Teacher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,31 +22,43 @@ class Lesson
     private $id;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      */
     private $resources;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $name;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $startTime;
 
     /**
+     * @vat DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $endTime;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Group")
      */
     private $groups;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\User\Teacher")
      */
     private $teachers;
@@ -91,24 +104,24 @@ class Lesson
         return $this;
     }
 
-    public function getStartTime(): ?\DateTimeInterface
+    public function getStartTime(): ?DateTime
     {
         return $this->startTime;
     }
 
-    public function setStartTime(\DateTimeInterface $startTime): self
+    public function setStartTime(DateTime $startTime): self
     {
         $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getEndTime(): ?\DateTimeInterface
+    public function getEndTime(): ?DateTime
     {
         return $this->endTime;
     }
 
-    public function setEndTime(\DateTimeInterface $endTime): self
+    public function setEndTime(DateTime $endTime): self
     {
         $this->endTime = $endTime;
 

@@ -17,6 +17,8 @@ class Room
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $name;

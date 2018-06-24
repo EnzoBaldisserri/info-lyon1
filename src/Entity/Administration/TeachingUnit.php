@@ -2,7 +2,7 @@
 
 namespace App\Entity\Administration;
 
-use App\Entity\Administration\Course;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,27 +21,37 @@ class TeachingUnit
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $code;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $name;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="date")
      * @Assert\Date()
      */
     private $implementationDate;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Course", inversedBy="teachingUnits", cascade={"persist", "remove"})
      */
     private $courses;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Module", mappedBy="teachingUnit", orphanRemoval=true)
      */
     private $modules;
@@ -86,12 +96,12 @@ class TeachingUnit
         return sprintf('%s - %s', $this->code, $this->name);
     }
 
-    public function getImplementationDate(): ?\DateTimeInterface
+    public function getImplementationDate(): ?DateTime
     {
         return $this->implementationDate;
     }
 
-    public function setImplementationDate(\DateTimeInterface $implementationDate): self
+    public function setImplementationDate(DateTime $implementationDate): self
     {
         $this->implementationDate = $implementationDate;
 

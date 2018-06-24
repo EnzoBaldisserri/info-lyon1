@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializerBuilder;
 
 abstract class BaseController extends AbstractController
 {
@@ -13,7 +14,7 @@ abstract class BaseController extends AbstractController
             $data['ok'] = $status === 200;
         }
 
-        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+        $serializer = SerializerBuilder::create()->build();
         $json = $serializer->serialize($data, 'json');
 
         return JsonResponse::fromJsonString($json, $status, $headers);

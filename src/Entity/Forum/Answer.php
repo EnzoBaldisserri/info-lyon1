@@ -2,6 +2,7 @@
 
 namespace App\Entity\Forum;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,22 +18,30 @@ class Answer
     private $id;
 
     /**
+     * @var Question
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Forum\Question", inversedBy="answers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      */
     private $datetime;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $teacher;
@@ -66,12 +75,12 @@ class Answer
         return $this;
     }
 
-    public function getDatetime(): ?\DateTimeInterface
+    public function getDatetime(): ?DateTime
     {
         return $this->datetime;
     }
 
-    public function setDatetime(\DateTimeInterface $datetime): self
+    public function setDatetime(DateTime $datetime): self
     {
         $this->datetime = $datetime;
 

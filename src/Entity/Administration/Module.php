@@ -19,22 +19,30 @@ class Module
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $code;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=100)
      */
     private $name;
 
     /**
+     * @var TeachingUnit
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\TeachingUnit", inversedBy="modules")
      * @ORM\JoinColumn(nullable=false)
      */
     private $teachingUnit;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Subject", mappedBy="module", orphanRemoval=true)
      */
     private $subjects;

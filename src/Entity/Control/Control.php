@@ -2,6 +2,8 @@
 
 namespace App\Entity\Control;
 
+use DateTime;
+use RunTimeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,41 +23,57 @@ abstract class Control
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $name;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $coefficient;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      */
     private $divisor;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="date")
      */
     private $date;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $median;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $average;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $standardDeviation;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Control\Mark", mappedBy="control", orphanRemoval=true)
      */
     private $marks;
@@ -106,12 +124,12 @@ abstract class Control
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 

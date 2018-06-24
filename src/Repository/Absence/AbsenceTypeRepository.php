@@ -24,7 +24,10 @@ class AbsenceTypeRepository extends ServiceEntityRepository
         $this->translator = $translator;
     }
 
-    public function findAllWithNames(): Array
+    /**
+     * @return string[]
+     */
+    public function findAllWithNames(): array
     {
         $absenceTypesRaw = $this->findAll();
 

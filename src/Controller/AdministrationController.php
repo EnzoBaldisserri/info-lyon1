@@ -3,12 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Administration\Course;
-use App\Entity\Administration\Semester;
 use App\Repository\Administration\CourseRepository;
 use App\Repository\Administration\SemesterRepository;
-use App\Form\Administration\CourseType;
-use App\Form\Administration\SemesterType;
 
 /**
  * @Route("/administration", name="administration_")

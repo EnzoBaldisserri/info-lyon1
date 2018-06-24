@@ -2,9 +2,18 @@
 
 namespace App\Entity;
 
+use DateTime;
+
 class Period
 {
+    /**
+     * @var DateTime
+     */
     private $start;
+
+    /**
+     * @var DateTime
+     */
     private $end;
 
     /**
@@ -16,7 +25,7 @@ class Period
      * @param DateTime $firstDate
      * @param DateTime $secondDate
      */
-    public function __construct(\DateTime $firstDate, \DateTime $secondDate)
+    public function __construct(DateTime $firstDate, DateTime $secondDate)
     {
         if ($firstDate <= $secondDate) {
             $this->start = $firstDate;
@@ -33,12 +42,12 @@ class Period
         $this->end = clone $this->end;
     }
 
-    public function getStart(): \DateTime
+    public function getStart(): DateTime
     {
         return $this->start;
     }
 
-    public function getEnd(): \DateTime
+    public function getEnd(): DateTime
     {
         return $this->end;
     }

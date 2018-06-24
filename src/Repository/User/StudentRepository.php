@@ -21,7 +21,11 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
-    public function findInGroup(Group $group): Array
+    /**
+     * @param Group $group
+     * @return Student[]
+     */
+    public function findInGroup(Group $group): array
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -40,7 +44,11 @@ class StudentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAvailableForSemester(Semester $semester): Array
+    /**
+     * @param Semester $semester
+     * @return Student[]
+     */
+    public function findAvailableForSemester(Semester $semester): array
     {
         // Filter students that already have a group for this period
         $qb = $this->createQueryBuilder('stu');
@@ -61,7 +69,7 @@ class StudentRepository extends ServiceEntityRepository
 
         // TODO find students potentially interested for semester
         /*
-         * - Students that succeded semester n-1
+         * - Students that succeeded semester n-1
          * - Students that failed semester n
          * - Students that failed a semester at some point, but got to the next anyway
          * ...

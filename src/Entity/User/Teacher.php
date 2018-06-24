@@ -5,7 +5,6 @@ namespace App\Entity\User;
 use App\Entity\Administration\Education;
 use App\Entity\Administration\Referent;
 use App\Entity\Project\Project;
-use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,16 +18,22 @@ use JMS\Serializer\Annotation as Serializer;
 class Teacher extends User
 {
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Referent", mappedBy="teacher", orphanRemoval=true)
      */
     private $referents;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Administration\Education", mappedBy="teacher", orphanRemoval=true)
      */
     private $educations;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Project\Project", mappedBy="tutor")
      */
     private $projects;

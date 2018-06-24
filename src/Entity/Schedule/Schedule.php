@@ -2,7 +2,7 @@
 
 namespace App\Entity\Schedule;
 
-use App\Entity\Lesson;
+use RuntimeException;
 use ICal\Ical;
 
 class Schedule
@@ -20,7 +20,7 @@ class Schedule
     public function getDay() {
         $build = $this->build($this->ical->events(), 'day');
         if ($build['period'] !== 'day') {
-            throw new \Exception('Dates don\'t correspond to a day');
+            throw new RuntimeException('Dates don\'t correspond to a day');
         }
 
         return $build['lessons'];
@@ -29,7 +29,7 @@ class Schedule
     public function getWeek() {
         $build = $this->build($this->ical->events(), 'week');
         if ($build['period'] !== 'week') {
-            throw new \Exception('Dates don\'t correspond to a week');
+            throw new RuntimeException('Dates don\'t correspond to a week');
         }
 
         return $build['lessons'];
@@ -43,9 +43,7 @@ class Schedule
 
             // Start date and end date should always be the same day
             $date = $lesson->getStartDate();
-            $year = $date->format('Y');
-            $week = $date->format('W');
-            $day = $date->format('N');
+            [$year, $week, $day] = explode(' ', $date->format('Y W N'));
 
             if (!array_key_exists($year, $lessons)) {
                 $lessons[$year] = array();

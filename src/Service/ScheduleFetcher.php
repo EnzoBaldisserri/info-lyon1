@@ -1,17 +1,41 @@
 <?php
 namespace App\Service;
 
+use DateTime;
+use RuntimeException;
 use ICal\ICal;
 use App\Entity\Schedule\Schedule;
 
 class ScheduleFetcher
 {
+    /**
+     * @var string
+     */
     private $fetch_url;
+
+    /**
+     * @var string
+     */
     private $date_format;
 
+    /**
+     * @var string
+     */
     private $resources;
+
+    /**
+     * @var int
+     */
     private $projectId;
+
+    /**
+     * @var DateTime
+     */
     private $firstDate;
+
+    /**
+     * @var DateTime
+     */
     private $lastDate;
 
     function __construct(string $fetch_url, int $projectId, string $date_format) {
@@ -32,10 +56,10 @@ class ScheduleFetcher
         }
 
         $day->setTime(0, 0, 0, 0);
-        
+
         $dayEnd = clone $day;
         $dayEnd->setTime(23, 59, 59, 999);
-        
+
         $this->firstDate = $day;
         $this->lastDate = $dayEnd;
 
@@ -91,26 +115,26 @@ class ScheduleFetcher
         try {
             $ical = new ICal($url);
             return new Schedule($ical);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }
 
     private function verifyResources() {
         if (!isset($this->resources)) {
-            throw new \Exception('Resources are not defined');
+            throw new RuntimeException('Resources are not defined');
         }
 
         if (!isset($this->projectId)) {
-            throw new \Exception("Project id isn\'t defined");
+            throw new RuntimeException("Project id isn\'t defined");
         }
 
         if (!isset($this->firstDate)) {
-            throw new \Exception('First date isn\'t defined');
+            throw new RuntimeException('First date isn\'t defined');
         }
 
         if (!isset($this->lastDate)) {
-            throw new \Exception('Last date isn\'t defined');
+            throw new RuntimeException('Last date isn\'t defined');
         }
     }
 }

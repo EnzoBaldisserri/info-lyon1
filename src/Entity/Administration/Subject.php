@@ -17,21 +17,29 @@ class Subject
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $code;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $name;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private $coefficient;
 
     /**
+     * @var Module
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Module", inversedBy="subjects")
      * @ORM\JoinColumn(nullable=false)
      */

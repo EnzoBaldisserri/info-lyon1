@@ -2,7 +2,7 @@
 
 namespace App\Entity\Administration;
 
-use App\Entity\Administration\TeachingUnit;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,12 +63,12 @@ class Course
         return $this;
     }
 
-    public function getImplementationDate(): ?\DateTimeInterface
+    public function getImplementationDate(): ?DateTime
     {
         return $this->implementationDate;
     }
 
-    public function setImplementationDate(\DateTimeInterface $implementationDate): self
+    public function setImplementationDate(DateTime $implementationDate): self
     {
         $this->implementationDate = $implementationDate;
 

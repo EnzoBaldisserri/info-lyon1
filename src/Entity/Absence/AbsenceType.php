@@ -18,6 +18,8 @@ class AbsenceType
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */

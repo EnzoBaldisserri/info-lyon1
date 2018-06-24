@@ -37,6 +37,10 @@ abstract class BaseController extends AbstractController
         return parent::render($view, $parameters, $response);
     }
 
+    /**
+     * @param int|null $duration The duration of the notification
+     * @return NotificationBuilder
+     */
     protected function createNotification(int $duration = null)
     {
         if ($duration === null) {

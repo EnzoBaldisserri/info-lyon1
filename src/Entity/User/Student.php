@@ -4,7 +4,6 @@ namespace App\Entity\User;
 
 use App\Entity\Absence\Absence;
 use App\Entity\Administration\Group;
-use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,11 +17,15 @@ use JMS\Serializer\Annotation as Serializer;
 class Student extends User
 {
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Administration\Group", inversedBy="students")
      */
     private $classes;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Absence\Absence", mappedBy="student", orphanRemoval=true)
      *
      * @Serializer\Expose
