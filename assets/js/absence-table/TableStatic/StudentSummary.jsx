@@ -2,10 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 class StudentSummary extends Component {
-  static defaultProps = {
-    open: false,
-  }
-
   static propTypes = {
     open: PropTypes.bool,
     student: PropTypes.shape({
@@ -14,7 +10,11 @@ class StudentSummary extends Component {
       })).isRequired,
     }).isRequired,
     toggle: PropTypes.func.isRequired,
-  }
+  };
+
+  static defaultProps = {
+    open: false,
+  };
 
   getCount() {
     const { student: { absences } } = this.props;

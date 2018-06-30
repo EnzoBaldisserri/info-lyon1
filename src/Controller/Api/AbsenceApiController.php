@@ -30,8 +30,7 @@ class AbsenceApiController extends BaseController
 
         $semesters = $semesterRepository->findCurrent();
 
-        $absenceTypes = $absenceTypeRepository
-            ->findAllWithNames();
+        $absenceTypes = $absenceTypeRepository->findAll();
 
         if (empty($semesters)) {
             $error = $translate->trans('error.semester.no_current');

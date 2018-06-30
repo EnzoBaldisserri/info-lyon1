@@ -5,6 +5,7 @@
 @import 'absence-table/color-codes';
 @import 'absence-table/table-static/table-static';
 @import 'absence-table/table-dynamic/table-dynamic';
+@import 'absence-table/absence-editor/absence-editor';
 
 #absence-table {
   display: flex;
@@ -19,4 +20,12 @@
   > .dynamic {
     @include table-dynamic();
   }
+
+  > .absence-editor {
+    @include absence-editor();
+  }
 }
+
+/* stylelint-disable */
+@import '~materialize-css/extras/nouislider/nouislider';
+/* stylelint-enable */

@@ -15,5 +15,15 @@
     "Translator": true,
     "Routing": true
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "jsx-a11y/label-has-for": [ 2, {
+      "required": {
+        "some": [ "nesting", "id" ]
+      }
+    }],
+    "no-param-reassign": [ "error", {
+      "props": false
+    }]
+  }
 }

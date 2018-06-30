@@ -24,6 +24,7 @@ global:
         clear: Effacer
         done: Accepter
         close: Fermer
+        save: Sauvergarder
 
 app:
     title: info-lyon1

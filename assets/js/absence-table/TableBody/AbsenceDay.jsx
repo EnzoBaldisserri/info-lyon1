@@ -43,30 +43,37 @@ class AbsenceDay extends PureComponent {
         name: PropTypes.string.isRequired,
       }),
     })).isRequired,
-  }
+    openEditor: PropTypes.func.isRequired,
+  };
 
   state = {
     open: false,
-  }
+  };
 
   open = () => {
     this.setState({
       open: true,
     });
-  }
+  };
 
   close = () => {
     this.setState({
       open: false,
     });
-  }
+  };
 
   render() {
-    const { absences } = this.props;
+    const { absences, openEditor, ...otherProps } = this.props;
     const { open } = this.state;
 
     if (absences.length === 0) {
-      return <td role="gridcell" />;
+      return (
+        <td
+          role="gridcell"
+          onClick={openEditor}
+          {...otherProps}
+        />
+      );
     }
 
     const classes = classNames(
@@ -80,9 +87,15 @@ class AbsenceDay extends PureComponent {
         onMouseEnter={this.open}
         onMouseLeave={this.close}
         className={classes}
+        onClick={() => {
+          this.close();
+          openEditor();
+        }}
+        {...otherProps}
       >
-        {
-          absences.map(absence => (
+        { !open
+          ? null
+          : absences.map(absence => (
             <div className={`abs-${absence.type.name}`} key={absence.id}>
               <div>
                 { Translator.trans('absence.props.time') } :&nbsp;
