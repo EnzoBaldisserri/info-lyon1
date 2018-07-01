@@ -1,27 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-const isNotJustified = absence => !absence.justified;
-
-const areJustified = absences => !absences.some(isNotJustified);
-
-const getType = absences => absences.reduce(
-  (carry, absence) => ((carry === null || carry === absence.type.name) ? absence.type.name : 'several'),
-  null,
-);
-
-const getClasses = (absences) => {
-  if (absences.length === 0) {
-    return null;
-  }
-
-  const typeClass = areJustified(absences) ?
-    'abs-justified'
-    : `abs-${getType(absences)}`;
-
-  return `abs ${typeClass}`;
-};
 
 function formatTime(time) {
   const date = new Date(time);
@@ -33,7 +12,7 @@ function formatTime(time) {
   });
 }
 
-class AbsenceDay extends PureComponent {
+class AbsenceDay extends Component {
   static propTypes = {
     absences: PropTypes.arrayOf(PropTypes.shape({
       student: PropTypes.shape({
@@ -50,6 +29,43 @@ class AbsenceDay extends PureComponent {
     open: false,
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.open !== nextState.open) {
+      return true;
+    }
+
+    if (this.props.absences.length !== nextProps.absences.length) {
+      return true;
+    }
+
+    return this.props.absences.some((absence, index) => nextProps.absences[index] !== absence);
+  }
+
+  getType = () => this.props.absences.reduce(
+    (carry, absence) => ((carry === null || carry === absence.type.name) ? absence.type.name : 'several'),
+    null,
+  );
+
+  getClasses = () => {
+    const { absences } = this.props;
+
+    if (absences.length === 0) {
+      return null;
+    }
+
+    const typeClass = this.isJustified() ?
+      'abs-justified'
+      : `abs-${this.getType()}`;
+
+    return `abs ${typeClass}`;
+  };
+
+  isJustified = () => {
+    const { absences } = this.props;
+
+    return !absences.some(absence => !absence.justified);
+  };
+
   open = () => {
     this.setState({
       open: true,
@@ -60,6 +76,11 @@ class AbsenceDay extends PureComponent {
     this.setState({
       open: false,
     });
+  };
+
+  openEditor = () => {
+    this.close();
+    this.props.openEditor();
   };
 
   render() {
@@ -77,20 +98,17 @@ class AbsenceDay extends PureComponent {
     }
 
     const classes = classNames(
-      getClasses(absences),
+      this.getClasses(),
       { open },
     );
 
     return (
       <td
         role="gridcell"
+        className={classes}
         onMouseEnter={this.open}
         onMouseLeave={this.close}
-        className={classes}
-        onClick={() => {
-          this.close();
-          openEditor();
-        }}
+        onClick={this.openEditor}
         {...otherProps}
       >
         { !open

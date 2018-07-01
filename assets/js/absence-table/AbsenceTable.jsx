@@ -38,61 +38,60 @@ class AbsenceTable extends Component {
           throw new Error(data.error);
         }
 
-        const parsedData = {
+        return {
           ...data,
           firstDay: new Date(data.firstDay),
         };
-
-        this.setState({
-          loaded: true,
-          ...parsedData,
-        });
-
-        return parsedData;
       })
 
-      .then((data) => {
+      .then((nextState) => {
         // Center current day
         const today = new Date();
-        const timeDifference = today - data.firstDay;
+        const timeDifference = today - nextState.firstDay;
 
         if (timeDifference > 0) {
           const cellWidth = 26;
           const dayDifference = timeDifference / (1000 * 3600 * 24);
 
-          this.setState({
-            tableScroll: Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0),
-          });
+          nextState.tableScroll =
+            Math.max((dayDifference * cellWidth) - (window.innerWidth / 2), 0);
         }
 
         // Highlight week-ends
         document.head.insertAdjacentHTML(
           'beforeend',
           `<style>
-            tbody td:nth-child(7n + ${8 - data.firstDay.getDay()}),
-            tbody td:nth-child(7n + ${7 - data.firstDay.getDay()}) {
+            tbody td:nth-child(7n + ${8 - nextState.firstDay.getDay()}),
+            tbody td:nth-child(7n + ${7 - nextState.firstDay.getDay()}) {
               background-color: rgba(255, 183, 77, .6);
             }
           </style>`,
         );
+
+        return nextState;
+      })
+
+      .then((nextState) => {
+        nextState.loaded = true;
+
+        this.setState(nextState);
       })
 
       .catch(error => this.setState({ error }));
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // Only change table scroll
-    if (prevState.tableScroll === this.state.tableScroll) {
-      return;
+    if (prevState.tableScroll !== this.state.tableScroll) {
+      this.tableContainer.current.scrollLeft = this.state.tableScroll;
     }
-
-    this.tableContainer.current.scrollLeft = this.state.tableScroll;
   }
 
   openEditor = (student, date, absences) => () => {
     this.setState({
       editor: {
-        absences, student, date,
+        absences,
+        student,
+        date,
       },
     });
   };

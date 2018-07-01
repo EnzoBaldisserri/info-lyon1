@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import StudentSummary from './StudentSummary';
 
-class StudentRow extends Component {
+class StudentRow extends PureComponent {
   static propTypes = {
     student: PropTypes.shape({
       id: PropTypes.number.isRequired,

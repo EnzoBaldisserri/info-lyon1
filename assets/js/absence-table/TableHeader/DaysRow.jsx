@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const DaysRow = props => (
-  <tr>
-    { props.days.map(([dayInMonth, day]) => (
-      <th key={day.repr}>{ props.number ? dayInMonth : day.name }</th>
-    )) }
-  </tr>
-);
+class DaysRow extends Component {
+  static propTypes = {
+    days: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        name: PropTypes.string,
+        repr: PropTypes.string,
+      }),
+    ]))).isRequired,
+    number: PropTypes.bool,
+  };
 
-DaysRow.defaultProps = {
-  number: false,
-};
+  static defaultProps = {
+    number: false,
+  };
 
-DaysRow.propTypes = {
-  days: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      name: PropTypes.string,
-      repr: PropTypes.string,
-    }),
-  ]))).isRequired,
-  number: PropTypes.bool,
-};
+  shouldComponentUpdate(nextProps) {
+    return this.props.days.length !== nextProps.days.length;
+  }
+
+  render() {
+    const { days, number } = this.props;
+
+    return (
+      <tr>
+        { days.map(([dayInMonth, day]) => (
+          <th key={day.repr}>{number ? dayInMonth : day.name}</th>
+        ))}
+      </tr>
+    );
+  }
+}
 
 export default DaysRow;
