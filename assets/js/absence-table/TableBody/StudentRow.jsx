@@ -13,17 +13,19 @@ const StudentRow = (props) => {
   return (
     <tr {...restProps}>
       <AbsenceConsumer>
-        { ({ months }) => months.map(({ days }) => Object.values(days).map((day) => {
-          const absences = student.absences
-            .filter(absence => absence.start_time.slice(0, 10) === day.repr);
+        { ({ months, actions: { openEditor } }) =>
+          months.map(({ days }) => Object.values(days).map((day) => {
+            const absences = student.absences
+              .filter(absence => absence.start_time.slice(0, 10) === day.repr);
 
-          return (
-            <AbsenceDay
-              absences={absences}
-              key={day.repr}
-            />
-          );
-        })) }
+            return (
+              <AbsenceDay
+                absences={absences}
+                openEditor={openEditor(student, new Date(day.repr), absences)}
+                key={day.repr}
+              />
+            );
+          })) }
       </AbsenceConsumer>
     </tr>
   );

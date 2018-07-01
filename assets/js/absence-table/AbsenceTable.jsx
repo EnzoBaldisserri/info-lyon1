@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
-import Loader from '../react-utils/Loader';
 
+import Loader from '../react-utils/Loader';
 import { AbsenceProvider } from './AbsenceContext';
 import TableStatic from './TableStatic/TableStatic';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
-// import AbsenceEditor from './AbsenceEditor/AbsenceEditor';
+import AbsenceEditor from './AbsenceEditor/AbsenceEditor';
 
 class AbsenceTable extends Component {
   constructor(props) {
@@ -18,8 +18,12 @@ class AbsenceTable extends Component {
       loaded: false,
       error: null,
       tableScroll: null,
+      editor: {
+        absences: [],
+        student: null,
+        date: null,
+      },
       // Loaded from server
-      firstDay: null,
       months: [],
       groups: [],
       absenceTypes: [],
@@ -85,11 +89,29 @@ class AbsenceTable extends Component {
     this.tableContainer.current.scrollLeft = this.state.tableScroll;
   }
 
+  openEditor = (student, date, absences) => () => {
+    this.setState({
+      editor: {
+        absences, student, date,
+      },
+    });
+  };
+
+  closeEditor = () => {
+    this.setState({
+      editor: {
+        absences: [],
+        student: null,
+        date: null,
+      },
+    });
+  };
+
   render() {
     const {
       error,
       loaded,
-      firstDay,
+      editor,
       months,
       groups,
       absenceTypes,
@@ -110,24 +132,26 @@ class AbsenceTable extends Component {
     }
 
     const provided = {
-      firstDay,
+      actions: {
+        openEditor: this.openEditor,
+        closeEditor: this.closeEditor,
+      },
       months,
       groups,
       absenceTypes,
     };
 
     return (
-      <Fragment>
-        <AbsenceProvider value={provided}>
-          <TableStatic />
-          <div className="dynamic" ref={this.tableContainer}>
-            <table role="grid">
-              <TableHeader />
-              <TableBody />
-            </table>
-          </div>
-        </AbsenceProvider>
-      </Fragment>
+      <AbsenceProvider value={provided}>
+        <TableStatic />
+        <div className="dynamic" ref={this.tableContainer}>
+          <table role="grid">
+            <TableHeader />
+            <TableBody />
+          </table>
+        </div>
+        <AbsenceEditor {...editor} />
+      </AbsenceProvider>
     );
   }
 }

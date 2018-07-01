@@ -18,6 +18,9 @@ global:
         cancel: Annuler
         clear: Effacer
         done: Accepter
+        close: Fermer
+        save: Sauvergarder
+        select: Selectionner...
 
 error:
     load_error: Impossible de charger les données nécessaires
@@ -36,13 +39,14 @@ absence:
         several: Plusieurs types
     props:
         time: Horaire
+        type: Type d'absence
         justified: Justifiée
     plain:
         students: Étudiants
     student:
         count:
-            total: '{0} Pas d''absence|{1} 1 demi-journée|[2,Inf[ %count% demi-journées'
-            days: '{1} 1 jour|]1,Inf[ %count% jours'
+            total: '{0} Pas d''absence enregistrée|{1} 1 absence enregistrée|[2,Inf[ %count% absences enregistrées'
+            days: '{0,1} %count% jour|]1,Inf[ %count% jours'
             justified: '{0} Pas d''absence justifiée|{1} 1 absence justifiée|]1,Inf[ %count% absences justifiées'
 
 semester:

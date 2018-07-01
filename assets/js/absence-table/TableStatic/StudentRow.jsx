@@ -10,17 +10,17 @@ class StudentRow extends Component {
       firstname: PropTypes.string.isRequired,
       surname: PropTypes.string.isRequired,
     }).isRequired,
-  }
+  };
 
   state = {
     open: false,
-  }
+  };
 
   toggleSummary = () => {
     this.setState({
       open: !this.state.open,
     });
-  }
+  };
 
   render() {
     const { open } = this.state;
@@ -30,7 +30,7 @@ class StudentRow extends Component {
     return (
       <div className="student-row">
         <div className="content" key={id}>
-          { `${firstname} ${surname}` }
+          { `${firstname} ${surname.toUpperCase()}` }
         </div>
         <i
           className="material-icons action-icon"

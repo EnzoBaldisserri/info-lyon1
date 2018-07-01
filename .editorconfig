@@ -11,7 +11,7 @@ max_line_length = 100
 [*.{html.twig,php,yaml}]
 indent_size = 4
 
-[*.{js,json,scss}]
+[*.{js,jsx,json,scss}]
 indent_size = 2
 
 [*.md]
