@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if ($groupList.hasAttribute('data-empty')) {
       // Remove message telling list is empty
-      $groupList.children[0].remove();
+      $groupList.firstElementChild.remove();
 
       // Remove list attribute
       $groupList.removeAttribute('data-empty');
@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Create widget from prototype
     const newWidget = $groupList.getAttribute('data-prototype')
-      .replace(/__group__/g, groupCounter);
+      .replace(/__group__/g, groupCounter.toString());
 
     // Insert the widdget in last position
     $groupList.insertAdjacentHTML(
@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .replace(/__content__/g, newWidget),
     );
 
-    const $created = $groupList.lastChild;
+    const $created = $groupList.lastElementChild;
 
     // Set default group number
     const number = 1 + ($created.previousElementSibling ?
