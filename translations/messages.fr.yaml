@@ -17,14 +17,15 @@ global:
         update: Mettre à jour
         delete: Supprimer
         send: Envoyer
-    message:
-        yes: Oui
-        no: Non
+        file: Fichier
         cancel: Annuler
         clear: Effacer
         done: Accepter
         close: Fermer
         save: Sauvergarder
+    message:
+        yes: Oui
+        no: Non
 
 app:
     title: info-lyon1

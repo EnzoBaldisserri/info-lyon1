@@ -54,9 +54,9 @@ function initializeDatePickers($pickers) {
     format: Translator.trans('global.form.datetype.format'),
     parse: dateString => parseDateString(dateString),
     i18n: {
-      cancel: Translator.trans('global.message.cancel'),
-      clear: Translator.trans('global.message.clear'),
-      done: Translator.trans('global.message.done'),
+      cancel: Translator.trans('global.button.cancel'),
+      clear: Translator.trans('global.button.clear'),
+      done: Translator.trans('global.button.done'),
       months: Translator.trans('global.time.months').split(','),
       monthsShort: Translator.trans('global.time.months_short').split(','),
       weekdays: Translator.trans('global.time.weekdays').split(','),
@@ -94,9 +94,9 @@ function initializeTimePickers($pickers) {
     autoClose: true,
     twelveHour: Translator.trans('global.time.twelve_hour'),
     i18n: {
-      cancel: Translator.trans('global.message.cancel'),
-      clear: Translator.trans('global.message.clear'),
-      done: Translator.trans('global.message.done'),
+      cancel: Translator.trans('global.button.cancel'),
+      clear: Translator.trans('global.button.clear'),
+      done: Translator.trans('global.button.done'),
     },
   };
   const options = [
