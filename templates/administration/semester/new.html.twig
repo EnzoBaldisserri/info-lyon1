@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block page_title %}
     <h2>{{ 'semester.form.new.title'|trans }}</h2>
+    <a href="{{ path('administration_semester_new_file') }}">
+        {{ 'semester.message.with_file.new'|trans }}
+    </a>
+{% endblock %}
 
+{% block body %}
     {{ include('administration/semester/_form.html.twig', {
         'button_label': 'global.button.create'|trans,
     }) }}
