@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title %}
-    <h2>{{ 'semester.form.new.title'|trans }}</h2>
-    <a href="{{ path('administration_semester_new_file') }}">
-        {{ 'semester.message.with_file.new'|trans }}
-    </a>
+    <div>
+        <h2>{{ 'semester.form.new.title'|trans }}</h2>
+        <a href="{{ path('administration_semester_new_file') }}">
+            {{ 'semester.message.with_file.new'|trans }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block body %}

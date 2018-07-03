@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title %}
+    <div>
+        <h2>{{ 'semester.form.edit.title'|trans }}</h2>
+        <a href="{{ path('administration_semester_edit', { 'id' : semester.id }) }}">
+            {{ 'semester.message.with_form.edit'|trans }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.attachment) }}
+        <button type="submit" class="btn">{{ 'global.button.send'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

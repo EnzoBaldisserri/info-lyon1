@@ -5,12 +5,15 @@ namespace App\Controller\Administration;
 use App\Controller\BaseController;
 use App\Entity\Administration\Semester;
 use App\Form\Administration\SemesterType;
+use App\Helper\SpreadsheetHelper;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
 use App\Service\NotificationBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 
 /**
  * @Route("/administration/semester")
@@ -44,10 +47,60 @@ class SemesterController extends BaseController
     }
 
     /**
+     * @Route("/new/file", name="administration_semester_new_file", methods="GET|POST")
+     */
+    public function newWithFile(Request $request, SpreadsheetHelper $spreadsheetHelper)
+    {
+        $form = $this->createFormBuilder()
+            ->add('attachment', FileType::class , ['label' => false])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $file = $form->get('attachment')->getData();
+                $spreadsheet = $spreadsheetHelper->read($file);
+                $semester = $spreadsheetHelper->createSemester($spreadsheet);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($semester);
+                $em->flush();
+
+                $this->createNotification()
+                    ->setContent('semester.form.edit.success')
+                    ->setType(NotificationBuilder::SUCCESS)
+                    ->save();
+
+                return $this->redirectToRoute('administration_semester_edit', [
+                    'id' => $semester->getId(),
+                ]);
+            } catch (SpreadsheetException $exception) {
+                $this->createNotification()
+                    ->setContent('error.semester.file.invalid')
+                    ->setType(NotificationBuilder::ERROR)
+                    ->save();
+            }
+        }
+
+        return $this->createHtmlResponse('administration/semester/file_new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="administration_semester_show", methods="GET")
      */
     public function show(Semester $semester): Response
     {
+        if ($semester->isEditable()) {
+            $this->createNotification()
+                ->setContent('error.semester.editable')
+                ->setType(NotificationBuilder::WARNING)
+                ->save();
+
+            return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
+        }
+
         return $this->createHtmlResponse('administration/semester/show.html.twig', ['semester' => $semester]);
     }
 
@@ -128,6 +181,81 @@ class SemesterController extends BaseController
             'students' => $students,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/edit/file", name="administration_semester_edit_file", methods="GET|POST")
+     */
+    public function editWithFile(Request $request, Semester $semester, SpreadsheetHelper $spreadsheetHelper)
+    {
+        if (!$semester->isEditable()) {
+            $this->createNotification()
+                ->setContent('error.semester.not_editable')
+                ->setType(NotificationBuilder::WARNING)
+                ->save();
+
+            return $this->redirectToRoute('administration_semester_show', [
+                'id' => $semester->getId(),
+            ]);
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('attachment', FileType::class , ['label' => false])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $file = $form->get('attachment')->getData();
+                $spreadsheet = $spreadsheetHelper->read($file);
+                $spreadsheetHelper->updateSemester($spreadsheet, $semester);
+
+                $this->getDoctrine()->getManager()->flush();
+
+                $this->createNotification()
+                    ->setContent('semester.form.edit.success')
+                    ->setType(NotificationBuilder::SUCCESS)
+                    ->save();
+
+                return $this->redirectToRoute('administration_semester_edit', [
+                    'id' => $semester->getId(),
+                ]);
+            } catch (SpreadsheetException $exception) {
+                $this->createNotification()
+                    ->setContent('error.semester.file.invalid')
+                    ->setType(NotificationBuilder::ERROR)
+                    ->save();
+            }
+        }
+
+        return $this->createHtmlResponse('administration/semester/file_edit.html.twig', [
+            'semester' => $semester,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/file", name="administration_semester_generate_file", methods="GET")
+     */
+    public function generateFile(Semester $semester, SpreadsheetHelper $spreadsheetHelper)
+    {
+        $filepath = '';
+        $spreadsheet = $spreadsheetHelper->createForSemester($semester);
+        $spreadsheetHelper->write($filepath, $spreadsheet);
+
+        return $this->file($filepath);
+    }
+
+    /**
+     * @Route("/sample/file", name="administration_semester_generate_sample", methods="GET")
+     */
+    public function generateSampleFile(SpreadsheetHelper $spreadsheetHelper)
+    {
+        $filepath = '';
+        $spreadsheet = $spreadsheetHelper->createForSemesterSample();
+        $spreadsheetHelper->write($filepath, $spreadsheet);
+
+        return $this->file($filepath);
     }
 
     /**

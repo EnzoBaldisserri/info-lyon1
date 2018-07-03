@@ -48,9 +48,12 @@ error:
         not_owner: Cette notification ne vous appartient pas
         not_user: Vous n'êtes pas connecté
     semester:
+        editable: Le semestre peut encore être modifié
         not_editable: Le semestre ne peut pas être modifié
         not_deletable: Le semestre ne peut pas être supprimé
         no_current: Pas de semestre en cours
+        file:
+            invalid: Le fichier envoyé n'est pas valide
 
 # General
 notification:
@@ -153,10 +156,19 @@ semester:
             create: Créer un semestre
         new:
             title: Créer un semestre
+            success: Création réussie
         edit:
             title: Modifier un semestre
+            success: Modification(s) effectuée(s)
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce semestre ?
+    message:
+        with_file:
+            edit: Modifier avec un fichier
+            new: Créer avec un fichier
+        with_form:
+            edit: Modifier avec un formulaire
+            new: Créer avec un formulaire
 
 # User related translations
 fosub:
