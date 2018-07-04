@@ -10,8 +10,21 @@
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-        {{ form_row(form.attachment) }}
-        <button type="submit" class="btn">{{ 'global.button.send'|trans }}</button>
-    {{ form_end(form) }}
+    <div class="card grey lighten-5">
+        {{ form_start(form) }}
+            <div class="card-content">
+                {{ form_row(form.attachment) }}
+            </div>
+            <div class="card-action">
+                <button type="submit" class="btn btn-flat waves-effect waves-green">
+                    {{ 'global.button.send'|trans }}
+                </button>
+                <a  href="{{ path('administration_semester_generate_file', { 'id': semester.id }) }}"
+                    class="btn btn-flat waves-effect waves-light"
+                >
+                    {{ 'semester.form.edit.download'|trans }}
+                </a>
+            </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

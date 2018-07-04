@@ -125,6 +125,8 @@ course:
 
 group:
     entity: Groupe %number%
+    props:
+        students: Étudiants
     form:
         props:
             number:
@@ -157,11 +159,21 @@ semester:
         new:
             title: Créer un semestre
             success: Création réussie
+            download: Télécharger un modèle
         edit:
             title: Modifier un semestre
             success: Modification(s) effectuée(s)
+            download: Télécharger le fichier actuel
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce semestre ?
+    file:
+        title:
+            property: Propriété
+            value: Valeur
+            more_infos: Informations supplémentaires
+        footer:
+            no_modify: Ne pas modifier les cases rouges
+            analyse_value: Seules les données de la colonne "valeur" sont analysées
     message:
         with_file:
             edit: Modifier avec un fichier
