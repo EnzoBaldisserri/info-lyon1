@@ -79,5 +79,5 @@
             </div>
         </div>
     {% endif %}
-    {{ forms.actions(button_label, path('administration_index'), 'administration.message.come_back'|trans) }}
+    {{ forms.actions(button_label, [ [path('administration_index'), 'administration.message.come_back'|trans] ]) }}
 {{ form_end(form) }}

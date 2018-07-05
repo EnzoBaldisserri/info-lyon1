@@ -6,5 +6,5 @@
         {{ form_row(form.semester, { 'attr': {'class': 'input-field col s12 m6'} }) }}
     </div>
     {{ form_row(form.teachingUnits, { 'attr': {'class': 'input-field'} }) }}
-    {{ forms.actions(button_label, path('administration_index'), 'administration.message.come_back'|trans) }}
+    {{ forms.actions(button_label, [ [path('administration_index'), 'administration.message.come_back'|trans] ]) }}
 {{ form_end(form) }}

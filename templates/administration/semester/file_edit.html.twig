@@ -1,3 +1,5 @@
+{% import 'form/form_macros.html.twig' as forms %}
+
 {% extends 'base.html.twig' %}
 
 {% block page_title %}
@@ -10,21 +12,12 @@
 {% endblock %}
 
 {% block body %}
-    <div class="card grey lighten-5">
-        {{ form_start(form) }}
-            <div class="card-content">
-                {{ form_row(form.attachment) }}
-            </div>
-            <div class="card-action">
-                <button type="submit" class="btn btn-flat waves-effect waves-green">
-                    {{ 'global.button.send'|trans }}
-                </button>
-                <a  href="{{ path('administration_semester_generate_file', { 'id': semester.id }) }}"
-                    class="btn btn-flat waves-effect waves-light"
-                >
-                    {{ 'semester.form.edit.download'|trans }}
-                </a>
-            </div>
-        {{ form_end(form) }}
-    </div>
+    {{ form_start(form) }}
+        {{ form_row(form.attachment) }}
+
+        {{ forms.actions('global.button.send'|trans, [
+            [path('administration_semester_generate_file', { 'id': semester.id }), 'semester.form.edit.download'|trans],
+            [path('administration_index'), 'administration.message.come_back'|trans],
+        ]) }}
+    {{ form_end(form) }}
 {% endblock %}
