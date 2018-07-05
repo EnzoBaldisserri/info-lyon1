@@ -6,7 +6,7 @@ use App\Controller\BaseController;
 use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
 use App\Form\Administration\SemesterType;
-use App\Form\User\SimpleStudentType;
+use App\Helper\FileHelper;
 use App\Helper\SpreadsheetHelper;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
@@ -241,9 +241,9 @@ class SemesterController extends BaseController
      * @Route("/sample/file", name="administration_semester_generate_sample", methods="GET")
      * @throws SpreadsheetException
      */
-    public function generateSampleFile(SpreadsheetHelper $spreadsheetHelper): Response
+    public function generateSampleFile(SpreadsheetHelper $spreadsheetHelper, FileHelper $fileHelper): Response
     {
-        $filepath = $this->getParameter('spreadsheet_directory') . 'sample.xlsx';
+        $filepath = $fileHelper->getFolder('spreadsheet', true) . 'sample.xlsx';
         $file = new \SplFileInfo($filepath);
 
         if (!$file->isFile()) {
@@ -263,9 +263,13 @@ class SemesterController extends BaseController
      * )
      * @throws SpreadsheetException
      */
-    public function generateFile(Semester $semester, SpreadsheetHelper $spreadsheetHelper): Response
+    public function generateFile(
+        Semester $semester,
+        SpreadsheetHelper $spreadsheetHelper,
+        FileHelper $fileHelper
+    ): Response
     {
-        $filepath = $this->getParameter('tmp_directory') . $this->generateUniqueFileName() . '.xlsx';
+        $filepath = $fileHelper->getFolder('tmp', true) . $this->generateUniqueFileName() . '.xlsx';
         $file = new \SplFileInfo($filepath);
 
         $spreadsheet = $spreadsheetHelper->createForSemester($semester);

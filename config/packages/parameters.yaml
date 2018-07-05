@@ -1,3 +1,0 @@
-parameters:
-    tmp_directory: '%kernel.project_dir%/public/uploads/tmp/'
-    spreadsheet_directory: '%kernel.project_dir%/public/uploads/spreadsheet/'

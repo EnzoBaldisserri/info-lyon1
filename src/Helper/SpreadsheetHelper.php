@@ -8,6 +8,7 @@ use App\Entity\User\Student;
 use App\Repository\Administration\CourseRepository;
 use App\Repository\Administration\SemesterRepository;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -70,11 +71,7 @@ class SpreadsheetHelper
             throw new WriteException('Already existing file');
         };
 
-        if (!$file->isWritable()) {
-            throw new WriteException('File not writable');
-        }
-
-        $writer->save($file->getRealPath());
+        $writer->save($file->getPathname());
     }
 
     /**
@@ -90,6 +87,8 @@ class SpreadsheetHelper
         $spreadsheet = new Spreadsheet();
 
         $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getDefaultColumnDimension()->setWidth(15);
 
         $this->writeHeader($worksheet);
         $this->writeProperties($worksheet, $semester);
@@ -128,6 +127,7 @@ class SpreadsheetHelper
             ->setSurname('Roe');
 
         $sampleGroup1 = (new Group())
+            ->setId('#id')
             ->setNumber(1)
             ->addStudent($sampleStudent1)
             ->addStudent($sampleStudent2)
@@ -140,11 +140,13 @@ class SpreadsheetHelper
             ->setSurname('Doe');
 
         $sampleGroup2 = (new Group())
+            ->setId('#id')
             ->setNumber(2)
             ->addStudent($sampleStudent3)
         ;
 
         $sampleSemester = (new Semester())
+            ->setId('#id')
             ->setPeriod($nextPeriod)
             ->setCourse($lastBeginningCourse)
             ->addGroup($sampleGroup1)
@@ -194,10 +196,11 @@ class SpreadsheetHelper
         static $styles = [
             'bad' => [
                 'fill' => [
-                    'color' => ['argb' => 'FF9C0006'],
+                    'fillType' => Fill::FILL_GRADIENT_LINEAR,
+                    'color' => ['argb' => 'FFFFC7CE'],
                 ],
                 'font' => [
-                    'color' => ['argb' => 'FFFFC7CE'],
+                    'color' => ['argb' => 'FF9C0006'],
                 ],
             ],
             'good' => [
@@ -329,12 +332,15 @@ class SpreadsheetHelper
     {
         $row = $worksheet->getHighestRow() + 2;
 
+        $worksheet->mergeCells("A$row:D$row");
         $cell = $worksheet->getCell('A'.$row);
         $cell->setValue($this->translator->trans('semester.file.footer.no_modify'));
         $this->setCellStyle($cell, 'bad');
 
+
         $row += 1;
 
+        $worksheet->mergeCells("A$row:D$row");
         $worksheet->setCellValue(
             'A'.$row, $this->translator->trans('semester.file.footer.analyse_value'));
     }

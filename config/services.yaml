@@ -23,6 +23,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Helper\FileHelper:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $uploadDir: '%kernel.project_dir%/public/uploads'
+
     App\Service\ScheduleFetcher:
         arguments:
             $fetch_url: "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp\

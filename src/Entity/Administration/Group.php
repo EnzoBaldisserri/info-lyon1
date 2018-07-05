@@ -53,6 +53,17 @@ class Group
         return $this->id;
     }
 
+    public function setId($id): self
+    {
+        if (isset($this->id)) {
+            throw new \RuntimeException('Cannot replace already defined id');
+        }
+
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * @Serializer\VirtualProperty()
      *
