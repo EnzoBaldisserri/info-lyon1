@@ -3,14 +3,17 @@
 namespace App\Controller\Administration;
 
 use App\Controller\BaseController;
+use App\Entity\Administration\Course;
 use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
+use App\Entity\Period;
+use App\Entity\User\Student;
 use App\Form\Administration\SemesterType;
 use App\Helper\FileHelper;
-use App\Helper\SpreadsheetHelper;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
 use App\Service\NotificationBuilder;
+use App\Service\SpreadsheetService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,7 +54,7 @@ class SemesterController extends BaseController
     /**
      * @Route("/new/file", name="administration_semester_new_file", methods="GET|POST")
      */
-    public function newWithFile(Request $request, SpreadsheetHelper $spreadsheetHelper): Response
+    public function newWithFile(Request $request, SpreadsheetService $spreadsheetService): Response
     {
         $form = $this->createFormBuilder()
             ->add('attachment', FileType::class , ['label' => false])
@@ -61,8 +64,21 @@ class SemesterController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $file = $form->get('attachment')->getData();
-                $spreadsheet = $spreadsheetHelper->read($file);
-                $semester = $spreadsheetHelper->createSemester($spreadsheet);
+                $semester = $spreadsheetService->readEntity(Semester::class, $file);
+                // TODO Perform some checks
+                // $semester > id, course, startDate, endDate, groups
+                // Needs verification: id (force null), course (semester + PPN exists ?), groups (just verify everything ok + new students !)
+                //
+                // $semester->setId(null);
+                //
+                // MOVE TO OTHER METHOD (so editWithFile can call it)
+                // $course = $courseRepository->findOneBy([
+                //     'semester' => $semester->getCourse()->getSemester(),
+                //     'implementationDate' => $semester->getCourse()->getImplementationDate(),
+                // ]);
+                // if ($course === null) {
+                //     // Create new
+                // }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($semester);
@@ -189,7 +205,7 @@ class SemesterController extends BaseController
     /**
      * @Route("/{id}/edit/file", name="administration_semester_edit_file", methods="GET|POST")
      */
-    public function editWithFile(Request $request, Semester $semester, SpreadsheetHelper $spreadsheetHelper): Response
+    public function editWithFile(Request $request, Semester $semester, SpreadsheetService $spreadsheetService): Response
     {
         if (!$semester->isEditable()) {
             $this->createNotification()
@@ -210,10 +226,10 @@ class SemesterController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $file = $form->get('attachment')->getData();
-                $spreadsheet = $spreadsheetHelper->read($file);
-                $spreadsheetHelper->updateSemester($spreadsheet, $semester);
+                $semester = $spreadsheetService->readEntity($semester, $file);
+                // TODO Perform some checks
 
-                $this->getDoctrine()->getManager()->flush();
+                $this->getDoctrine()->getManager()->flush($semester);
 
                 $this->createNotification()
                     ->setContent('semester.form.edit.success')
@@ -239,16 +255,17 @@ class SemesterController extends BaseController
 
     /**
      * @Route("/sample/file", name="administration_semester_generate_sample", methods="GET")
+     *
      * @throws SpreadsheetException
      */
-    public function generateSampleFile(SpreadsheetHelper $spreadsheetHelper, FileHelper $fileHelper): Response
+    public function generateSampleFile(SpreadsheetService $spreadsheetService, FileHelper $fileHelper): Response
     {
         $filepath = $fileHelper->getFolder('spreadsheet', true) . 'sample.xlsx';
         $file = new \SplFileInfo($filepath);
 
         if (!$file->isFile()) {
-            $spreadsheet = $spreadsheetHelper->createForSemesterSample();
-            $spreadsheetHelper->write($file, $spreadsheet);
+            $sample = $this->createSemesterSample();
+            $spreadsheetService->writeEntity($sample, $file);
         }
 
         return $this->file($file);
@@ -261,19 +278,19 @@ class SemesterController extends BaseController
      *     methods="GET",
      *     requirements={"id"="\d+"}
      * )
+     *
      * @throws SpreadsheetException
      */
     public function generateFile(
         Semester $semester,
-        SpreadsheetHelper $spreadsheetHelper,
+        SpreadsheetService $spreadsheetService,
         FileHelper $fileHelper
     ): Response
     {
         $filepath = $fileHelper->getFolder('tmp', true) . $this->generateUniqueFileName() . '.xlsx';
         $file = new \SplFileInfo($filepath);
 
-        $spreadsheet = $spreadsheetHelper->createForSemester($semester);
-        $spreadsheetHelper->write($file, $spreadsheet, true);
+        $spreadsheetService->writeEntity($semester, $file);
 
         return $this->file($filepath);
     }
@@ -303,6 +320,59 @@ class SemesterController extends BaseController
         }
 
         return $this->redirectToRoute('administration_index');
+    }
+
+    private function createSemesterSample(): Semester
+    {
+        $doctrine = $this->getDoctrine();
+
+        /** @var Period $nextPeriod */
+        $nextPeriod = $doctrine->getRepository(Semester::class)->findNextPeriod();
+
+        /** @var Course $lastBeginningCourse */
+        $lastBeginningCourse = $doctrine->getRepository(Course::class)->findOneBy(
+            [ 'semester' => 1 ],
+            [ 'id' => 'DESC']
+        );
+
+        /** @var Student $sampleStudent1 */
+        $sampleStudent1 = (new Student())
+            ->setUsername('p0000001')
+            ->setFirstname('John')
+            ->setSurname('Doe');
+
+        /** @var Student $sampleStudent2 */
+        $sampleStudent2 = (new Student())
+            ->setUsername('p0000012')
+            ->setFirstname('Richard')
+            ->setSurname('Roe');
+
+        $sampleGroup1 = (new Group())
+            ->setId('#id')
+            ->setNumber(1)
+            ->addStudent($sampleStudent1)
+            ->addStudent($sampleStudent2)
+        ;
+
+        /** @var Student $sampleStudent3 */
+        $sampleStudent3 = (new Student)
+            ->setUsername('p0000008')
+            ->setFirstname('Jane')
+            ->setSurname('Doe');
+
+        $sampleGroup2 = (new Group())
+            ->setId('#id')
+            ->setNumber(2)
+            ->addStudent($sampleStudent3)
+        ;
+
+        return (new Semester())
+            ->setId('#id')
+            ->setPeriod($nextPeriod)
+            ->setCourse($lastBeginningCourse)
+            ->addGroup($sampleGroup1)
+            ->addGroup($sampleGroup2)
+        ;
     }
 
     private function generateUniqueFileName(): string

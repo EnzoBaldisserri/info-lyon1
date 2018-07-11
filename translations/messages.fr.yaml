@@ -99,7 +99,7 @@ administration:
 course:
     props:
         semester: Type
-        implementationDate: Date de mise en oeuvre
+        implementationDate: Date de mise en application
         implementationYear: PPN
         manage: Gérer
     form:
@@ -170,7 +170,7 @@ semester:
         title:
             property: Propriété
             value: Valeur
-            more_infos: Informations supplémentaires
+            more_info: Informations supplémentaires
         footer:
             no_modify: Ne pas modifier les cases rouges
             analyse_value: Seules les données de la colonne "valeur" sont analysées
