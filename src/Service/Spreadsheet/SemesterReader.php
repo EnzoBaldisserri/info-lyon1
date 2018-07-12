@@ -13,17 +13,17 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class SemesterReader extends BaseEntityReader
 {
-    public function readHeader(Worksheet $worksheet): int
+    public function readHeader(&$semester, Worksheet $worksheet): int
     {
         return 2; // Skip header
     }
 
     /**
-     * Reads the semester's information
+     * Reads the semester's information.
      *
      * @param Semester $semester
      * @param Worksheet $worksheet
-     * @param int $row
+     * @param int $row              The first
      * @return int
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception

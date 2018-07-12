@@ -29,30 +29,45 @@ abstract class BaseEntityWriter implements IEntityWriter
      */
     public function write($entity, Worksheet $worksheet): Worksheet
     {
-        $row = $this->writeHeader($worksheet);
+        $row = $this->writeHeader($entity, $worksheet);
         $row = $this->writeContent($entity, $worksheet, $row);
-        $this->writeFooter($worksheet, $row);
+        $this->writeFooter($entity, $worksheet, $row);
 
         return $worksheet;
     }
 
     /**
-     * @inheritdoc
+     * Writes the header for a type of entity.<br>
+     * The header should not contain entity information.
+     *
+     * @param object    $entity
+     * @param Worksheet $worksheet
+     * @return int                  The next row to be written to
      */
-    public function writeHeader(Worksheet $worksheet): int
+    protected function writeHeader($entity, Worksheet $worksheet): int
     {
         return 1;
     }
 
     /**
-     * @inheritdoc
+     * Writes the information about the entity.
+     *
+     * @param object $entity
+     * @param Worksheet $worksheet
+     * @param int $row              The first row to be written to
+     * @return int                  The next row to be written to
      */
-    public abstract function writeContent($entity, Worksheet $worksheet, int $row): int;
+    protected abstract function writeContent($entity, Worksheet $worksheet, int $row): int;
 
     /**
-     * @inheritdoc
+     * Writes the footer for a type of entity.
+     * The footer should not contain entity information.
+     *
+     * @param object $entity
+     * @param Worksheet $worksheet
+     * @param int $row              The first row to be written to
      */
-    public function writeFooter(Worksheet $worksheet, int $row): void
+    protected function writeFooter($entity, Worksheet $worksheet, int $row): void
     {
     }
 

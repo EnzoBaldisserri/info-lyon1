@@ -4,7 +4,7 @@ namespace App\Service\Spreadsheet;
 
 
 use App\Entity\Administration\Group;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use App\Entity\Administration\Semester;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -16,7 +16,7 @@ class SemesterWriter extends BaseEntityWriter
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function writeHeader(Worksheet $worksheet): int
+    public function writeHeader($semester, Worksheet $worksheet): int
     {
         // Style
         $worksheet->getDefaultColumnDimension()->setWidth(14);
@@ -35,6 +35,8 @@ class SemesterWriter extends BaseEntityWriter
 
     /**
      * @inheritdoc
+     *
+     * @param Semester $semester
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -151,7 +153,7 @@ class SemesterWriter extends BaseEntityWriter
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception;
      */
-    public function writeFooter(Worksheet $worksheet, int $row): void
+    public function writeFooter($semester, Worksheet $worksheet, int $row): void
     {
         $worksheet->mergeCells("A$row:D$row");
         $cell = $worksheet->getCell('A'.$row);

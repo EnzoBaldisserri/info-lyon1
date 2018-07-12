@@ -27,30 +27,46 @@ abstract class BaseEntityReader implements IEntityReader
             $entity = new $entity();
         }
 
-        $row = $this->readHeader($worksheet);
+        $row = $this->readHeader($entity, $worksheet);
         $row = $this->readContent($entity, $worksheet, $row);
-        $this->readFooter($worksheet, $row);
+        $this->readFooter($entity, $worksheet, $row);
 
         return $entity;
     }
 
     /**
-     * @inheritdoc
+     * Reads the header of the worksheet.<br>
+     * In most cases, this should just skip the header
+     * by returning the line at which starts the content.
+     *
+     * @param object $entity
+     * @param Worksheet $worksheet
+     * @return int                  The next row to be read
      */
-    public function readHeader(Worksheet $worksheet): int
+    protected function readHeader(&$entity, Worksheet $worksheet): int
     {
         return 1;
     }
 
     /**
-     * @inheritdoc
+     * Reads the information about the entity.
+     *
+     * @param object $entity
+     * @param Worksheet $worksheet
+     * @param int $row              The first row to be read
+     * @return int                  The next row to be read
      */
-    public abstract function readContent(&$entity, Worksheet $worksheet, int $row): int;
+    protected abstract function readContent(&$entity, Worksheet $worksheet, int $row): int;
 
     /**
-     * @inheritdoc
+     * Reads the footer of a spreadsheet.<br>
+     * In most cases, this shouldn't do anything.
+     *
+     * @param object $entity
+     * @param Worksheet $worksheet
+     * @param int $row              The first row to be read
      */
-    public function readFooter(Worksheet $worksheet, int $row): void
+    protected function readFooter(&$entity, Worksheet $worksheet, int $row): void
     {
     }
 }
