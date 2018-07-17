@@ -15,7 +15,7 @@ class SemesterReader extends BaseEntityReader
 {
     public function readHeader(&$semester, Worksheet $worksheet): int
     {
-        return 2; // Skip header
+        return 4; // Skip header
     }
 
     /**
@@ -31,17 +31,14 @@ class SemesterReader extends BaseEntityReader
      */
     public function readContent(&$semester, Worksheet $worksheet, int $row): int
     {
-        $semester->setId(
-            (int) $worksheet->getCell('B'.$row)->getValue());
-
-        $row += 1;
-
         $course = $semester->getCourse() ?? new Course();
         $course->setSemester(
             (int) $worksheet->getCell('B'.$row)->getValue());
 
+        $row += 1;
+
         $course->setImplementationDate(
-            Date::excelToDateTimeObject($worksheet->getCell('B'.$row)->getValue()));
+            \DateTime::createFromFormat('Y', $worksheet->getCell('B'.$row)->getValue()));
 
         $row += 1;
 

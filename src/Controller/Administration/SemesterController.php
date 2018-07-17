@@ -8,10 +8,13 @@ use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
 use App\Entity\Period;
 use App\Entity\User\Student;
+use App\Entity\User\User;
+use App\Exception\InvalidEntityException;
 use App\Form\Administration\SemesterType;
 use App\Helper\FileHelper;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
+use App\Repository\User\UserRepository;
 use App\Service\NotificationBuilder;
 use App\Service\SpreadsheetService;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,21 +67,10 @@ class SemesterController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $file = $form->get('attachment')->getData();
+
+                /** @var Semester $semester */
                 $semester = $spreadsheetService->readEntity(Semester::class, $file);
-                // TODO Perform some checks
-                // $semester > id, course, startDate, endDate, groups
-                // Needs verification: id (force null), course (semester + PPN exists ?), groups (just verify everything ok + new students !)
-                //
-                // $semester->setId(null);
-                //
-                // MOVE TO OTHER METHOD (so editWithFile can call it)
-                // $course = $courseRepository->findOneBy([
-                //     'semester' => $semester->getCourse()->getSemester(),
-                //     'implementationDate' => $semester->getCourse()->getImplementationDate(),
-                // ]);
-                // if ($course === null) {
-                //     // Create new
-                // }
+                $this->complete($semester);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($semester);
@@ -95,6 +87,11 @@ class SemesterController extends BaseController
             } catch (SpreadsheetException $exception) {
                 $this->createNotification()
                     ->setContent('error.semester.file.invalid')
+                    ->setType(NotificationBuilder::ERROR)
+                    ->save();
+            } catch (InvalidEntityException $exception) {
+                $this->createNotification()
+                    ->setContent($exception->getMessage())
                     ->setType(NotificationBuilder::ERROR)
                     ->save();
             }
@@ -205,7 +202,11 @@ class SemesterController extends BaseController
     /**
      * @Route("/{id}/edit/file", name="administration_semester_edit_file", methods="GET|POST")
      */
-    public function editWithFile(Request $request, Semester $semester, SpreadsheetService $spreadsheetService): Response
+    public function editWithFile(
+        Request $request,
+        Semester $semester,
+        SpreadsheetService $spreadsheetService
+    ): Response
     {
         if (!$semester->isEditable()) {
             $this->createNotification()
@@ -226,10 +227,12 @@ class SemesterController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $file = $form->get('attachment')->getData();
-                $semester = $spreadsheetService->readEntity($semester, $file);
-                // TODO Perform some checks
 
-                $this->getDoctrine()->getManager()->flush($semester);
+                /** @var Semester $semester */
+                $semester = $spreadsheetService->readEntity($semester, $file);
+                $this->complete($semester);
+
+                $this->getDoctrine()->getManager()->flush();
 
                 $this->createNotification()
                     ->setContent('semester.form.edit.success')
@@ -242,6 +245,11 @@ class SemesterController extends BaseController
             } catch (SpreadsheetException $exception) {
                 $this->createNotification()
                     ->setContent('error.semester.file.invalid')
+                    ->setType(NotificationBuilder::ERROR)
+                    ->save();
+            } catch (InvalidEntityException $exception) {
+                $this->createNotification()
+                    ->setContent($exception->getMessage(), $exception->getArguments())
                     ->setType(NotificationBuilder::ERROR)
                     ->save();
             }
@@ -306,11 +314,10 @@ class SemesterController extends BaseController
                 ->setType(NotificationBuilder::WARNING)
                 ->save();
 
-            if ($semester->isEditable()) {
-                return $this->redirectToRoute('administration_semester_edit', ['id' => $semester->getId()]);
-            } else {
-                return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
-            }
+            return $this->redirectToRoute(
+                'administration_semester_' . ($semester->isEditable() ? 'edit' : 'show'),
+                ['id' => $semester->getId()]
+            );
         }
 
         if ($this->isCsrfTokenValid('delete'.$semester->getId(), $request->request->get('_token'))) {
@@ -322,18 +329,81 @@ class SemesterController extends BaseController
         return $this->redirectToRoute('administration_index');
     }
 
+    /**
+     * Make a complete entity from the semester
+     *
+     * @param Semester $semester
+     *
+     * @throws InvalidEntityException
+     */
+    private function complete(Semester &$semester)
+    {
+        $doctrine = $this->getDoctrine();
+
+        // Check for course existence
+        $course = $semester->getCourse();
+
+        /** @var Course $optCourse */
+        $optCourse = $doctrine
+            ->getRepository(Course::class)
+            ->findOneBySemesterAndYear(
+                $course->getSemester(),
+                (int) $course->getImplementationDate()->format('Y')
+            )
+        ;
+
+        if (!$optCourse) {
+            throw new InvalidEntityException('error.course.nonexistent', [
+                '%name%' => $course->getName(),
+                '%implementationYear%' => $course->getImplementationDate()->format('Y'),
+            ]);
+        }
+
+        $semester->setCourse($optCourse);
+
+        // Check for students existence
+        $groups = $semester->getGroups();
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $doctrine->getRepository(User::class);
+
+        foreach ($groups as $group) {
+            $students = $group->getStudents();
+
+            foreach ($students as $key => $student) {
+                $username = $student->getUsername();
+
+                /** @var Student $optStudent */
+                $optStudent = $userRepository->findByUsername($username);
+
+                if (!$optStudent) {
+                    throw new InvalidEntityException('error.student.nonexistent', [
+                        '%username%' => $username,
+                    ]);
+                }
+
+                $students->set($key, $optStudent);
+            }
+        }
+    }
+
     private function createSemesterSample(): Semester
     {
         $doctrine = $this->getDoctrine();
 
         /** @var Period $nextPeriod */
-        $nextPeriod = $doctrine->getRepository(Semester::class)->findNextPeriod();
+        $nextPeriod = $doctrine
+            ->getRepository(Semester::class)
+            ->findNextPeriod();
 
         /** @var Course $lastBeginningCourse */
-        $lastBeginningCourse = $doctrine->getRepository(Course::class)->findOneBy(
-            [ 'semester' => 1 ],
-            [ 'id' => 'DESC']
-        );
+        $lastBeginningCourse = $doctrine
+            ->getRepository(Course::class)
+            ->findOneBy(
+                [ 'semester' => 1 ],
+                [ 'id' => 'DESC']
+            )
+        ;
 
         /** @var Student $sampleStudent1 */
         $sampleStudent1 = (new Student())

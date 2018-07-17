@@ -40,13 +40,16 @@ app:
         schedule: Emploi du temps
 
 error:
-    no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
+    course:
+        nonexistent: "Il n'existe pas de parcours %name% implémenté en %implementationYear%"
     login:
-        no_role: "Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.
-            Vous ne pouvez pas accéder à ce site."
+        no_role: |-
+            Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.
+            Vous ne pouvez donc pas accéder au site.
+    no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
     notification:
-        not_owner: Cette notification ne vous appartient pas
-        not_user: Vous n'êtes pas connecté
+            not_owner: Cette notification ne vous appartient pas
+            not_user: Vous n'êtes pas connecté
     semester:
         editable: Le semestre peut encore être modifié
         not_editable: Le semestre ne peut pas être modifié
@@ -54,6 +57,8 @@ error:
         no_current: Pas de semestre en cours
         file:
             invalid: Le fichier envoyé n'est pas valide
+    student:
+        nonexistent: "L'étudiant %username% n'existe pas"
 
 # General
 notification:
@@ -167,13 +172,12 @@ semester:
         delete:
             confirm: Êtes-vous sûr de vouloir supprimer ce semestre ?
     file:
+        message:
+                no_modify: Ne pas modifier les cases rouges
         title:
             property: Propriété
             value: Valeur
-            more_info: Informations supplémentaires
-        footer:
-            no_modify: Ne pas modifier les cases rouges
-            analyse_value: Seules les données de la colonne "valeur" sont analysées
+            more_info: Informations complémentaires
     message:
         with_file:
             edit: Modifier avec un fichier

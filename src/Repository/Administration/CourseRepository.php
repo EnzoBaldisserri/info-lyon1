@@ -50,4 +50,32 @@ class CourseRepository extends ServiceEntityRepository
         return $qb->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param int $semester
+     * @param int|DateTime $year
+     * @return Course|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneBySemesterAndYear(int $semester, $year): ?Course
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        // Semester
+        $qb
+            ->andWhere($qb->expr()->eq('c.semester', ':semester'))
+              ->setParameter('semester', $semester)
+        ;
+
+        // Year
+        $qb
+            ->andWhere($qb->expr()->between('c.implementationDate', ':yearStart', ':yearEnd'))
+              ->setParameter('yearStart', new DateTime("$year-01-01"))
+              ->setParameter('yearEnd', new DateTime("$year-12-31"))
+        ;
+
+        return $qb->getQuery()
+            ->getOneOrNullResult();
+    }
 }

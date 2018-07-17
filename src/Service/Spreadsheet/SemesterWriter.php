@@ -21,16 +21,22 @@ class SemesterWriter extends BaseEntityWriter
         // Style
         $worksheet->getDefaultColumnDimension()->setWidth(14);
 
-        // Actual header
-        $worksheet->setCellValue(
-            'A1', $this->translator->trans('semester.file.title.property'));
-        $worksheet->setCellValue(
-            'B1', $this->translator->trans('semester.file.title.value'));
-        $worksheet->setCellValue(
-            'C1', $this->translator->trans('semester.file.title.more_info'));
-        $worksheet->mergeCells('C1:D1');
+        // Warning message
+        $worksheet->mergeCells('A1:D1');
+        $cell = $worksheet->getCell('A1');
+        $cell->setValue($this->translator->trans('semester.file.message.no_modify'));
+        $this->helper->setCellStyle($cell, 'bad');
 
-        return 2;
+        // Column titles
+        $worksheet->setCellValue(
+            'A3', $this->translator->trans('semester.file.title.property'));
+        $worksheet->setCellValue(
+            'B3', $this->translator->trans('semester.file.title.value'));
+        $worksheet->setCellValue(
+            'C3', $this->translator->trans('semester.file.title.more_info'));
+        $worksheet->mergeCells('C3:D3');
+
+        return 4;
     }
 
     /**
@@ -42,15 +48,6 @@ class SemesterWriter extends BaseEntityWriter
      */
     public function writeContent($semester, Worksheet $worksheet, int $row): int
     {
-        // id
-        $worksheet->setCellValue(
-            'A'.$row, 'id');
-        $cell = $worksheet->getCell('B'.$row);
-        $cell->setValue($semester->getId() ?? '');
-        $this->helper->setCellStyle($cell, 'bad');
-
-        $row += 1;
-
         // Course's type
         $worksheet->setCellValue(
             'A'.$row, $this->translator->trans('course.props.semester'));
@@ -59,14 +56,11 @@ class SemesterWriter extends BaseEntityWriter
 
         $row += 1;
 
-        // Course's implementation date
+        // Course's implementation year
         $worksheet->setCellValue(
-            'A'.$row, $this->translator->trans('course.props.implementationDate'));
+            'A'.$row, $this->translator->trans('course.props.implementationYear'));
         $worksheet->setCellValue(
-            'B'.$row, Date::PHPToExcel($semester->getCourse()->getImplementationDate()));
-        $worksheet->getStyle('B'.$row)
-            ->getNumberFormat()
-            ->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+            'B'.$row, $semester->getCourse()->getImplementationDate()->format('Y'));
 
         $row += 1;
 
@@ -147,24 +141,4 @@ class SemesterWriter extends BaseEntityWriter
 
         return $row;
     }
-
-    /**
-     * @inheritdoc
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception;
-     */
-    public function writeFooter($semester, Worksheet $worksheet, int $row): void
-    {
-        $worksheet->mergeCells("A$row:D$row");
-        $cell = $worksheet->getCell('A'.$row);
-        $cell->setValue($this->translator->trans('semester.file.footer.no_modify'));
-        $this->helper->setCellStyle($cell, 'bad');
-
-        $row += 1;
-
-        $worksheet->mergeCells("A$row:D$row");
-        $worksheet->setCellValue(
-            'A'.$row, $this->translator->trans('semester.file.footer.analyse_value'));
-    }
-
 }
