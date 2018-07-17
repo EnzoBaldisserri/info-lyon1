@@ -41,7 +41,10 @@ app:
 
 error:
     course:
-        nonexistent: "Il n'existe pas de parcours %name% implémenté en %implementationYear%"
+        not_editable: Le parcours ne peut pas être modifié
+        not_deletable: Le parcours ne peut pas être supprimé
+        exists: "Un parcours %name% pour le PPN %implementationYear% existe déjà"
+        nonexistent: "Il n'existe pas de parcours %name% pour le PPN %implementationYear%"
     login:
         no_role: |-
             Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.

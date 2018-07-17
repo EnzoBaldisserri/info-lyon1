@@ -43,7 +43,7 @@ class Semester
     /**
      * @var Course
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", inversedBy="semesters", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
@@ -139,7 +139,7 @@ class Semester
         return $this->startDate;
     }
 
-    public function setStartDate(DateTime $startDate): self
+    public function setStartDate(?DateTime $startDate): self
     {
         // Start date's time must be the beginning of the day
         $startDate->setTime(0, 0, 0, 0);
@@ -154,7 +154,7 @@ class Semester
         return $this->endDate;
     }
 
-    public function setEndDate(DateTime $endDate): self
+    public function setEndDate(?DateTime $endDate): self
     {
         // End date's time must be the end of the day
         $endDate->setTime(23, 59, 59, 999);
@@ -169,10 +169,15 @@ class Semester
         return new Period($this->startDate, $this->endDate);
     }
 
-    public function setPeriod(Period $period): self
+    public function setPeriod(?Period $period): self
     {
-        $this->setStartDate($period->getStart());
-        $this->setEndDate($period->getEnd());
+        if ($period === null) {
+            $this->setStartDate(null);
+            $this->setEndDate(null);
+        } else {
+            $this->setStartDate($period->getStart());
+            $this->setEndDate($period->getEnd());
+        }
 
         return $this;
     }
@@ -182,7 +187,7 @@ class Semester
         return $this->course;
     }
 
-    public function setCourse(Course $course): self
+    public function setCourse(?Course $course): self
     {
         $this->course = $course;
 

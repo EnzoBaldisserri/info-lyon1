@@ -127,7 +127,7 @@ class SemesterController extends BaseController
         if (!$semester->isEditable()) {
             $this->createNotification()
                 ->setContent('error.semester.not_editable')
-                ->setType(NotificationBuilder::WARNING)
+                ->setType(NotificationBuilder::ERROR)
                 ->save();
 
             return $this->redirectToRoute('administration_semester_show', ['id' => $semester->getId()]);
@@ -211,7 +211,7 @@ class SemesterController extends BaseController
         if (!$semester->isEditable()) {
             $this->createNotification()
                 ->setContent('error.semester.not_editable')
-                ->setType(NotificationBuilder::WARNING)
+                ->setType(NotificationBuilder::ERROR)
                 ->save();
 
             return $this->redirectToRoute('administration_semester_show', [
@@ -311,7 +311,7 @@ class SemesterController extends BaseController
         if (!$semester->isDeletable()) {
             $this->createNotification()
                 ->setContent('error.semester.not_deletable')
-                ->setType(NotificationBuilder::WARNING)
+                ->setType(NotificationBuilder::ERROR)
                 ->save();
 
             return $this->redirectToRoute(

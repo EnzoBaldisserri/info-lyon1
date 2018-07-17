@@ -32,13 +32,31 @@ class Course
     private $implementationDate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\TeachingUnit", mappedBy="courses", cascade={"persist"})
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Semester", mappedBy="course", cascade={"persist"})
+     */
+    private $semesters;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="TeachingUnit", mappedBy="courses", cascade={"persist"})
      */
     private $teachingUnits;
 
     public function __construct()
     {
+        $this->semesters = new ArrayCollection();
         $this->teachingUnits = new ArrayCollection();
+    }
+
+    public function isEditable()
+    {
+        $today = new DateTime();
+        return $today < $this->implementationDate;
+    }
+
+    public function isDeletable()
+    {
+        return $this->isEditable() && $this->semesters->isEmpty();
     }
 
     public function getId()
@@ -71,6 +89,37 @@ class Course
     public function setImplementationDate(DateTime $implementationDate): self
     {
         $this->implementationDate = $implementationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Semester[]
+     */
+    public function getSemesters(): Collection
+    {
+        return $this->semesters;
+    }
+
+    public function addSemester(Semester $semester): self
+    {
+        if (!$this->semesters->contains($semester)) {
+            $this->semesters[] = $semester;
+            $semester->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSemester(Semester $semester): self
+    {
+        if ($this->semesters->contains($semester)) {
+            $this->semesters->removeElement($semester);
+            // set the owning side to null (unless already changed)
+            if ($semester->getCourse() === $this) {
+                $semester->setCourse(null);
+            }
+        }
 
         return $this;
     }
