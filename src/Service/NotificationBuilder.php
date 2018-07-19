@@ -22,7 +22,7 @@ class NotificationBuilder
         self::INFORMATION => 'info_outline',
         self::SUCCESS => 'done',
         self::WARNING => 'warning',
-        self::ERROR => 'report'
+        self::ERROR => 'report',
     ];
 
     const DURATION_FLASH = 0;
@@ -183,7 +183,7 @@ class NotificationBuilder
 
         switch ($this->duration) {
             case self::DURATION_FLASH:
-                $this->session->getFlashBag()->add('notifications', $newNotification);
+                $this->session->getFlashBag()->add('notification', $newNotification);
                 break;
             case self::DURATION_PERSIST:
                 $this->em->persist($newNotification);

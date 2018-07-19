@@ -1,6 +1,5 @@
 const path = require('path');
 const NotifierPlugin = require('webpack-notifier');
-const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const production = process.env.APP_ENV === 'prod';
@@ -59,10 +58,6 @@ module.exports = {
 
   plugins: [
     new NotifierPlugin(),
-    new CopyPlugin([
-      'node_modules/materialize-css/dist/js/materialize.js',
-      { from: 'assets/images', to: '../images' },
-    ]),
     new MiniCssExtractPlugin(),
   ],
 

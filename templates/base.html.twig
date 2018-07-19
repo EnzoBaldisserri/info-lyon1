@@ -11,8 +11,8 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -24,6 +24,9 @@
                 } only %}
             {% endblock %}
         </header>
+        <noscript class="center-block alert alert-error">
+            {{ 'error.noscript'|trans }}
+        </noscript>
         {% block bodyContainer %}
             <main class="container">
                 <div class="page-title">
@@ -34,10 +37,23 @@
                 {% endblock %}
             </main>
         {% endblock %}
+
+
+        <script>
+            const notifications = [
+                {% for notification in app.flashes('notification') %}
+                {
+                    content: '{{  notification.content|e('js') }}',
+                    type: '{{ notification.type|e('js') }}',
+                    icon: '{{ notification.icon|e('js') }}',
+                    link: '{{ notification.link|e('js') }}',
+                },
+                {% endfor %}
+            ];
+        </script>
+        <script src="{{ asset('build/app.js') }}"></script>
+        <script src="{{ path('bazinga_jstranslation_js', { domain: 'javascript' }) }}" async></script>
         {% block javascripts %}
-            <script src="{{ asset('build/materialize.js') }}"></script>
-            <script src="{{ asset('build/app.js') }}"></script>
-            <script src="{{ path('bazinga_jstranslation_js', { domain: 'javascript' }) }}"></script>
         {% endblock %}
     </body>
 </html>

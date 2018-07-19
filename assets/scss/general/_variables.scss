@@ -24,6 +24,12 @@ $color-success: color('light-green', 'accent-3');
 
 $default-transition: all 0.2s ease;
 
+$notification-types: (
+  'success': $color-success,
+  'warning': $color-warning,
+  'error'  : $color-error,
+);
+
 // Utilities
 // Margin, padding
 $spacer: 1rem;

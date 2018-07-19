@@ -49,7 +49,7 @@ error:
         no_role: |-
             Vous avez été reconnu comme utilisateur mais n'avez aucun rôle.
             Vous ne pouvez donc pas accéder au site.
-    no_script: L'activation de javascript est nécessaire pour que la page fonctionne !
+    noscript: Ce site nécéssite l'activation de Javascript pour fonctionner.
     notification:
             not_owner: Cette notification ne vous appartient pas
             not_user: Vous n'êtes pas connecté
