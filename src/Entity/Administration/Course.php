@@ -21,11 +21,15 @@ class Course
     private $id;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="smallint")
      */
     private $semester;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="date")
      * @Assert\Date()
      */
@@ -33,11 +37,14 @@ class Course
 
     /**
      * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="Semester", mappedBy="course", cascade={"persist"})
      */
     private $semesters;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="TeachingUnit", mappedBy="courses", cascade={"persist"})
      */
     private $teachingUnits;

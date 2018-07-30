@@ -8,13 +8,12 @@ use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
 use App\Entity\Period;
 use App\Entity\User\Student;
-use App\Entity\User\User;
 use App\Exception\InvalidEntityException;
 use App\Form\Administration\SemesterType;
 use App\Helper\FileHelper;
+use App\Repository\Administration\GroupRepository;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\User\StudentRepository;
-use App\Repository\User\UserRepository;
 use App\Service\NotificationBuilder;
 use App\Service\SpreadsheetService;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,7 +139,7 @@ class SemesterController extends BaseController
                 $groups[$group->getId()] = $group->getStudents()->toArray();
                 return $groups;
             },
-            array()
+            []
         );
 
         $form = $this->createForm(SemesterType::class, $semester);
@@ -164,9 +163,7 @@ class SemesterController extends BaseController
 
                 // Add new students
                 foreach ($currentStudents as $student) {
-                    if (!in_array($student, $formerStudents, true)) {
-                        $group->addStudent($student);
-                    }
+                    $group->addStudent($student);
                 }
 
                 // Remove students that aren't in the group anymore
@@ -364,8 +361,11 @@ class SemesterController extends BaseController
         // Check for students existence
         $groups = $semester->getGroups();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $doctrine->getRepository(User::class);
+        /** @var StudentRepository $userRepository */
+        $studentRepository = $doctrine->getRepository(Student::class);
+
+        /** @var GroupRepository $groupRepository */
+        $groupRepository = $doctrine->getRepository(Group::class);
 
         foreach ($groups as $group) {
             $students = $group->getStudents();
@@ -374,13 +374,22 @@ class SemesterController extends BaseController
                 $username = $student->getUsername();
 
                 /** @var Student $optStudent */
-                $optStudent = $userRepository->findByUsername($username);
+                $optStudent = $studentRepository->findOneByUsername($username);
 
                 if (!$optStudent) {
                     throw new InvalidEntityException('error.student.nonexistent', [
                         '%username%' => $username,
                     ]);
                 }
+
+                $classForSemester = $groupRepository->findInSemesterForStudent($group->getSemester(), $optStudent);
+                if ($classForSemester !== $group) {
+                    if ($classForSemester !== null) {
+                        $optStudent->removeClass($classForSemester);
+                    }
+                    $optStudent->addClass($group);
+                }
+
 
                 $students->set($key, $optStudent);
             }
@@ -399,10 +408,7 @@ class SemesterController extends BaseController
         /** @var Course $lastBeginningCourse */
         $lastBeginningCourse = $doctrine
             ->getRepository(Course::class)
-            ->findOneBy(
-                [ 'semester' => 1 ],
-                [ 'id' => 'DESC']
-            )
+            ->findLastOneBySemester(1)
         ;
 
         /** @var Student $sampleStudent1 */

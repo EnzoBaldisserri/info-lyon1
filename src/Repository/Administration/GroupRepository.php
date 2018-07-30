@@ -2,13 +2,11 @@
 
 namespace App\Repository\Administration;
 
+use App\Entity\User\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use App\Entity\Administration\Group;
 use App\Entity\Administration\Semester;
-use App\Entity\Period;
 
 /**
  * @method Group|null find($id, $lockMode = null, $lockVersion = null)
@@ -74,5 +72,29 @@ class GroupRepository extends ServiceEntityRepository
 
         return $qb->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param Semester $semester
+     * @param Student $student
+     * @return Group|null
+     */
+    public function findInSemesterForStudent(Semester $semester, Student $student): ?Group
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb
+            ->join('g.students', 'stu')
+            ->andWhere($qb->expr()->eq('stu', ':student'))
+            ->setParameter('student', $student)
+        ;
+
+        $qb
+            ->andWhere($qb->expr()->eq('g.semester', ':semester'))
+            ->setParameter('semester', $semester)
+        ;
+
+        return $qb->getQuery()
+            ->getOneOrNullResult();
     }
 }

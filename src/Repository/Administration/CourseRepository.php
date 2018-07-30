@@ -53,12 +53,32 @@ class CourseRepository extends ServiceEntityRepository
 
     /**
      * @param int $semester
-     * @param int|DateTime $year
      * @return Course|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneBySemesterAndYear(int $semester, $year): ?Course
+    public function findLastOneBySemester(int $semester)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->andWhere($qb->expr()->eq('c.semester', ':semester'))
+              ->setParameter('semester', $semester)
+        ;
+
+        $qb
+            ->addOrderBy('c.id', 'DESC')
+            ->setMaxResults(1)
+        ;
+
+        return $qb->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param int $semester
+     * @param int $year
+     * @return Course|null
+     */
+    public function findOneBySemesterAndYear(int $semester, int $year): ?Course
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -71,11 +91,11 @@ class CourseRepository extends ServiceEntityRepository
         // Year
         $qb
             ->andWhere($qb->expr()->between('c.implementationDate', ':yearStart', ':yearEnd'))
-              ->setParameter('yearStart', new DateTime("$year-01-01"))
-              ->setParameter('yearEnd', new DateTime("$year-12-31"))
+              ->setParameter('yearStart', new DateTime($year . '-01-01'))
+              ->setParameter('yearEnd', new DateTime($year . '-12-31'))
         ;
 
-        return $qb->getQuery()
+         return $qb->getQuery()
             ->getOneOrNullResult();
     }
 }

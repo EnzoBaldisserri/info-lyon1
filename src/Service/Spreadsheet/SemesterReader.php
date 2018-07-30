@@ -31,7 +31,7 @@ class SemesterReader extends BaseEntityReader
      */
     public function readContent(&$semester, Worksheet $worksheet, int $row): int
     {
-        $course = $semester->getCourse() ?? new Course();
+        $course = new Course();
         $course->setSemester(
             (int) $worksheet->getCell('B'.$row)->getValue());
 
@@ -39,6 +39,8 @@ class SemesterReader extends BaseEntityReader
 
         $course->setImplementationDate(
             \DateTime::createFromFormat('Y', $worksheet->getCell('B'.$row)->getValue()));
+
+        $semester->setCourse($course);
 
         $row += 1;
 
@@ -52,7 +54,7 @@ class SemesterReader extends BaseEntityReader
 
         $row += 1;
 
-        $row = $this->updateGroups($worksheet, $semester->getGroups(), $row);
+        $row = $this->updateGroups($worksheet, $semester, $row);
 
         return $row;
     }
@@ -61,15 +63,24 @@ class SemesterReader extends BaseEntityReader
      * Update the collection of group.
      *
      * @param Worksheet $worksheet
-     * @param Collection $formerGroups
+     * @param Semester $semester
      * @param int $row
-     * @return int                      The next line to read
+     * @return int                   The next line to read
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    protected function updateGroups(Worksheet $worksheet, Collection $formerGroups, int $row): int
+    protected function updateGroups(Worksheet $worksheet, Semester $semester, int $row): int
     {
         $newGroups = $this->readGroups($worksheet, $row);
+        $formerGroups = $semester->getGroups();
+
+        // Remove former groups
+        foreach ($formerGroups as $formerGroup) {
+            // If group does not exist anymore
+            if ($newGroups->filter($this->filterSameId($formerGroup))->isEmpty()) {
+                $semester->removeGroup($formerGroup);
+            }
+        }
 
         // Add new groups and update modified ones
         foreach ($newGroups as $newGroup) {
@@ -77,38 +88,30 @@ class SemesterReader extends BaseEntityReader
             $formerGroup = $formerGroups->filter($this->filterSameId($newGroup))->current();
 
             // If group did exist
-            if ($formerGroup !== FALSE) {
-                // Compute modifications
+            if ($formerGroup !== false) {
+                // Update group number
                 $formerGroup->setNumber($newGroup->getNumber());
 
-                $formerStudents = $formerGroup->getStudents();
                 $newStudents = $newGroup->getStudents();
-
-                // Add new students
-                $newStudents->forAll(function($key, $newStudent) use ($formerStudents) {
-                    // If student did not exist
-                    if ($formerStudents->filter($this->filterSameUsername($newStudent))->count() === 0) {
-                        $formerStudents->add($newStudent);
-                    }
-                });
+                $formerStudents = $formerGroup->getStudents();
 
                 // Remove former students
-                foreach ($formerStudents as $key => $formerStudent) {
+                foreach ($formerStudents as $formerStudent) {
                     // If student does not exist anymore
-                    if ($newStudents->filter($this->filterSameUsername($formerStudent))->count() !== 0) {
-                        $formerStudents->remove($key);
+                    if ($newStudents->filter($this->filterSameUsername($formerStudent))->isEmpty()) {
+                        $formerGroup->removeStudent($formerStudent);
+                    }
+                }
+
+                // Add new students
+                foreach ($newStudents as $newStudent) {
+                    if ($formerStudents->filter($this->filterSameUsername($newStudent))->isEmpty()) {
+                        $formerGroup->addStudent($newStudent);
                     }
                 }
             } else {
                 // Add it to the collection
-                $formerGroups->add($newGroup);
-            }
-        }
-
-        // Remove former groups
-        foreach ($formerGroups as $key => $formerGroup) {
-            if ($newGroups->filter($this->filterSameId($formerGroup))->count() === 0) {
-                $formerGroups->remove($key);
+                $semester->addGroup($newGroup);
             }
         }
 
@@ -142,23 +145,14 @@ class SemesterReader extends BaseEntityReader
 
             // Students
             while (($username = $worksheet->getCell('B'.$row)->getValue()) !== null) {
-                $student = new Student();
-                $student->setUsername($username);
-
-                if ($firstname = $worksheet->getCell('C'.$row)->getValue()) {
-                    $student->setFirstname($firstname);
-                }
-
-                if ($surname = $worksheet->getCell('C'.$row)->getValue()) {
-                    $student->setSurname($surname);
-                }
-
-                $group->addStudent($student);
+                $group->addStudent((new Student())
+                    ->setUsername($username));
 
                 $row += 1;
             }
 
             $row += 1;
+
             $groups->add($group);
         }
 

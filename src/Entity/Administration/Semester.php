@@ -57,6 +57,8 @@ class Semester
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"number" = "ASC"})
+     *
      * Excluded because causes serialization to break in Api\AbsenceController.getAll
      * @Serializer\Exclude
      */
