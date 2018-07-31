@@ -335,6 +335,8 @@ class SemesterController extends BaseController
      */
     private function complete(Semester &$semester)
     {
+        $creation = $semester->getId() == null;
+
         $doctrine = $this->getDoctrine();
 
         // Check for course existence
@@ -382,14 +384,13 @@ class SemesterController extends BaseController
                     ]);
                 }
 
-                $classForSemester = $groupRepository->findInSemesterForStudent($group->getSemester(), $optStudent);
+                $classForSemester = $creation ? null : $groupRepository->findInSemesterForStudent($group->getSemester(), $optStudent);
                 if ($classForSemester !== $group) {
                     if ($classForSemester !== null) {
                         $optStudent->removeClass($classForSemester);
                     }
                     $optStudent->addClass($group);
                 }
-
 
                 $students->set($key, $optStudent);
             }
