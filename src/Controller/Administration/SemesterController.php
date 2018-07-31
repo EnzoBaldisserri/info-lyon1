@@ -273,7 +273,7 @@ class SemesterController extends BaseController
             $spreadsheetService->writeEntity($sample, $file);
         }
 
-        return $this->file($file);
+        return $this->file($file, 'sample.xlsx');
     }
 
     /**
@@ -297,7 +297,13 @@ class SemesterController extends BaseController
 
         $spreadsheetService->writeEntity($semester, $file);
 
-        return $this->file($filepath);
+        $filename = sprintf(
+            'semester_%s_%s.xlsx',
+            $semester->getName(),
+            date('Y-m-d')
+        );
+
+        return $this->file($filepath, $filename);
     }
 
     /**

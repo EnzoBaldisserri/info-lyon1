@@ -128,7 +128,7 @@ class Semester
 
     public function getName(): ?string
     {
-        return 'S' . $this->course->getSemester();
+        return $this->course->getName();
     }
 
     public function getNumber(): ?int
