@@ -106,14 +106,14 @@ administration:
 # Entity related translations
 course:
     props:
-        semester: Type
+        type: Type
         implementationDate: Date de mise en application
         implementationYear: PPN
         manage: Gérer
     form:
         choice_label: '%courseType% - PPN %implementationYear%'
         props:
-            semester:
+            type:
                 placeholder: Selectionnez un semestre...
                 label: Type de semestre
             implementation_date:

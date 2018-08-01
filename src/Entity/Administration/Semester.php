@@ -133,7 +133,7 @@ class Semester
 
     public function getNumber(): ?int
     {
-        return $this->course->getSemester();
+        return $this->course->getType();
     }
 
     public function getStartDate(): ?DateTime

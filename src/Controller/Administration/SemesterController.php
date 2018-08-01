@@ -351,8 +351,8 @@ class SemesterController extends BaseController
         /** @var Course $optCourse */
         $optCourse = $doctrine
             ->getRepository(Course::class)
-            ->findOneBySemesterAndYear(
-                $course->getSemester(),
+            ->findOneByTypeAndYear(
+                $course->getType(),
                 (int) $course->getImplementationDate()->format('Y')
             )
         ;

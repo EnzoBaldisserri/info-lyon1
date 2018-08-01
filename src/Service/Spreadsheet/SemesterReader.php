@@ -32,7 +32,7 @@ class SemesterReader extends BaseEntityReader
     public function readContent(&$semester, Worksheet $worksheet, int $row): int
     {
         $course = new Course();
-        $course->setSemester(
+        $course->setType(
             (int) $worksheet->getCell('B'.$row)->getValue());
 
         $row += 1;

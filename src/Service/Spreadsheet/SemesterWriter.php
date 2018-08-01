@@ -50,9 +50,9 @@ class SemesterWriter extends BaseEntityWriter
     {
         // Course's type
         $worksheet->setCellValue(
-            'A'.$row, $this->translator->trans('course.props.semester'));
+            'A'.$row, $this->translator->trans('course.props.type'));
         $worksheet->setCellValue(
-            'B'.$row, $semester->getCourse()->getSemester());
+            'B'.$row, $semester->getCourse()->getType());
 
         $row += 1;
 

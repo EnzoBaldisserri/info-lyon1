@@ -25,7 +25,7 @@ class Course
      *
      * @ORM\Column(type="smallint")
      */
-    private $semester;
+    private $type;
 
     /**
      * @var DateTime
@@ -73,17 +73,17 @@ class Course
 
     public function getName(): string
     {
-        return sprintf('S%d', $this->semester);
+        return sprintf('S%d', $this->type);
     }
 
-    public function getSemester(): ?int
+    public function getType(): ?int
     {
-        return $this->semester;
+        return $this->type;
     }
 
-    public function setSemester(int $semester): self
+    public function setType(int $type): self
     {
-        $this->semester = $semester;
+        $this->type = $type;
 
         return $this;
     }

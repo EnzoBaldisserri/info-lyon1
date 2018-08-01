@@ -4,7 +4,7 @@
     {{ form_errors(form) }}
     <div class="row">
         {{ form_row(form.implementationDate, { 'attr': {'class': 'input-field col s12 m6'} }) }}
-        {{ form_row(form.semester, { 'attr': {'class': 'input-field col s12 m6'} }) }}
+        {{ form_row(form.type, { 'attr': {'class': 'input-field col s12 m6'} }) }}
     </div>
     {{ form_row(form.teachingUnits, { 'attr': {'class': 'input-field'} }) }}
     {{ forms.actions(button_label, [ [path('administration_index'), 'administration.message.come_back'|trans] ]) }}

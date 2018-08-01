@@ -3,7 +3,7 @@
 {% block page_title %}
     <h2>
         {{ 'semester.entity'|trans({
-            '%courseType%': semester.course.semester,
+            '%courseType%': semester.number,
             '%creationYear%': semester.course.implementationDate|date('Y'),
         }) }}
     </h2>

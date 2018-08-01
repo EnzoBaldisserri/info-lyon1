@@ -35,8 +35,8 @@ class CourseController extends BaseController
         if ($form->isSubmitted()) {
             $optCourse = $this->getDoctrine()
                 ->getRepository(Course::class)
-                ->findOneBySemesterAndYear(
-                    $course->getSemester(),
+                ->findOneByTypeAndYear(
+                    $course->getType(),
                     (int) $course->getImplementationDate()->format('Y')
                 )
             ;

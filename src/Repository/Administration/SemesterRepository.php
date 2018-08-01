@@ -79,7 +79,7 @@ class SemesterRepository extends ServiceEntityRepository
 
         $qb
             ->join('s.course', 'c')
-            ->addOrderBy('c.semester', 'ASC')
+            ->addOrderBy('c.type', 'ASC')
         ;
 
         return $qb->getQuery()

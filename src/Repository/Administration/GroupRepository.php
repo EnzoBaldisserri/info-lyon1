@@ -42,7 +42,7 @@ class GroupRepository extends ServiceEntityRepository
         $qb
             ->join('g.semester', 'sem')
             ->join('sem.course', 'c')
-            ->addOrderBy('c.semester', 'ASC')
+            ->addOrderBy('c.type', 'ASC')
             ->addOrderBy('g.number', 'ASC')
         ;
 

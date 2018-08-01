@@ -44,7 +44,7 @@ class CourseRepository extends ServiceEntityRepository
 
         $qb
             ->addOrderBy('c.implementationDate', 'DESC')
-            ->addOrderBy('c.semester', 'ASC')
+            ->addOrderBy('c.type', 'ASC')
         ;
 
         return $qb->getQuery()
@@ -52,16 +52,16 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $semester
+     * @param int $type
      * @return Course|null
      */
-    public function findLastOneBySemester(int $semester)
+    public function findLastOneByType(int $type)
     {
         $qb = $this->createQueryBuilder('c');
 
         $qb
-            ->andWhere($qb->expr()->eq('c.semester', ':semester'))
-              ->setParameter('semester', $semester)
+            ->andWhere($qb->expr()->eq('c.type', ':type'))
+              ->setParameter('type', $type)
         ;
 
         $qb
@@ -74,18 +74,18 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $semester
+     * @param int $type
      * @param int $year
      * @return Course|null
      */
-    public function findOneBySemesterAndYear(int $semester, int $year): ?Course
+    public function findOneByTypeAndYear(int $type, int $year): ?Course
     {
         $qb = $this->createQueryBuilder('c');
 
         // Semester
         $qb
-            ->andWhere($qb->expr()->eq('c.semester', ':semester'))
-              ->setParameter('semester', $semester)
+            ->andWhere($qb->expr()->eq('c.type', ':type'))
+              ->setParameter('type', $type)
         ;
 
         // Year
