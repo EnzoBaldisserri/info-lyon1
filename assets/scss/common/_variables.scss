@@ -1,15 +1,15 @@
-@import '~materialize-css/sass/components/color-variables';
+@import '~materialize-css/sass/components/variables';
 
 $theme-colors: (
-  'primary':   color('yellow', 'accent-4'),
-  'secondary': color('orange', 'lighten-2'),
-  'white':     #fff,
-  'light':     color('grey', 'base'),
-  'dark':      color('grey', 'darken-4'),
-  'black':     rgba(0, 0, 0, 0.87),
-  'error':     color('red', 'base'),
-  'warning':   color('amber', 'base'),
-  'success':   color('light-green', 'accent-3'),
+  'primary':    $primary-color,
+  'secondary':  $secondary-color,
+  'white':      #fff,
+  'light':      color('grey', 'base'),
+  'dark':       color('grey', 'darken-4'),
+  'black':      rgba(0, 0, 0, 0.87),
+  'success':    $success-color,
+  'warning':    color('amber', 'base'),
+  'error':      $error-color,
 );
 
 $absence-colors: (
@@ -20,4 +20,22 @@ $absence-colors: (
   'several'   : #b203fd
 );
 
+$grid-breakpoints: (
+  sm: 0,
+  md: $small-screen,
+  lg: $medium-screen,
+  xl: $large-screen,
+);
+
+// HELPERS
 $default-transition: all 0.2s ease;
+
+// UTILITIES
+$sizes: (
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%,
+  auto: auto,
+);
+

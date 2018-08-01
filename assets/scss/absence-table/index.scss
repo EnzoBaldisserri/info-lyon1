@@ -1,12 +1,10 @@
-@import '../common/variables';
-@import '../common/functions';
-@import '../common/mixins/popup';
+@import '../min-import';
 
+@import 'color-codes';
 @import 'variables';
 @import 'table-static/table-static';
 @import 'table-dynamic/table-dynamic';
 @import 'absence-editor/absence-editor';
-@import 'color-codes';
 
 #absence-table {
   display: flex;
