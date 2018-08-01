@@ -10,9 +10,7 @@ module.exports = {
   entry: {
     'absence-table': './assets/js/absence-table/index.js',
     app: './assets/js/app.js',
-    fos_layout: './assets/js/fos_layout.js',
     semester_form: './assets/js/administration/semester_form.js',
-    student_absence: './assets/js/student/absence.js',
   },
 
   output: {
@@ -65,7 +63,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json'],
   },
 
-  devtool: !production ? 'source-map' : '',
+  devtool: production ? false : 'source-map',
 
   target: 'web',
 

@@ -1,0 +1,75 @@
+$notification-types: (
+  'success':   theme-color('success'),
+  'warning':   theme-color('warning'),
+  'error'  :   theme-color('error'),
+);
+
+// Alerts
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+
+  border-radius: 0.25rem;
+
+  @each $name, $color in $notification-types {
+    &.alert-#{$name} {
+      color: color-yiq($color);
+      background-color: $color;
+    }
+  }
+}
+
+.notif,
+.toast {
+  cursor: pointer;
+  padding: 0.4rem;
+
+  .material-icons {
+    font-size: 24px;
+    padding: 0 0.8rem 0 0.2rem;
+  }
+
+  @each $name, $color in $notification-types {
+    &.#{$name} {
+      background-color: $color !important;
+    }
+  }
+}
+
+// Notifications in navigation bar
+#navbar-notifications {
+  min-width: 300px;
+  max-width: 600px;
+}
+
+// Notification badges
+.notif-badge-container {
+  position: relative;
+
+  .notif-badge {
+    position: absolute;
+    top: 0.7rem;
+
+    $size: 1.3rem;
+    width: $size !important;
+    min-width: $size !important;
+    height: $size !important;
+    line-height: $size !important;
+
+    background-color: #ee6e73;
+    color: theme-color('white');
+    font-weight: 300;
+    font-size: 0.8rem;
+
+    text-align: center;
+    border-radius: 50% !important;
+
+    @media #{$medium-and-down} {
+      margin-left: 28px;
+    }
+
+    @media #{$large-and-up} {
+      margin-left: 14px;
+    }
+  }
+}

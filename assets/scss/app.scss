@@ -1,12 +1,12 @@
-@import 'general/variables';
-@import 'general/colors';
+@import 'common/materialize-variables';
 
 /* stylelint-disable */
 @import '~materialize-css/sass/materialize';
 /* stylelint-enable */
 
-@import 'general/helpers';
-@import 'general/override';
-@import 'general/style';
-@import 'general/components/header';
-@import 'general/components/notifications';
+@import 'common/variables';
+@import 'common/functions';
+@import 'common/mixins';
+@import 'common/utilities';
+@import 'common/general';
+@import 'common/components';

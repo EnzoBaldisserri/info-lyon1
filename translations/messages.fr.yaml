@@ -199,3 +199,5 @@ fosub:
             remember_me: Rester connecté
             connect: Se connecter
     logout: Déconnexion
+    error:
+        Invalid credentials.: Identifiant ou mot de passe invalide

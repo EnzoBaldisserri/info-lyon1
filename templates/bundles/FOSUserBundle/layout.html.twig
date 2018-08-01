@@ -1,14 +1,4 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'fosub.login.title'|trans }} - {{ parent() }}{% endblock %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('build/fos_layout.css') }}">
-{% endblock %}
-
-{% block body %}
-    <div class="center-align">
-        {% block fos_user_content %}
-        {% endblock %}
-    </div>
+{% block fos_user_content %}
 {% endblock %}

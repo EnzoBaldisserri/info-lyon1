@@ -1,0 +1,5 @@
+@import '~materialize-css/sass/components/color-variables';
+
+$primary-color: color('yellow', 'accent-4');
+$secondary-color: color('orange', 'lighten-2');
+$link-color: $secondary-color;

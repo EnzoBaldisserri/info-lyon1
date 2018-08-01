@@ -1,0 +1,18 @@
+@mixin student-row() {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  height: $line-height;
+  border-top: $default-border;
+
+  > .content {
+    flex-grow: 1;
+    white-space: nowrap;
+  }
+
+  .popup {
+    @include popup(true, true);
+  }
+}

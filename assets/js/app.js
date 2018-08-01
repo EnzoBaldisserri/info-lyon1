@@ -150,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const displayLength = notification.type === 'error' ? Infinity : 4000;
 
-    const classes = `toast toast-${notification.type}`;
+    const classes = `toast ${notification.type}`;
 
     M.toast({ html, displayLength, classes });
   });

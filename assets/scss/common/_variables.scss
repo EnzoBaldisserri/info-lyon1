@@ -1,0 +1,23 @@
+@import '~materialize-css/sass/components/color-variables';
+
+$theme-colors: (
+  'primary':   color('yellow', 'accent-4'),
+  'secondary': color('orange', 'lighten-2'),
+  'white':     #fff,
+  'light':     color('grey', 'base'),
+  'dark':      color('grey', 'darken-4'),
+  'black':     rgba(0, 0, 0, 0.87),
+  'error':     color('red', 'base'),
+  'warning':   color('amber', 'base'),
+  'success':   color('light-green', 'accent-3'),
+);
+
+$absence-colors: (
+  'justified' : #1bee00,
+  'absence'   : #f7171b,
+  'lateness'  : #eb9a0e,
+  'control'   : #010dfd,
+  'several'   : #b203fd
+);
+
+$default-transition: all 0.2s ease;
