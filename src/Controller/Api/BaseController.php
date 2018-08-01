@@ -8,7 +8,7 @@ use JMS\Serializer\SerializerBuilder;
 
 abstract class BaseController extends AbstractController
 {
-    protected function createJsonResponse(Array $data = [], int $status = 200, Array $headers = [])
+    protected function createJsonResponse(array $data = [], int $status = 200, array $headers = [])
     {
         if (empty($data)) {
             $data['ok'] = $status === 200;

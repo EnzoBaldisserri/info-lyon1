@@ -65,7 +65,9 @@ class NotificationBuilder
      */
     public function newNotification(int $duration = self::DURATION_FLASH): self
     {
-        if ($duration < 0 || $duration >= 2) {
+        static $availableDurations = [self::DURATION_FLASH, self::DURATION_PERSIST];
+
+        if (!in_array($duration, $availableDurations)) {
             throw new RuntimeException('Duration "' . $duration . '" does not exist');
         }
 
@@ -96,18 +98,19 @@ class NotificationBuilder
 
     /**
      * Set the type of the notification.
-     * Also defines a default icon based on $type.
      *
      * @param  string $type The type
      * @return self
      */
     public function setType(string $type): self
     {
-        $this->type = $type;
+        static $availableTypes = [self::INFORMATION, self::SUCCESS, self::WARNING, self::ERROR];
 
-        if ($this->icon === null) {
-            $this->icon = self::TYPE_ICONS[$type];
+        if (!in_array($type, $availableTypes)) {
+            throw new RuntimeException('Notification type "' . $type . '" does not exist');
         }
+
+        $this->type = $type;
 
         return $this;
     }
@@ -128,14 +131,13 @@ class NotificationBuilder
 
     /**
      * Defines the path the notification will link to.
-     * If $parameters is not set to 'false', the link will be generated
-     * from $path and $parameters.
+     * If $parameters is set to <code>false</code>, $path will not be passed through the router.
      *
-     * @param  string $path       The path
-     * @param  array  $parameters The routing parameters
+     * @param  string      $path       The path
+     * @param  array|false $parameters The routing parameters
      * @return self
      */
-    public function setPath(string $path, Array $parameters = []): self
+    public function setPath(string $path, array $parameters = []): self
     {
         $this->link = false !== $parameters ?
             $this->router->generate($path, $parameters)
@@ -164,13 +166,17 @@ class NotificationBuilder
      */
     public function save()
     {
-        // Pre-save
+        // Validate the input
+        $this->validate();
+
+        // Auto-fill attributes
         if ($this->receiver === null) {
             $this->receiver = $this->user;
         }
 
-        // Validation of the input
-        $this->validate();
+        if ($this->icon === null) {
+            $this->icon = self::TYPE_ICONS[$this->type] ?: self::TYPE_ICONS[self::INFORMATION];
+        }
 
         // Create a notification
         $newNotification = (new Notification())
@@ -200,10 +206,6 @@ class NotificationBuilder
 
         if ($this->type === null) {
             throw new RuntimeException('Notification type is not set');
-        }
-
-        if ($this->icon === null) {
-            throw new RuntimeException('Notification icon is not set');
         }
 
         if ($this->duration === null) {

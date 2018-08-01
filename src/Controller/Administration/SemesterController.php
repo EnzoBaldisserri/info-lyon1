@@ -76,7 +76,7 @@ class SemesterController extends BaseController
                 $em->flush();
 
                 $this->createNotification()
-                    ->setContent('semester.form.edit.success')
+                    ->setContent('semester.form.new.success')
                     ->setType(NotificationBuilder::SUCCESS)
                     ->save();
 
