@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ 'semester.entity'|trans({
+    '%courseType%': semester.number,
+    '%creationYear%': semester.course.implementationDate|date('Y'),
+}) }} - {{ parent() }}{% endblock %}
+
 {% block page_title %}
     <h2>
         {{ 'semester.entity'|trans({
