@@ -35,19 +35,7 @@
             </main>
         {% endblock %}
 
-
-        <script>
-            const notifications = [
-                {% for notification in app.flashes('notification') %}
-                {
-                    content: '{{  notification.content|e('js') }}',
-                    type: '{{ notification.type|e('js') }}',
-                    icon: '{{ notification.icon|e('js') }}',
-                    link: '{{ notification.link|e('js') }}',
-                },
-                {% endfor %}
-            ];
-        </script>
+        <script>const notifications = [{% for notification in app.flashes('notification') %}{ content: '{{  notification.content|e('js') }}', type: '{{ notification.type|e('js') }}', icon: '{{ notification.icon|e('js') }}', link: '{{ notification.link|e('js') }}' },{% endfor %}];</script>
         <script src="{{ asset('build/app.js') }}"></script>
         <script src="{{ path('bazinga_jstranslation_js', { domain: 'javascript' }) }}"></script>
         {% block javascripts %}
