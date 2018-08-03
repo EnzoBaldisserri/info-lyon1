@@ -31,8 +31,8 @@ class CourseType extends AbstractType
         $dateFormat = $this->translator->trans('global.date.format');
 
         $builder
-            ->add('semester', ChoiceType::class, [
-                'label' => 'course.form.props.semester.label',
+            ->add('type', ChoiceType::class, [
+                'label' => 'course.form.props.type.label',
                 'required' => true,
                 'choices' => [
                     'S1' => 1,
@@ -41,7 +41,7 @@ class CourseType extends AbstractType
                     'S4' => 4,
                 ],
                 'choice_translation_domain' => false,
-                'placeholder' => 'course.form.props.semester.placeholder'
+                'placeholder' => 'course.form.props.type.placeholder'
             ])
             ->add('implementationDate', DateType::class, array_merge(
                 [
@@ -57,8 +57,8 @@ class CourseType extends AbstractType
                 'multiple' => true,
                 'label' => 'course.form.props.teaching_units.label',
                 'class' => TeachingUnit::class,
-                'choice_label' => function($tu) {
-                    return $tu->getFullName();
+                'choice_label' => function($teachingUnit) {
+                    return $teachingUnit->getFullName();
                 },
                 'choice_translation_domain' => false,
             ])

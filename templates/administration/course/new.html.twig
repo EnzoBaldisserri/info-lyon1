@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block page_title %}
     <h2>{{ 'course.form.new.title'|trans }}</h2>
+{% endblock %}
 
+{% block body %}
     {{ include('administration/course/_form.html.twig', {
         'button_label': 'global.button.create'|trans,
     }) }}

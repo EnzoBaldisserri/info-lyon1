@@ -121,7 +121,7 @@ class AbsenceEditor extends Component {
                   className="btn waves-effect waves-light"
                   onClick={closeEditor}
                 >
-                  {Translator.trans('global.message.close')}
+                  {Translator.trans('global.button.close')}
                 </button>
               )}
             </AbsenceConsumer>

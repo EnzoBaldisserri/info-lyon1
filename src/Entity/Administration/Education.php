@@ -3,7 +3,6 @@
 namespace App\Entity\Administration;
 
 use App\Entity\User\Teacher;
-use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,21 +18,32 @@ class Education
     private $id;
 
     /**
+     * @var Group
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Group")
      * @ORM\JoinColumn(nullable=false)
      */
     private $group;
 
     /**
+     * @var Subject
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Subject")
      * @ORM\JoinColumn(nullable=false)
      */
     private $subject;
 
     /**
+     * @var Teacher
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Teacher", inversedBy="educations")
      */
     private $teacher;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getGroup(): ?Group
     {

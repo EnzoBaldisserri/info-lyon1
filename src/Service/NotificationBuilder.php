@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use Exception;
+use RuntimeException;
 use App\Entity\User\User;
 use App\Entity\User\Notification;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,13 +22,13 @@ class NotificationBuilder
         self::INFORMATION => 'info_outline',
         self::SUCCESS => 'done',
         self::WARNING => 'warning',
-        self::ERROR => 'report'
+        self::ERROR => 'report',
     ];
 
     const DURATION_FLASH = 0;
     const DURATION_PERSIST = 1;
 
-    private $tokenStorage;
+    private $user;
     private $translator;
     private $router;
     private $session;
@@ -48,7 +48,8 @@ class NotificationBuilder
         SessionInterface $session,
         EntityManagerInterface $em
     ) {
-        $this->tokenStorage = $tokenStorage;
+        $token = $tokenStorage->getToken();
+        $this->user = $token ? $token->getUser() : null;
         $this->translator = $translator;
         $this->router = $router;
         $this->session = $session;
@@ -56,15 +57,18 @@ class NotificationBuilder
     }
 
     /**
-     * (Re)Initialize the builders properties.
+     * Initialize the builder's properties.
      *
      * @param  int $duration The duration of the notification
      * @return self
+     * @throws RuntimeException When the duration isn't valid
      */
     public function newNotification(int $duration = self::DURATION_FLASH): self
     {
-        if ($duration < 0 || $duration >= 2) {
-            throw new Exception('Duration "' . $duration . '" does not exist');
+        static $availableDurations = [self::DURATION_FLASH, self::DURATION_PERSIST];
+
+        if (!in_array($duration, $availableDurations)) {
+            throw new RuntimeException('Duration "' . $duration . '" does not exist');
         }
 
         $this->content = $this->type = $this->icon = $this->link = $this->receiver = null;
@@ -94,18 +98,19 @@ class NotificationBuilder
 
     /**
      * Set the type of the notification.
-     * Also defines a default icon based on $type.
      *
      * @param  string $type The type
      * @return self
      */
     public function setType(string $type): self
     {
-        $this->type = $type;
+        static $availableTypes = [self::INFORMATION, self::SUCCESS, self::WARNING, self::ERROR];
 
-        if ($this->icon === null) {
-            $this->icon = self::TYPE_ICONS[$type];
+        if (!in_array($type, $availableTypes)) {
+            throw new RuntimeException('Notification type "' . $type . '" does not exist');
         }
+
+        $this->type = $type;
 
         return $this;
     }
@@ -126,14 +131,13 @@ class NotificationBuilder
 
     /**
      * Defines the path the notification will link to.
-     * If $parameters is not set to 'false', the link will be generated
-     * from $path and $parameters.
+     * If $parameters is set to <code>false</code>, $path will not be passed through the router.
      *
-     * @param  string $path       The path
-     * @param  array  $parameters The routing parameters
+     * @param  string      $path       The path
+     * @param  array|false $parameters The routing parameters
      * @return self
      */
-    public function setPath(string $path, Array $parameters = []): self
+    public function setPath(string $path, array $parameters = []): self
     {
         $this->link = false !== $parameters ?
             $this->router->generate($path, $parameters)
@@ -153,20 +157,26 @@ class NotificationBuilder
     public function setReceiver(?User $receiver): self
     {
         $this->receiver = $receiver;
+
+        return $this;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function save()
     {
-        // Pre-save
-        if ($this->duration === self::DURATION_PERSIST && $this->receiver === null) {
-            $token = $this->tokenStorage->getToken();
-            if ($token !== null) {
-                $this->receiver = $token->getUser();
-            }
+        // Validate the input
+        $this->validate();
+
+        // Auto-fill attributes
+        if ($this->receiver === null) {
+            $this->receiver = $this->user;
         }
 
-        // Validation of the input
-        $this->validate();
+        if ($this->icon === null) {
+            $this->icon = self::TYPE_ICONS[$this->type] ?: self::TYPE_ICONS[self::INFORMATION];
+        }
 
         // Create a notification
         $newNotification = (new Notification())
@@ -174,18 +184,15 @@ class NotificationBuilder
             ->setType($this->type)
             ->setIcon($this->icon)
             ->setLink($this->link)
+            ->setUser($this->receiver)
         ;
 
         switch ($this->duration) {
             case self::DURATION_FLASH:
-                $notifications = $this->session->getFlashBag()->get('notifications') ?? [];
-                $notifications[] = $newNotification;
-                $this->session->getFlashBag()->set('notifications', $notifications);
+                $this->session->getFlashBag()->add('notification', $newNotification);
                 break;
             case self::DURATION_PERSIST:
-                $newNotification->setUser($this->receiver);
-
-                $this->em->persist($notification);
+                $this->em->persist($newNotification);
                 $this->em->flush();
                 break;
         }
@@ -194,25 +201,21 @@ class NotificationBuilder
     private function validate()
     {
         if ($this->content === null) {
-            throw new Exception('Notification content is not set');
+            throw new RuntimeException('Notification content is not set');
         }
 
         if ($this->type === null) {
-            throw new Exception('Notification type is not set');
-        }
-
-        if ($this->icon === null) {
-            throw new Exception('Notification icon is not set');
+            throw new RuntimeException('Notification type is not set');
         }
 
         if ($this->duration === null) {
-            throw new Exception('Notification duration is not set');
+            throw new RuntimeException('Notification duration is not set');
         }
 
         if ($this->duration !== self::DURATION_PERSIST && (
             $this->receiver !== null && $this->receiver !== $this->user
         )) {
-            throw new Exception('Notifications for other users must be persisted');
+            throw new RuntimeException('Notifications for other users must be persisted');
         }
     }
 }

@@ -42,7 +42,7 @@ class NavbarBuilder
         $this->authChecker = $authChecker;
     }
 
-    public function getNavigation(): Array
+    public function getNavigation(): array
     {
         $navigation = [];
 

@@ -2,8 +2,6 @@
 
 namespace App\Entity\User;
 
-use App\Entity\Administration\Education;
-use App\Entity\Administration\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,24 +28,31 @@ abstract class User extends BaseUser
     protected $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      * @Serializer\Expose
      */
     protected $firstname;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      * @Serializer\Expose
      */
     protected $surname;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\User\Notification", mappedBy="user", orphanRemoval=true)
      */
     protected $notifications;
 
     public function __construct()
     {
+        parent::__construct();
         $this->notifications = new ArrayCollection();
     }
 

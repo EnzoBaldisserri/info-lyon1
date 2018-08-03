@@ -2,7 +2,7 @@
 
 namespace App\Entity\Administration;
 
-use App\Entity\Absence\Absence;
+use DateTime;
 use App\Entity\Period;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,30 +25,40 @@ class Semester
     private $id;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\Date()
      */
     private $startDate;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\Date()
      */
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", cascade={"persist"})
+     * @var Course
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Course", inversedBy="semesters", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $course;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Administration\Group",
      *     mappedBy="semester",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"number" = "ASC"})
+     *
      * Excluded because causes serialization to break in Api\AbsenceController.getAll
      * @Serializer\Exclude
      */
@@ -76,10 +86,10 @@ class Semester
         };
     }
 
-    public function isActive(\DateTimeInterface $datetime = null): ?bool
+    public function isActive(DateTime $datetime = null): ?bool
     {
         if ($datetime === null) {
-            $datetime = new \DateTime();
+            $datetime = new DateTime();
         }
 
         // Check if datetime is between begin and end
@@ -89,14 +99,14 @@ class Semester
     public function isEditable(): bool
     {
         // if semester isn't finished
-        $today = new \DateTime();
+        $today = new DateTime();
         return $today < $this->endDate;
     }
 
     public function isDeletable(): bool
     {
         // if semester hasn't started
-        $today = (new \DateTime());
+        $today = (new DateTime());
         return $today < $this->startDate;
     }
 
@@ -105,22 +115,33 @@ class Semester
         return $this->id;
     }
 
+    public function setId($id): self
+    {
+        if (isset($this->id)) {
+            throw new \RuntimeException('Cannot replace already defined id');
+        }
+
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
-        return 'S' . $this->course->getSemester();
+        return $this->course->getName();
     }
 
     public function getNumber(): ?int
     {
-        return $this->course->getSemester();
+        return $this->course->getType();
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate(?DateTime $startDate): self
     {
         // Start date's time must be the beginning of the day
         $startDate->setTime(0, 0, 0, 0);
@@ -130,12 +151,12 @@ class Semester
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate(?DateTime $endDate): self
     {
         // End date's time must be the end of the day
         $endDate->setTime(23, 59, 59, 999);
@@ -150,10 +171,15 @@ class Semester
         return new Period($this->startDate, $this->endDate);
     }
 
-    public function setPeriod(Period $period): self
+    public function setPeriod(?Period $period): self
     {
-        $this->setStartDate($period->getStart());
-        $this->setEndDate($period->getEnd());
+        if ($period === null) {
+            $this->setStartDate(null);
+            $this->setEndDate(null);
+        } else {
+            $this->setStartDate($period->getStart());
+            $this->setEndDate($period->getEnd());
+        }
 
         return $this;
     }
@@ -163,7 +189,7 @@ class Semester
         return $this->course;
     }
 
-    public function setCourse(Course $course): self
+    public function setCourse(?Course $course): self
     {
         $this->course = $course;
 

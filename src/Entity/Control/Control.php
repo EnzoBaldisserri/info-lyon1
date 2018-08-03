@@ -2,8 +2,7 @@
 
 namespace App\Entity\Control;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,48 +20,43 @@ abstract class Control
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=45)
      */
     private $name;
 
     /**
+     * @var float
+     *
      * @ORM\Column(type="float")
      */
     private $coefficient;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      */
     private $divisor;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="date")
      */
     private $date;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $median;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $average;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $standardDeviation;
-
-    /**
+     * @var MarkCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Control\Mark", mappedBy="control", orphanRemoval=true)
      */
     private $marks;
 
     public function __construct()
     {
-        $this->marks = new ArrayCollection();
+        $this->marks = new MarkCollection();
     }
 
     public function getId()
@@ -106,70 +100,22 @@ abstract class Control
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getMedian(): ?float
-    {
-        return $this->median;
-    }
-
-    public function setMedian(float $median): self
-    {
-        if ($median > $this->divisor) {
-            throw new RuntimeException('Median is greater than divisor');
-        }
-
-        $this->median = $median;
-
-        return $this;
-    }
-
-    public function getAverage(): ?float
-    {
-        return $this->average;
-    }
-
-    public function setAverage(float $average): self
-    {
-        if ($average > $this->divisor) {
-            throw new RuntimeException('Average is greater than divisor');
-        }
-
-        $this->average = $average;
-
-        return $this;
-    }
-
-    public function getStandardDeviation(): ?float
-    {
-        return $this->standardDeviation;
-    }
-
-    public function setStandardDeviation(float $standardDeviation): self
-    {
-        if ($standardDeviation > $this->divisor) {
-            throw new RuntimeException('Standard deviation is greater than divisor');
-        }
-
-        $this->standardDeviation = $standardDeviation;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Mark[]
+     * @return MarkCollection|Mark[]
      */
-    public function getMarks(): Collection
+    public function getMarks(): MarkCollection
     {
         return $this->marks;
     }

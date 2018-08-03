@@ -1,0 +1,68 @@
+// Cards
+.card-content .row:last-child {
+  margin-bottom: 0;
+}
+
+// Drag and drop
+[draggable=true] {
+  cursor: pointer;
+}
+
+// Headings
+.h1 { @extend h1; }
+.h2 { @extend h2; }
+.h3 { @extend h3; }
+.h4 { @extend h4; }
+.h5 { @extend h5; }
+.h6 { @extend h6; }
+
+// Icons
+.material-icons {
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  user-select: none;
+
+  &.action-icon {
+    color: theme-color('secondary');
+    cursor: pointer;
+  }
+}
+
+// Input-fields
+.input-field {
+  > .prefix {
+    color: theme-color('light-grey');
+  }
+}
+
+// No script tag
+noscript {
+  display: block;
+  margin: 0 1rem;
+}
+
+// Page title
+.page-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  margin-left: 2.4rem;
+
+  .container & {
+    margin-left: 0;
+  }
+
+  > .title-right {
+    margin-left: auto;
+
+    // Simulate h2 size
+    // Should not bother as this part is made for icons
+    font-size: $h2-fontsize;
+    line-height: 110%;
+    margin-top: $h2-fontsize / 1.5;
+  }
+
+  .material-icons {
+    font-size: 2rem;
+  }
+}

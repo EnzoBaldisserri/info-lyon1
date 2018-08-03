@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Translation\TranslatorInterface;
 use App\Repository\Administration\SemesterRepository;
 use App\Repository\Administration\GroupRepository;
@@ -16,8 +15,7 @@ use App\Helper\TimeHelper;
 class AbsenceApiController extends BaseController
 {
     /**
-     * @Route("/get/all", name="get_all")
-     * @Method({"GET"})
+     * @Route("/get/all", name="get_all", methods="GET")
      */
     public function getAll(
         TimeHelper $timeHelper,
@@ -33,7 +31,7 @@ class AbsenceApiController extends BaseController
         $absenceTypes = $absenceTypeRepository->findAll();
 
         if (empty($semesters)) {
-            $error = $translate->trans('error.semester.no_current');
+            $error = $translator->trans('error.semester.no_current');
         } else {
             $period = reset($semesters)->getPeriod();
 

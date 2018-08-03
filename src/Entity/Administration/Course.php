@@ -2,7 +2,7 @@
 
 namespace App\Entity\Administration;
 
-use App\Entity\Administration\TeachingUnit;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,24 +21,49 @@ class Course
     private $id;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="smallint")
      */
-    private $semester;
+    private $type;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="date")
      * @Assert\Date()
      */
     private $implementationDate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Administration\TeachingUnit", mappedBy="courses", cascade={"persist"})
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Semester", mappedBy="course", cascade={"persist"})
+     */
+    private $semesters;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="TeachingUnit", mappedBy="courses", cascade={"persist"})
      */
     private $teachingUnits;
 
     public function __construct()
     {
+        $this->semesters = new ArrayCollection();
         $this->teachingUnits = new ArrayCollection();
+    }
+
+    public function isEditable()
+    {
+        $today = new DateTime();
+        return $today < $this->implementationDate;
+    }
+
+    public function isDeletable()
+    {
+        return $this->isEditable() && $this->semesters->isEmpty();
     }
 
     public function getId()
@@ -48,29 +73,60 @@ class Course
 
     public function getName(): string
     {
-        return sprintf('S%d', $this->semester);
+        return sprintf('S%d', $this->type);
     }
 
-    public function getSemester(): ?int
+    public function getType(): ?int
     {
-        return $this->semester;
+        return $this->type;
     }
 
-    public function setSemester(int $semester): self
+    public function setType(int $type): self
     {
-        $this->semester = $semester;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getImplementationDate(): ?\DateTimeInterface
+    public function getImplementationDate(): ?DateTime
     {
         return $this->implementationDate;
     }
 
-    public function setImplementationDate(\DateTimeInterface $implementationDate): self
+    public function setImplementationDate(DateTime $implementationDate): self
     {
         $this->implementationDate = $implementationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Semester[]
+     */
+    public function getSemesters(): Collection
+    {
+        return $this->semesters;
+    }
+
+    public function addSemester(Semester $semester): self
+    {
+        if (!$this->semesters->contains($semester)) {
+            $this->semesters[] = $semester;
+            $semester->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSemester(Semester $semester): self
+    {
+        if ($this->semesters->contains($semester)) {
+            $this->semesters->removeElement($semester);
+            // set the owning side to null (unless already changed)
+            if ($semester->getCourse() === $this) {
+                $semester->setCourse(null);
+            }
+        }
 
         return $this;
     }

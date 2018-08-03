@@ -1,0 +1,26 @@
+@import '../min-import';
+
+@import 'color-codes';
+@import 'variables';
+@import 'table-static/table-static';
+@import 'table-dynamic/table-dynamic';
+@import 'absence-editor/absence-editor';
+
+#absence-table {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  > .static {
+    @include table-static();
+  }
+
+  > .dynamic {
+    @include table-dynamic();
+  }
+
+  > .absence-editor {
+    @include absence-editor();
+  }
+}

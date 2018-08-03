@@ -2,99 +2,102 @@
 
 {% block title %}{{ 'administration.title'|trans }} - {{ parent() }}{% endblock %}
 
+{% block page_title %}
+    <h2>{{ 'administration.title'|trans }}</h2>
+{% endblock %}
+
 {% block body %}
-<h2>{{ 'administration.title'|trans }}</h2>
-<div class="section">
-    <div class="card">
-        <div class="card-content">
-            <h3 class="card-title">{{ 'administration.semester_management.title'|trans }}</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ 'semester.props.start_date'|trans }}</th>
-                        <th>{{ 'semester.props.end_date'|trans }}</th>
-                        <th>{{ 'semester.props.type'|trans }}</th>
-                        <th>{{ 'semester.props.groups'|trans }}</th>
-                        <th>{{ 'semester.props.manage'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for semester in semesters %}
+    <div class="section">
+        <div class="card">
+            <div class="card-content">
+                <h3 class="card-title">{{ 'administration.semester_management.title'|trans }}</h3>
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ semester.startDate|date('global.date.format'|trans) }}</td>
-                            <td>{{ semester.endDate|date('global.date.format'|trans) }}</td>
-                            <td>{{ semester.course.name }}</td>
-                            <td>
-                                {% for group in semester.groups %}
-                                    {% if not loop.first %} - {% endif %}
-                                    {{ group.name }}
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% if semester.editable %}
-                                    <a href="{{ path('administration_semester_edit', { 'id': semester.id }) }}">
+                            <th>{{ 'semester.props.start_date'|trans }}</th>
+                            <th>{{ 'semester.props.end_date'|trans }}</th>
+                            <th>{{ 'semester.props.type'|trans }}</th>
+                            <th>{{ 'semester.props.groups'|trans }}</th>
+                            <th>{{ 'semester.props.manage'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for semester in semesters %}
+                            <tr>
+                                <td>{{ semester.startDate|date('global.date.format'|trans) }}</td>
+                                <td>{{ semester.endDate|date('global.date.format'|trans) }}</td>
+                                <td>{{ semester.course.name }}</td>
+                                <td>
+                                    {% for group in semester.groups %}
+                                        {% if not loop.first %} - {% endif %}
+                                        {{ group.name }}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% if semester.editable %}
+                                        <a href="{{ path('administration_semester_edit', { 'id': semester.id }) }}">
+                                            <i class="material-icons action-icon">edit</i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('administration_semester_show', { 'id': semester.id }) }}">
+                                            <i class="material-icons action-icon">add_to_queue</i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="center-align" colspan="5">{{ 'semester.form.message.empty'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action">
+                <a href="{{ path('administration_semester_new') }}" class="btn btn-flat waves-effect waves-light">
+                    {{ 'semester.form.button.create'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="card">
+            <div class="card-content">
+                <h3 class="card-title">{{ 'administration.course_management.title'|trans }}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ 'course.props.type'|trans }}</th>
+                            <th>{{ 'course.props.implementationDate'|trans }}</th>
+                            <th>{{ 'course.props.manage'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                            <tr>
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.implementationDate|date('global.date.format'|trans) }}</td>
+                                <td>
+                                    <a href="{{ path('administration_course_edit', { 'id': course.id }) }}">
                                         <i class="material-icons action-icon">edit</i>
                                     </a>
-                                {% else %}
-                                    <a href="{{ path('administration_semester_show', { 'id': semester.id }) }}">
-                                        <i class="material-icons action-icon">add_to_queue</i>
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td class="center-align" colspan="5">{{ 'semester.form.message.empty'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="card-action">
-            <a href="{{ path('administration_semester_new') }}" class="btn btn-flat waves-effect waves-light">
-                {{ 'semester.form.button.create'|trans }}
-            </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="center-align" colspan="3">{{ 'course.form.message.editable_empty'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action">
+                <a href="{{ path('administration_course_new') }}" class="btn btn-flat waves-effect waves-light">
+                    {{ 'course.form.button.create'|trans }}
+                </a>
+            </div>
         </div>
     </div>
-</div>
-<div class="section">
-    <div class="card">
-        <div class="card-content">
-            <h3 class="card-title">{{ 'administration.course_management.title'|trans }}</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ 'course.props.semester'|trans }}</th>
-                        <th>{{ 'course.props.implementationDate'|trans }}</th>
-                        <th>{{ 'course.props.manage'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for course in courses %}
-                        <tr>
-                            <td>{{ course.name }}</td>
-                            <td>{{ course.implementationDate|date('global.date.format'|trans) }}</td>
-                            <td>
-                                <a href="{{ path('administration_course_edit', { 'id': course.id }) }}">
-                                    <i class="material-icons action-icon">edit</i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td class="center-align" colspan="3">{{ 'course.form.message.editable_empty'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="card-action">
-            <a href="{{ path('administration_course_new') }}" class="btn btn-flat waves-effect waves-light">
-                {{ 'course.form.button.create'|trans }}
-            </a>
-        </div>
-    </div>
-</div>
 {% endblock body %}
 
 {% block scripts %}

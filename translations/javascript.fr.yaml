@@ -12,15 +12,16 @@ global:
     form:
         datetype:
             format: dd/mm/yyyy # no uppercase character !
-    message:
-        yes: Oui
-        no: Non
+    button:
         cancel: Annuler
         clear: Effacer
         done: Accepter
         close: Fermer
         save: Sauvergarder
         select: Selectionner...
+    message:
+        yes: Oui
+        no: Non
 
 error:
     load_error: Impossible de charger les données nécessaires

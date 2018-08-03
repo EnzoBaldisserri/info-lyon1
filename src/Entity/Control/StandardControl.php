@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class StandardControl extends Control
 {
     /**
+     * @var Education
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Education")
      */
     private $education;

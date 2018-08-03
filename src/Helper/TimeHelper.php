@@ -16,7 +16,7 @@ class TimeHelper
         $this->translator = $translator;
     }
 
-    public function getPeriodMonths(Period $period, bool $withRepr = false): Array
+    public function getPeriodMonths(Period $period, bool $withRepr = false): array
     {
         $monthsTrans = explode(',', $this->translator->trans('global.time.months'));
         $daysShortTrans = explode(',', $this->translator->trans('global.time.days_short'));

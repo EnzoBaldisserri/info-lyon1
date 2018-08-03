@@ -21,7 +21,12 @@ class AbsenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Absence::class);
     }
 
-    public function getInPeriodForStudent(Period $period, Student $student): Array
+    /**
+     * @param Period $period
+     * @param Student $student
+     * @return Absence[]
+     */
+    public function getInPeriodForStudent(Period $period, Student $student): array
     {
         $qb = $this->createQueryBuilder('a');
 

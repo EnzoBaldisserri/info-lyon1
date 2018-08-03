@@ -1,5 +1,6 @@
-import Translator from 'bazinga-translator';
+import 'materialize-css/dist/js/materialize';
 import axios from 'axios';
+import Translator from 'bazinga-translator';
 import Routing from '../../public/bundles/fosjsrouting/js/router.min';
 import routes from '../../public/bundles/fos_js_routes.json';
 
@@ -54,9 +55,9 @@ function initializeDatePickers($pickers) {
     format: Translator.trans('global.form.datetype.format'),
     parse: dateString => parseDateString(dateString),
     i18n: {
-      cancel: Translator.trans('global.message.cancel'),
-      clear: Translator.trans('global.message.clear'),
-      done: Translator.trans('global.message.done'),
+      cancel: Translator.trans('global.button.cancel'),
+      clear: Translator.trans('global.button.clear'),
+      done: Translator.trans('global.button.done'),
       months: Translator.trans('global.time.months').split(','),
       monthsShort: Translator.trans('global.time.months_short').split(','),
       weekdays: Translator.trans('global.time.weekdays').split(','),
@@ -94,9 +95,9 @@ function initializeTimePickers($pickers) {
     autoClose: true,
     twelveHour: Translator.trans('global.time.twelve_hour'),
     i18n: {
-      cancel: Translator.trans('global.message.cancel'),
-      clear: Translator.trans('global.message.clear'),
-      done: Translator.trans('global.message.done'),
+      cancel: Translator.trans('global.button.cancel'),
+      clear: Translator.trans('global.button.clear'),
+      done: Translator.trans('global.button.done'),
     },
   };
   const options = [
@@ -137,7 +138,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
   M.Modal.init(document.querySelectorAll('.modal'));
 
-  // Handle notifications
+  // Flash notifications
+
+  // Notifications are always defined directly in base.html.twig
+  // eslint-disable-next-line no-undef
+  notifications.forEach((notification) => {
+    const contentHtml = `<i class="material-icons">${notification.icon}</i><span>${notification.content}</span>`;
+    const html = notification.link ?
+      `<a href="${notification.link}">${contentHtml}</a>`
+      : contentHtml;
+
+    const displayLength = notification.type === 'error' ? Infinity : 4000;
+
+    const classes = `toast ${notification.type}`;
+
+    M.toast({ html, displayLength, classes });
+  });
+
+  // Persistent notifications
   const $header = document.querySelector('header');
 
   const updateNotificationWrappers = () => {
@@ -149,7 +167,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     $header.querySelectorAll('.notif-badge')
       .forEach(($el) => {
-        /* eslint-disable no-param-reassign */
         if (empty) {
           // sibling is notification icon
           $el.previousElementSibling.textContent = 'notifications_none';
@@ -157,7 +174,6 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
           $el.textContent = nbNotif.toString();
         }
-        /* eslint-enable no-param-reassign */
       });
 
     if (empty) {

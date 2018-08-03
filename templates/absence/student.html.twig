@@ -3,12 +3,14 @@
 {% block title %}{{ 'absence.title'|trans }} - {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('build/student_absence.css') }}">
 {% endblock %}
 
-{% block body %}
+{% block page_title %}
     <h2>{{ 'absence.title'|trans }}</h2>
+{% endblock %}
+
+{% block body %}
     <table class="bordered centered">
         <thead>
             <tr>

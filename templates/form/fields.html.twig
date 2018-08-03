@@ -19,6 +19,24 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
+{% block file_widget %}
+{% endblock %}
+
+{% block file_label %}
+{% endblock %}
+
+{% block file_row %}
+    <div class="file-field input-field" {{ block('attributes') }}>
+        <div class="btn">
+            <span>{{ label|default('global.button.file'|trans) }}</span>
+            <input type="file" {{ block('widget_attributes') }}>
+        </div>
+        <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+        </div>
+    </div>
+{% endblock file_row %}
+
 {% block date_widget %}
     <input
         type="text"

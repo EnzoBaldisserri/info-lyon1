@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class PromoControl extends Control
 {
     /**
+     * @var Subject
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Subject")
      */
     private $subject;

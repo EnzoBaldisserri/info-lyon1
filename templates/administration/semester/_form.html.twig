@@ -51,7 +51,6 @@
                                 <li>{{ func.print_group(group) }}</li>
                             {% else %}
                                 <li>{{ 'semester.form.props.groups.empty'|trans }}</li>
-                                <hr>
                             {% endfor %}
                         </ul>
                         <div class="center-align">
@@ -80,5 +79,5 @@
             </div>
         </div>
     {% endif %}
-    {{ forms.actions(button_label, path('administration_index'), 'administration.message.come_back'|trans) }}
+    {{ forms.actions(button_label, [ [path('administration_index'), 'administration.message.come_back'|trans] ]) }}
 {{ form_end(form) }}

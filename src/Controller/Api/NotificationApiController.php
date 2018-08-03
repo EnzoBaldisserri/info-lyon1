@@ -5,9 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\User\Notification;
 use App\Repository\User\NotificationRepository;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/notification", name="notification_")
@@ -15,8 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class NotificationApiController extends BaseController
 {
     /**
-     * @Route("/{id}", name="delete", requirements={"id"="\d+"})
-     * @Method({"DELETE"})
+     * @Route("/{id}", name="delete", requirements={"id"="\d+"}, methods="DELETE")
      */
     public function delete(Notification $notification, TranslatorInterface $translator)
     {
@@ -26,7 +23,7 @@ class NotificationApiController extends BaseController
             ], 403);
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->remove($notification);
         $em->flush();
 
@@ -34,8 +31,7 @@ class NotificationApiController extends BaseController
     }
 
     /**
-     * @Route("/clear", name="clear")
-     * @Method({"DELETE"})
+     * @Route("/clear", name="clear", methods="DELETE")
      */
     public function clear(NotificationRepository $notificationRepository, TranslatorInterface $translator)
     {

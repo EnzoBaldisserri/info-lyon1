@@ -24,7 +24,7 @@ abstract class BaseController extends AbstractController
         $this->notificationRepository = $notificationRepository;
     }
 
-    protected function createHtmlResponse(string $view, Array $parameters = [], Response $response = null): Response
+    protected function createHtmlResponse(string $view, array $parameters = [], Response $response = null): Response
     {
         $this->validate($parameters);
 
@@ -37,6 +37,10 @@ abstract class BaseController extends AbstractController
         return parent::render($view, $parameters, $response);
     }
 
+    /**
+     * @param int|null $duration The duration of the notification
+     * @return NotificationBuilder
+     */
     protected function createNotification(int $duration = null)
     {
         if ($duration === null) {
@@ -45,7 +49,7 @@ abstract class BaseController extends AbstractController
         return $this->notificationBuilder->newNotification($duration);
     }
 
-    private function validate(Array $parameters)
+    private function validate(array $parameters)
     {
         if (isset($parameters['navigation'])) {
             throw new \RuntimeException('"navigation" is a reserved entry in parameters');

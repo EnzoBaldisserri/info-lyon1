@@ -1,0 +1,71 @@
+@import '../../common/variables';
+@import '../../common/functions';
+
+@mixin absence-editor() {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  &.closed {
+    display: none;
+  }
+
+  > .modal-content {
+    position: fixed;
+    top: 15%;
+    left: 22.5%;
+
+    height: 70%;
+    width: 55%;
+    background-color: #fafafa;
+    padding: 24px;
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 2px;
+
+    > .modal-footer {
+      padding: 4px 6px;
+      height: 56px;
+      width: 100%;
+      text-align: right;
+    }
+  }
+
+  .abs-type {
+    color: theme-color('white');
+    flex-grow: 1;
+    height: 3rem;
+    border: none;
+
+    transition: all 0.4s ease-in-out;
+
+    &.active {
+      flex-grow: 4;
+    }
+
+    &:not(.active) {
+      &:first-child {
+        border-radius: 2px 0 0 2px;
+      }
+
+      &:last-child {
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+
+  @each $name, $color in $absence-colors {
+    .abs-#{$name} {
+      color: darken(theme-color('white'), 7);
+      background-color: darken($color, 10);
+
+      &.active {
+        color: theme-color('white');
+        background-color: $color;
+      }
+    }
+  }
+}

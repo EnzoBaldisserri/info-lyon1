@@ -1,10 +1,12 @@
-{% macro actions(button_label, back_path, back_text) %}
+{% macro actions(button_label, links) %}
     <div class="flex-row flex-nowrap">
         <button type="submit" class="btn btn-flat waves-effect waves-light">
             {{ button_label }}
         </button>
-        <a href="{{ back_path }}" class="btn btn-flat waves-effect waves-light">
-            {{ back_text }}
-        </a>
+        {% for link in links %}
+            <a href="{{ link[0] }}" class="btn btn-flat waves-effect waves-{{ link[2]|default('light') }}">
+                {{ link[1] }}
+            </a>
+        {% endfor %}
     </div>
 {% endmacro %}

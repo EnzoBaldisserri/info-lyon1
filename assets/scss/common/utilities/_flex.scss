@@ -1,0 +1,44 @@
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Justify content
+@each $name, $value in (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+) {
+  .justify-content-#{$name} {
+    justify-content: $value !important;
+  }
+}
+
+// Align-items
+@each $name, $value in (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  baseline: baseline,
+) {
+  .align-items-#{$name} {
+    align-items: $value !important;
+  }
+}
+
+// Wrap
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}

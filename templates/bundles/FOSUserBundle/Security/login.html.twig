@@ -1,0 +1,8 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}{{ 'fosub.login.title'|trans }} - {{ parent() }}{% endblock %}
+
+{% block bodyContainer %}
+    {{ include('@FOSUser/Security/login_content.html.twig') }}
+{% endblock %}
+

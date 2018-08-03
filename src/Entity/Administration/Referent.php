@@ -19,18 +19,24 @@ class Referent
     private $id;
 
     /**
+     * @var Semester
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester")
      * @ORM\JoinColumn(nullable=false)
      */
     private $semester;
 
     /**
+     * @var Module
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Module")
      * @ORM\JoinColumn(nullable=false)
      */
     private $module;
 
     /**
+     * @var Teacher
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Teacher", inversedBy="referents")
      * @ORM\JoinColumn(nullable=false)
      */

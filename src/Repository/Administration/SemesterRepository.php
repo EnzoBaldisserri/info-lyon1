@@ -2,6 +2,8 @@
 
 namespace App\Repository\Administration;
 
+use DateTime;
+use RuntimeException;
 use App\Entity\Administration\Semester;
 use App\Entity\Period;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,13 +22,20 @@ class SemesterRepository extends ServiceEntityRepository
         parent::__construct($registry, Semester::class);
     }
 
-    public function findCurrent(): Array
+    /**
+     * @return Semester[]
+     */
+    public function findCurrent(): array
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         return $this->findAtDate($now);
     }
 
-    public function findAtDate(\DateTime $datetime): Array
+    /**
+     * @param DateTime $datetime
+     * @return Semester[]
+     */
+    public function findAtDate(DateTime $datetime): array
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -39,16 +48,24 @@ class SemesterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Semester[]
+     */
     public function findFuture()
     {
         $now = new DateTime();
         return $this->findAfter($now, 'startDate');
     }
 
-    public function findAfter(\DateTime $datetime, string $boundary = 'startDate'): Array
+    /**
+     * @param DateTime $datetime
+     * @param string $boundary Either the 'startDate' or the 'endDate' of the semester
+     * @return Semester[]
+     */
+    public function findAfter(DateTime $datetime, string $boundary = 'startDate'): array
     {
         if (!in_array($boundary, ['startDate', 'endDate'])) {
-            throw new Exception('Boundary is neither \'startDate\' nor \'endDate\'');
+            throw new RuntimeException('Boundary is neither \'startDate\' nor \'endDate\'');
         }
 
         $qb = $this->createQueryBuilder('s');
@@ -62,7 +79,7 @@ class SemesterRepository extends ServiceEntityRepository
 
         $qb
             ->join('s.course', 'c')
-            ->addOrderBy('c.semester', 'ASC')
+            ->addOrderBy('c.type', 'ASC')
         ;
 
         return $qb->getQuery()
@@ -71,11 +88,11 @@ class SemesterRepository extends ServiceEntityRepository
 
     public function findCurrentPeriod(): Period
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         return $this->findPeriodAt($now);
     }
 
-    public function findPeriodAt(\DateTime $datetime): Period
+    public function findPeriodAt(DateTime $datetime): Period
     {
         $qb = $this->createQueryBuilder('s');
 

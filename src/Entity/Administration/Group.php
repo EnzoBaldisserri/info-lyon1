@@ -3,7 +3,6 @@
 namespace App\Entity\Administration;
 
 use App\Entity\User\Student;
-use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,17 +22,23 @@ class Group
     private $id;
 
     /**
+     * @var int
+     *
      * @ORM\Column(type="smallint")
      */
     private $number;
 
     /**
+     * @var Semester
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="groups", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $semester;
 
     /**
+     * @var Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\User\Student", mappedBy="classes", cascade={"persist"})
      */
     private $students;
@@ -46,6 +51,17 @@ class Group
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id): self
+    {
+        if (isset($this->id)) {
+            throw new \RuntimeException('Cannot replace already defined id');
+        }
+
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

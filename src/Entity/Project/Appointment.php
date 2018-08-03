@@ -2,6 +2,7 @@
 
 namespace App\Entity\Project;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,22 +20,30 @@ class Appointment
     private $id;
 
     /**
+     * @var Project
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Project\Project")
      * @ORM\JoinColumn(nullable=false)
      */
     private $project;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Project\DateProposal", mappedBy="appointment", orphanRemoval=true)
      */
     private $dateProposals;
@@ -61,12 +70,12 @@ class Appointment
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTimeInterface $date): self
+    public function setDate(?DateTime $date): self
     {
         $this->date = $date;
 

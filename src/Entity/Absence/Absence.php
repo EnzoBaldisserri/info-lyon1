@@ -2,8 +2,7 @@
 
 namespace App\Entity\Absence;
 
-use App\Entity\Absence\AbsenceType;
-use App\Entity\Administration\Semester;
+use DateTime;
 use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,29 +20,39 @@ class Absence
     private $id;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $startTime;
 
     /**
+     * @var DateTime
+     *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $endTime;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $justified;
 
     /**
+     * @var AbsenceType
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Absence\AbsenceType")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
+     * @var Student
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User\Student", inversedBy="absences")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -58,24 +67,24 @@ class Absence
         return $this->id;
     }
 
-    public function getStartTime(): ?\DateTimeInterface
+    public function getStartTime(): ?DateTime
     {
         return $this->startTime;
     }
 
-    public function setStartTime(\DateTimeInterface $startTime): self
+    public function setStartTime(DateTime $startTime): self
     {
         $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getEndTime(): ?\DateTimeInterface
+    public function getEndTime(): ?DateTime
     {
         return $this->endTime;
     }
 
-    public function setEndTime(\DateTimeInterface $endTime): self
+    public function setEndTime(DateTime $endTime): self
     {
         $this->endTime = $endTime;
 

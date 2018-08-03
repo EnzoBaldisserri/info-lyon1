@@ -1,0 +1,36 @@
+@import 'groups-column';
+@import 'students-column';
+
+@mixin table-static() {
+  flex-grow: 1;
+
+  background-color: theme-color('white');
+  border-right: $big-border;
+
+  .title {
+    height: $header-height;
+    line-height: $header-height;
+
+    font-size: $title-font-size;
+    text-align: center;
+  }
+
+  // GroupsCol + StudentsCol
+  .flex {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    border-bottom: $big-border;
+    margin-bottom: 0;
+
+    .groups {
+      @include groups-column();
+    }
+
+    .students {
+      @include students-column();
+    }
+  }
+}

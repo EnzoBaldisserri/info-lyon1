@@ -69,7 +69,7 @@ class SemesterType extends AbstractType
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('c')
                             ->addOrderBy('c.implementationDate', 'DESC')
-                            ->addOrderBy('c.semester', 'ASC')
+                            ->addOrderBy('c.type', 'ASC')
                         ;
                     },
                 ])

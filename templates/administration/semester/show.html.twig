@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h2>{{ 'semester.entity'|trans({
-        '%courseType%': semester.course.semester,
-        '%creationYear%': semester.course.implementationDate|date('Y'),
-    }) }}</h2>
+{% block page_title %}
+    <h2>
+        {{ 'semester.entity'|trans({
+            '%courseType%': semester.number,
+            '%creationYear%': semester.course.implementationDate|date('Y'),
+        }) }}
+    </h2>
+{% endblock %}
 
+{% block body %}
     <p class="h5">
         <i class="material-icons small">date_range</i>
         {{ semester.startDate|date('global.date.format'|trans) }} -

@@ -1,15 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="title row valign-wrapper">
-        <div class="col s11">
-            <h2>{{ 'semester.form.edit.title'|trans }}</h2>
-        </div>
-        <div class="col s1">
-            {{ include('administration/semester/_delete_form.html.twig') }}
-        </div>
+{% block page_title %}
+    <div class="title-left">
+        <h2>{{ 'semester.form.edit.title'|trans }}</h2>
+        <a href="{{ path('administration_semester_edit_file', { id: semester.id }) }}">
+            {{ 'semester.message.with_file.edit'|trans }}
+        </a>
     </div>
+    <div class="title-right">
+        {{ include('administration/semester/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
 
+{% block body %}
     {{ include('administration/semester/_form.html.twig', {
         'button_label': 'global.button.update'|trans,
     }) }}

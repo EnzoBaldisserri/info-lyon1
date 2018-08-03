@@ -1,11 +1,32 @@
-@import 'general/variables';
-@import 'general/colors';
+@import '~materialize-css/sass/components/color-variables';
+@import 'common/materialize-variables';
 
 /* stylelint-disable */
-@import '~materialize-css/sass/materialize';
+@import '~materialize-css/sass/components/variables';
+@import '~materialize-css/sass/components/forms/forms';
+@import '~materialize-css/sass/components/buttons';
+@import '~materialize-css/sass/components/cards';
+@import '~materialize-css/sass/components/collapsible';
+@import '~materialize-css/sass/components/datepicker';
+@import '~materialize-css/sass/components/dropdown';
+@import '~materialize-css/sass/components/global';
+@import '~materialize-css/sass/components/grid';
+@import '~materialize-css/sass/components/modal';
+@import '~materialize-css/sass/components/navbar';
+@import '~materialize-css/sass/components/normalize';
+@import '~materialize-css/sass/components/sidenav';
+@import '~materialize-css/sass/components/tabs';
+@import '~materialize-css/sass/components/timepicker';
+@import '~materialize-css/sass/components/toast';
+@import '~materialize-css/sass/components/tooltip';
+@import '~materialize-css/sass/components/transitions';
+@import '~materialize-css/sass/components/typography';
+@import '~materialize-css/sass/components/waves';
 /* stylelint-enable */
 
-@import 'general/helpers';
-@import 'general/style';
-@import 'general/components/header';
-@import 'general/components/notifications';
+@import 'common/variables';
+@import 'common/functions';
+@import 'common/mixins';
+@import 'common/utilities';
+@import 'common/general';
+@import 'common/components';
