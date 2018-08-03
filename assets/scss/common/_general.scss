@@ -22,6 +22,10 @@
   font-feature-settings: 'liga';
   user-select: none;
 
+  .btn-flat & {
+    font-size: 2rem;
+  }
+
   &.action-icon {
     color: theme-color('secondary');
     cursor: pointer;
@@ -47,15 +51,6 @@ noscript {
 
   > .title-right {
     margin-left: auto;
-
-    // Simulate h2 size
-    // Should not bother as this part is made for icons
-    font-size: $h2-fontsize;
-    line-height: 110%;
-    margin-top: $h2-fontsize / 1.5;
-  }
-
-  .material-icons {
-    font-size: 2rem;
+    align-self: center;
   }
 }

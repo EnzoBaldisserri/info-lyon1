@@ -54,7 +54,7 @@
                 </table>
             </div>
             <div class="card-action">
-                <a href="{{ path('administration_semester_new') }}" class="btn btn-flat waves-effect waves-light">
+                <a href="{{ path('administration_semester_new') }}" class="btn-flat waves-effect waves-light">
                     {{ 'semester.form.button.create'|trans }}
                 </a>
             </div>
@@ -92,15 +92,10 @@
                 </table>
             </div>
             <div class="card-action">
-                <a href="{{ path('administration_course_new') }}" class="btn btn-flat waves-effect waves-light">
+                <a href="{{ path('administration_course_new') }}" class="btn-flat waves-effect waves-light">
                     {{ 'course.form.button.create'|trans }}
                 </a>
             </div>
         </div>
     </div>
 {% endblock body %}
-
-{% block scripts %}
-    {{ parent() }}
-    <script src="{{ asset('build/administration.js') }}"></script>
-{% endblock %}
