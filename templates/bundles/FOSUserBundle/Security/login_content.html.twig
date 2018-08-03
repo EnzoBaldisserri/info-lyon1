@@ -6,7 +6,7 @@
     />
 
     {% if error %}
-        <div class="alert alert-error d-inline-block">
+        <div class="alert error d-inline-block">
             {{ ('fosub.error.' ~ error.messageKey)|trans(error.messageData) }}
         </div>
     {% endif %}

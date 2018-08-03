@@ -1,22 +1,9 @@
-$notification-types: (
-  'success':   theme-color('success'),
-  'warning':   theme-color('warning'),
-  'error'  :   theme-color('error'),
-);
-
 // Alerts
 .alert {
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
 
-  border-radius: 0.25rem;
-
-  @each $name, $color in $notification-types {
-    &.alert-#{$name} {
-      color: color-yiq($color);
-      background-color: $color;
-    }
-  }
+  border-radius: 2px;
 }
 
 .notif,
@@ -28,12 +15,22 @@ $notification-types: (
     font-size: 24px;
     padding: 0 0.8rem 0 0.2rem;
   }
+}
 
+.alert,
+.notif,
+.toast {
   @each $name, $color in $notification-types {
     &.#{$name} {
-      background-color: $color !important;
+      color: color-yiq($color);
+      background-color: $color;
     }
   }
+}
+
+.notif.notif-clear {
+  color: theme-color('black');
+  text-align: center;
 }
 
 // Notifications in navigation bar
@@ -50,11 +47,8 @@ $notification-types: (
     position: absolute;
     top: 0.7rem;
 
-    $size: 1.3rem;
-    width: $size !important;
-    min-width: $size !important;
-    height: $size !important;
-    line-height: $size !important;
+    width: 1.3rem;
+    line-height: 1.3rem;
 
     background-color: #ee6e73;
     color: theme-color('white');

@@ -27,7 +27,16 @@ $grid-breakpoints: (
   xl: $large-screen,
 );
 
+// COMPONENTS
+$notification-types: (
+  'success':   $success-color,
+  'warning':   map-get($theme-colors, 'warning'),
+  'error'  :   $error-color,
+);
+
 // HELPERS
+$yiq-contrasted-threshold: 110;
+
 $default-transition: all 0.2s ease;
 
 // UTILITIES

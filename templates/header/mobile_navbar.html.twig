@@ -17,7 +17,7 @@
 </ul>
 
 <div id="mobile-notifications" class="modal bottom-sheet">
-    <div class="modal-content black-text">
+    <div class="modal-content text-black">
         <h4 class="center-align">{{ 'notification.title'|trans }}</h4>
         <div class="collection notification-wrapper">
             {% if notifications is not empty %}
@@ -36,7 +36,7 @@
                     </div>
                 {% endfor %}
                 <div class="notif notif-clear">
-                    <i class="material-icons black-text center-align">clear_all</i>
+                    <i class="material-icons">clear_all</i>
                 </div>
             {% else %}
                 <div class="collection-item valign-wrapper notif pointer-events-none">

@@ -17,7 +17,7 @@
             <a class="dropdown-trigger notif-badge-container" data-target="navbar-notifications">
                 <i class="material-icons">notifications</i>
                 <span class="notif-badge">
-                    {{ notifications|length}}
+                    {{ notifications|length }}
                 </span>
             </a>
             <ul id="navbar-notifications" class="dropdown-content notification-wrapper">
@@ -34,7 +34,7 @@
                     </li>
                 {% endfor %}
                 <li class="notif notif-clear">
-                    <i class="material-icons black-text center-align">clear_all</i>
+                    <i class="material-icons">clear_all</i>
                 </li>
             </ul>
         {% endif %}
@@ -45,7 +45,7 @@
         </a>
         <ul id="navbar-user" class="dropdown-content">
             <li>
-              <a href="{{ path('fos_user_profile_show') }}">{{ app.user.fullName }}</a>
+                <a href="{{ path('fos_user_profile_show') }}">{{ app.user.fullName }}</a>
             </li>
             <li class="divider"></li>
             <li>
