@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import Form from './Form';
 import StudentDay from '../Model/StudentDay';
@@ -73,14 +74,16 @@ class AbsenceEditor extends Component {
     const { close } = this.props;
     const { studentDay } = this.state;
 
-    if (!studentDay) {
-      return null;
+    let absences = [];
+    let student = null;
+    let date = null;
+
+    if (studentDay) {
+      ({ absences, student, date } = studentDay);
     }
 
-    const { absences, student, date } = studentDay;
-
     return (
-      <div className="absence-editor">
+      <div className={classnames('absence-editor', { closed: !studentDay })}>
         <div className="modal-content">
           <div className="center-align h4">
             {student ? `${student.firstname} ${student.surname.toUpperCase()}` : 'Error'}<br />
@@ -96,6 +99,11 @@ class AbsenceEditor extends Component {
                 key={getAbsenceId(absence)}
               />
             )) }
+            <section className="col s12 m10 l6 add-container">
+              <button className="btn-floating btn-large">
+                <i className="material-icons">add</i>
+              </button>
+            </section>
           </div>
           <div className="modal-footer">
             <button

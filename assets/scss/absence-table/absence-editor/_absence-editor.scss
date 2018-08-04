@@ -2,6 +2,8 @@
 @import '../../common/functions';
 
 @mixin absence-editor() {
+  $footer-height: $button-height;
+
   position: fixed;
   left: 0;
   top: 0;
@@ -13,13 +15,38 @@
     display: none;
   }
 
+  .row {
+    height: calc(97% - #{$h4-fontsize * 1.1 * 2 + ($h4-fontsize / 1.5) + ($h4-fontsize / 2.5)} - #{$footer-height});
+
+    > section {
+      &,
+      > .card,
+      > .card .card-content {
+        height: 100%;
+      }
+
+      &.add-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card-content {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        overflow-y: auto;
+      }
+    }
+  }
+
   > .modal-content {
     position: fixed;
-    top: 15%;
-    left: 22.5%;
+    top: 10vh;
+    left: 15vw;
 
-    height: 70%;
-    width: 55%;
+    height: 80vh;
+    width: 70vw;
     background-color: #fafafa;
     padding: 24px;
     margin: auto;
@@ -27,21 +54,21 @@
     border-radius: 2px;
 
     > .modal-footer {
-      padding: 4px 6px;
-      height: 56px;
-      width: 100%;
+      height: $footer-height;
       text-align: right;
     }
   }
 
   .time-container {
+    padding-bottom: 3rem;
+
     .noUi-target {
       margin: 0 0.5rem;
     }
   }
 
   .abs-type-container {
-    padding: 3rem 0;
+    margin-bottom: 1.6rem;
 
     .abs-type {
       color: theme-color('white');
@@ -64,17 +91,17 @@
           border-radius: 0 2px 2px 0;
         }
       }
-    }
-  }
 
-  @each $name, $color in $absence-colors {
-    .abs-#{$name} {
-      color: darken(theme-color('white'), 7);
-      background-color: darken($color, 10);
+      @each $name, $color in $absence-colors {
+        &.abs-#{$name} {
+          color: darken(theme-color('white'), 7);
+          background-color: darken($color, 10);
 
-      &.active {
-        color: theme-color('white');
-        background-color: $color;
+          &.active {
+            color: theme-color('white');
+            background-color: $color;
+          }
+        }
       }
     }
   }
