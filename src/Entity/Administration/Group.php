@@ -33,6 +33,8 @@ class Group
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administration\Semester", inversedBy="groups", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Serializer\Exclude
      */
     private $semester;
 

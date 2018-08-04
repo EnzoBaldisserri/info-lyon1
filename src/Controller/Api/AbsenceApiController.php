@@ -35,9 +35,7 @@ class AbsenceApiController extends BaseController
         } else {
             $period = reset($semesters)->getPeriod();
 
-            $firstDay = $period->getStart()->format(TimeHelper::JSON_TIME_FORMAT);
-
-            $months = $timeHelper->getPeriodMonths($period, true);
+            $months = $timeHelper->getPeriodMonths($period);
 
             $groups = $groupRepository
                 ->findInSemestersWithAbsences($semesters);
@@ -45,7 +43,6 @@ class AbsenceApiController extends BaseController
 
         return $this->createJsonResponse([
             'error' => $error ?? null,
-            'firstDay' => $firstDay ?? null,
             'months' => $months ?? [],
             'groups' => $groups ?? [],
             'absenceTypes' => $absenceTypes,

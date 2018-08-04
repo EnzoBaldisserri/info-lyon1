@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import Student from '../Model/Student';
 import StudentSummary from './StudentSummary';
 
 class StudentRow extends PureComponent {
   static propTypes = {
-    student: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      firstname: PropTypes.string.isRequired,
-      surname: PropTypes.string.isRequired,
-    }).isRequired,
+    student: PropTypes.instanceOf(Student).isRequired,
   };
 
   state = {
@@ -33,10 +30,10 @@ class StudentRow extends PureComponent {
           { `${firstname} ${surname.toUpperCase()}` }
         </div>
         <i
+          role="button"
           className="material-icons action-icon"
           onClick={this.toggleSummary}
-          onKeyPress={this.toggleSummary}
-          role="button"
+          onKeyUp={this.toggleSummary}
           tabIndex={0}
         >
           info

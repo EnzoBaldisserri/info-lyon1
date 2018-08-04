@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Day from '../Model/Day';
 
 class DaysRow extends Component {
   static propTypes = {
-    days: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape({
-        name: PropTypes.string,
-        repr: PropTypes.string,
-      }),
-    ]))).isRequired,
+    days: PropTypes.arrayOf(PropTypes.instanceOf(Day)).isRequired,
     number: PropTypes.bool,
   };
 
@@ -26,9 +21,9 @@ class DaysRow extends Component {
 
     return (
       <tr>
-        { days.map(([dayInMonth, day]) => (
-          <th key={day.repr}>{number ? dayInMonth : day.name}</th>
-        ))}
+        { days.map(day => (
+          <th key={day.hash}>{number ? day.date.getDate() : day.name}</th>
+        )) }
       </tr>
     );
   }

@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
+import DataHolder from './Model/DataHolder';
 import Loader from '../react-utils/Loader';
 import { AbsenceProvider } from './AbsenceContext';
 import TableStatic from './TableStatic/TableStatic';
@@ -18,36 +19,25 @@ class AbsenceTable extends Component {
       loaded: false,
       error: null,
       tableScroll: null,
-      editor: {
-        absences: [],
-        student: null,
-        date: null,
-      },
-      // Loaded from server
-      months: [],
-      groups: [],
-      absenceTypes: [],
+      dataHolder: null,
+      currentEdit: null,
     };
   }
 
   componentDidMount() {
     axios.get(Routing.generate('api_absence_get_all'))
-      .then(response => response.data)
-      .then((data) => {
-        if (data.error) {
-          throw new Error(data.error);
-        }
+      .then(response => DataHolder.fromData(response.data))
 
-        return {
-          ...data,
-          firstDay: new Date(data.firstDay),
+      .then((dataHolder) => {
+        const nextState = {
+          dataHolder,
         };
-      })
 
-      .then((nextState) => {
         // Center current day
         const today = new Date();
-        const timeDifference = today - nextState.firstDay;
+        const { firstDay } = dataHolder.period;
+
+        const timeDifference = today - firstDay;
 
         if (timeDifference > 0) {
           const cellWidth = 26;
@@ -61,9 +51,10 @@ class AbsenceTable extends Component {
         document.head.insertAdjacentHTML(
           'beforeend',
           `<style>
-            tbody td:nth-child(7n + ${8 - nextState.firstDay.getDay()}),
-            tbody td:nth-child(7n + ${7 - nextState.firstDay.getDay()}) {
+            tbody td:nth-child(7n + ${8 - firstDay.getDay()}),
+            tbody td:nth-child(7n + ${7 - firstDay.getDay()}) {
               background-color: rgba(255, 183, 77, .6);
+              pointer-events: none;
             }
           </style>`,
         );
@@ -77,32 +68,25 @@ class AbsenceTable extends Component {
         this.setState(nextState);
       })
 
-      .catch(error => this.setState({ error }));
+      .catch((error) => {
+        // console.log(error);
+        this.setState({ error });
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.tableScroll !== this.state.tableScroll) {
+    if (prevState.tableScroll !== this.state.tableScroll && this.tableContainer.current) {
       this.tableContainer.current.scrollLeft = this.state.tableScroll;
     }
   }
 
-  openEditor = (student, date, absences) => () => {
-    this.setState({
-      editor: {
-        absences,
-        student,
-        date,
-      },
-    });
-  };
+  componentDidCatch(error) {
+    this.setState({ error });
+  }
 
-  closeEditor = () => {
+  edit = newEdit => () => {
     this.setState({
-      editor: {
-        absences: [],
-        student: null,
-        date: null,
-      },
+      currentEdit: newEdit,
     });
   };
 
@@ -110,15 +94,13 @@ class AbsenceTable extends Component {
     const {
       error,
       loaded,
-      editor,
-      months,
-      groups,
-      absenceTypes,
+      dataHolder,
+      currentEdit,
     } = this.state;
 
     if (error) {
       return (
-        <div className="alert alert-error center-block">
+        <div className="alert error center-block">
           {error.message}
         </div>
       );
@@ -131,26 +113,23 @@ class AbsenceTable extends Component {
     }
 
     const provided = {
-      actions: {
-        openEditor: this.openEditor,
-        closeEditor: this.closeEditor,
-      },
-      months,
-      groups,
-      absenceTypes,
+      dataHolder,
+      edit: this.edit,
     };
 
     return (
-      <AbsenceProvider value={provided}>
-        <TableStatic />
-        <div className="dynamic" ref={this.tableContainer}>
-          <table role="grid">
-            <TableHeader />
-            <TableBody />
-          </table>
-        </div>
-        <AbsenceEditor {...editor} />
-      </AbsenceProvider>
+      <Fragment>
+        <AbsenceProvider value={provided}>
+          <TableStatic />
+          <div className="dynamic" ref={this.tableContainer}>
+            <table role="grid">
+              <TableHeader />
+              <TableBody />
+            </table>
+          </div>
+          <AbsenceEditor studentDay={currentEdit} close={this.edit(null)} />
+        </AbsenceProvider>
+      </Fragment>
     );
   }
 }

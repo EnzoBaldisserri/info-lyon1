@@ -5,6 +5,7 @@ namespace App\Entity\Absence;
 use DateTime;
 use App\Entity\User\Student;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,6 +25,8 @@ class Absence
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     *
+     * @Serializer\SerializedName("startTime")
      */
     private $startTime;
 
@@ -32,6 +35,8 @@ class Absence
      *
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     *
+     * @Serializer\SerializedName("endTime")
      */
     private $endTime;
 

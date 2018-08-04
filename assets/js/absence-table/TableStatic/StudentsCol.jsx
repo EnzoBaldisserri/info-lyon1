@@ -6,7 +6,7 @@ import StudentRow from './StudentRow';
 const StudentsCol = () => (
   <div className="students">
     <AbsenceConsumer>
-      { ({ groups }) => groups.map(group => (
+      { ({ dataHolder: { groupContainer: { groups } } }) => groups.map(group => (
         <div className="group" key={group.id}>
           { group.students.map(student => <StudentRow student={student} key={student.id} />) }
         </div>

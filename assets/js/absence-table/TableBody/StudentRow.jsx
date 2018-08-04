@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 
 import { AbsenceConsumer } from '../AbsenceContext';
 import AbsenceDay from './AbsenceDay';
+import Student from '../Model/Student';
 
 class StudentRow extends PureComponent {
   static propTypes = {
-    student: PropTypes.shape({
-      absences: PropTypes.arrayOf(PropTypes.any),
-    }).isRequired,
+    student: PropTypes.instanceOf(Student).isRequired,
   };
 
   render() {
@@ -20,19 +19,21 @@ class StudentRow extends PureComponent {
     return (
       <tr {...restProps}>
         <AbsenceConsumer>
-          { ({ months, actions: { openEditor } }) =>
-            months.map(({ days }) => Object.values(days).map((day) => {
-              const absences = student.absences
-                .filter(absence => absence.start_time.slice(0, 10) === day.repr);
+          { ({ dataHolder: { period: { daysAsArray } }, edit }) => daysAsArray.map((day) => {
+              const studentDay = day.getAbsences(student);
+              const dayOfWeek = studentDay.date.getDay();
+              const onClick = dayOfWeek === 0 || dayOfWeek === 6
+                ? null
+                : edit(studentDay);
 
               return (
                 <AbsenceDay
-                  absences={absences}
-                  openEditor={openEditor(student, new Date(day.repr), absences)}
-                  key={day.repr}
+                  day={studentDay}
+                  onClick={onClick}
+                  key={day.hash}
                 />
               );
-            })) }
+            }) }
         </AbsenceConsumer>
       </tr>
     );

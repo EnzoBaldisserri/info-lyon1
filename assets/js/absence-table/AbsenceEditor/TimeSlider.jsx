@@ -63,13 +63,13 @@ class TimeSlider extends PureComponent {
     };
 
     return (
-      <div ref={this.sliderContainer} className="valign-wrapper py-3">
+      <div ref={this.sliderContainer} className="valign-wrapper">
         <span />
         <NoUiSlider
           start={times}
           range={{ min: 7, max: 20 }}
           {...sliderOptions}
-          className="mx-2 w-100"
+          className="w-100"
         />
         <span />
       </div>

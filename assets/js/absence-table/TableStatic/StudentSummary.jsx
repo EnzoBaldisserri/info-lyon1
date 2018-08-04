@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import Student from '../Model/Student';
+
 class StudentSummary extends Component {
   static propTypes = {
     open: PropTypes.bool,
-    student: PropTypes.shape({
-      absences: PropTypes.arrayOf(PropTypes.shape({
-        justified: PropTypes.bool,
-      })).isRequired,
-    }).isRequired,
+    student: PropTypes.instanceOf(Student).isRequired,
     toggle: PropTypes.func.isRequired,
   };
 
@@ -20,19 +18,19 @@ class StudentSummary extends Component {
     const { student: { absences } } = this.props;
     const total = absences.length;
 
-    const days = absences.reduce(
-      (dates, absence) => {
-        const absenceDate = absence.start_time.slice(0, 10);
+    const days = absences.reduce((timestamps, absence) => {
+      const date = new Date(absence.startTime);
+      date.setHours(0, 0, 0, 0);
 
-        return dates.includes(absenceDate)
-          ? dates
-          : [
-            ...dates,
-            absenceDate,
-          ];
-      },
-      [],
-    ).length;
+      const timestamp = date.getTime();
+
+      return timestamps.includes(timestamp)
+        ? timestamps
+        : [
+          ...timestamps,
+          timestamp,
+        ];
+    }, []).length;
 
     const justified = absences.reduce(
       (count, absence) => count + (absence.justified ? 1 : 0),

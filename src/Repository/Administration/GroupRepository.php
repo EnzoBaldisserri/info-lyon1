@@ -55,8 +55,7 @@ class GroupRepository extends ServiceEntityRepository
             ->addOrderBy('s.firstname', 'ASC')
         ;
 
-        // Add absences
-        // That are in the semester
+        // Add absences that are in the semester
         // Order them by time
         $qb
             ->leftJoin('s.absences', 'a')

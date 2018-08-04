@@ -34,25 +34,35 @@
     }
   }
 
-  .abs-type {
-    color: theme-color('white');
-    flex-grow: 1;
-    height: 3rem;
-    border: none;
-
-    transition: all 0.4s ease-in-out;
-
-    &.active {
-      flex-grow: 4;
+  .time-container {
+    .noUi-target {
+      margin: 0 0.5rem;
     }
+  }
 
-    &:not(.active) {
-      &:first-child {
-        border-radius: 2px 0 0 2px;
+  .abs-type-container {
+    padding: 3rem 0;
+
+    .abs-type {
+      color: theme-color('white');
+      flex-grow: 1;
+      height: 3rem;
+      border: none;
+
+      transition: all 0.4s ease-in-out;
+
+      &.active {
+        flex-grow: 4;
       }
 
-      &:last-child {
-        border-radius: 0 2px 2px 0;
+      &:not(.active) {
+        &:first-child {
+          border-radius: 2px 0 0 2px;
+        }
+
+        &:last-child {
+          border-radius: 0 2px 2px 0;
+        }
       }
     }
   }

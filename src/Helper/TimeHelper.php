@@ -16,7 +16,7 @@ class TimeHelper
         $this->translator = $translator;
     }
 
-    public function getPeriodMonths(Period $period, bool $withRepr = false): array
+    public function getPeriodMonths(Period $period): array
     {
         $monthsTrans = explode(',', $this->translator->trans('global.time.months'));
         $daysShortTrans = explode(',', $this->translator->trans('global.time.days_short'));
@@ -26,22 +26,22 @@ class TimeHelper
         $date = clone $period->getStart();
 
         while ($date <= $period->getEnd()) {
-            [$dayInWeek, $dayInMonth, $month] = explode(' ', $date->format('w j n'));
+            [$dayInWeek, $month] = explode(' ', $date->format('w n'));
 
             if (!isset($months[$month])) {
                 $months[$month] = [
                     'name' => $monthsTrans[$month - 1],
-                    'repr' => $date->format('Y-m'),
+                    'date' => $date->format(self::JSON_TIME_FORMAT),
+                    'hash' => $date->format('Y-m'),
                     'days' => [],
                 ];
             }
 
-            $months[$month]['days'][$dayInMonth] = $withRepr ?
-                [
-                    'name' => $daysShortTrans[$dayInWeek],
-                    'repr' => $date->format('Y-m-d'),
-                ]
-                : $daysShortTrans[$dayInWeek];
+            $months[$month]['days'][] = [
+                'name' => $daysShortTrans[$dayInWeek],
+                'date' => $date->format(self::JSON_TIME_FORMAT),
+                'hash' => $date->format('Y-m-d'),
+            ];
 
             $date->modify('+1 day');
         }
